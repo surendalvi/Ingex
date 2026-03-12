@@ -106,11 +106,11 @@ col1, col2 = st.columns([1, 10])  # Adjust column widths as needed
 
 # Display logo in the first column
 with col1:
-    st.image(logo_url, width=80)  # Adjust width to fit
+    st.image(logo_url, width=70)  # Adjust width to fit
 
 # Display heading in the second column
 with col2:
-    st.markdown('<div class="ingex-header">INGENERO360AI <span style="font-weight:1000; color:#64748B;">| Digital Investment Engine</span></div>', unsafe_allow_html=True)
+    st.markdown('<div class="ingex-header">INGENERO360AI <span style="font-weight:300; font-size:50px; color:#64748B;">| Digital Investment Engine</span></div>', unsafe_allow_html=True)
 
 t_col1, t_col2, t_col3 = st.columns([2, 1, 1])
 with t_col1:
@@ -174,6 +174,7 @@ with col_right:
         st.toast("Quote Drafted: ~$2.97M for Full Plant")
 
 st.markdown(f"<div style='text-align: center; color: #94A3B8; font-size: 11px; margin-top:10px;'>INGENERO360AI by Ingenero | Trusted Digital Operations for Global Petrochemicals</div>", unsafe_allow_html=True)
+
 
 
 
