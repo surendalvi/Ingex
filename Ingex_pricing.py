@@ -1,5 +1,35 @@
 
 import streamlit as st
+# Function to get raw url from gitHub
+def get_raw_github_url(repo_url, filepath):
+  """Gets the raw GitHub URL for a file in a repository.
+
+  Args:
+    repo_url: The URL of the GitHub repository.
+    filepath: The path to the file within the repository.
+
+  Returns:
+    The raw GitHub URL for the file.
+  """
+
+  # Splitting the repo_url to extract username and repo name
+  parts = repo_url.split("/")
+  username = parts[3]
+  repo_name = parts[4]
+
+  # Constructing the raw URL
+  raw_url = f"https://raw.githubusercontent.com/{username}/{repo_name}/main/{filepath}"
+  return raw_url
+
+# Replace with your actual repo and image path
+repo_url = "https://github.com/surendalvi/Ingex/blob/main/logo.png"
+filepath = "logo.png"
+
+logo_url = get_raw_github_url(repo_url, filepath)
+
+# Display the logo using st.image
+st.image(logo_url, width=200)  # Adjust width as needed
+
 # --- 1. PAGE CONFIG & UI ---
 st.set_page_config(page_title="INGENERO360AI Pricing", layout="wide", initial_sidebar_state="collapsed")
 
@@ -138,6 +168,7 @@ with col_right:
         st.toast("Quote Drafted: ~$2.97M for Full Plant")
 
 st.markdown(f"<div style='text-align: center; color: #94A3B8; font-size: 11px; margin-top:10px;'>INGENERO360AI by Ingenero | Trusted Digital Operations for Global Petrochemicals</div>", unsafe_allow_html=True)
+
 
 
 
