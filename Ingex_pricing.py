@@ -16,7 +16,7 @@ st.markdown("""
     }
     
     /* Product Header Styling */
-    .ingex-header { font-size: 26px; font-weight: 800; color: #031D44; margin-bottom: 0.1rem; }
+    .INGENERO360AI-header { font-size: 26px; font-weight: 800; color: #031D44; margin-bottom: 0.1rem; }
     h3 { color: #031D44; font-size: 0.95rem !important; margin-bottom: 4px !important; }
 
     /* Final Price Card */
@@ -139,4 +139,5 @@ with col_right:
         st.toast("Quote Drafted: ~$2.97M for Full Plant")
 
 st.markdown(f"<div style='text-align: center; color: #94A3B8; font-size: 11px; margin-top:10px;'>INGEX by Ingenero | Trusted Digital Operations for Global Petrochemicals</div>", unsafe_allow_html=True)
+
 
