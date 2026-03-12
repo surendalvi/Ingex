@@ -1,7 +1,34 @@
+
 import streamlit as st
+# Function to get raw url from gitHub
+def get_raw_github_url(repo_url, filepath):
+  """Gets the raw GitHub URL for a file in a repository.
+
+  Args:
+    repo_url: The URL of the GitHub repository.
+    filepath: The path to the file within the repository.
+
+  Returns:
+    The raw GitHub URL for the file.
+  """
+
+  # Splitting the repo_url to extract username and repo name
+  parts = repo_url.split("/")
+  username = parts[3]
+  repo_name = parts[4]
+
+  # Constructing the raw URL
+  raw_url = f"https://raw.githubusercontent.com/{username}/{repo_name}/main/{filepath}"
+  return raw_url
+
+# Replace with your actual repo and image path
+repo_url = "https://github.com/surendalvi/Ingex/blob/main/logo.png"
+filepath = "logo.png"
+
+logo_url = get_raw_github_url(repo_url, filepath)
 
 # --- 1. PAGE CONFIG & UI ---
-st.set_page_config(page_title="INGEX Pricing", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="INGENERO360AI Pricing", layout="wide", initial_sidebar_state="collapsed")
 
 # Custom CSS for "Zero Scroll" and a polished Figma-style look
 st.markdown("""
@@ -15,7 +42,7 @@ st.markdown("""
     }
     
     /* Product Header Styling */
-    .ingex-header { font-size: 26px; font-weight: 800; color: #031D44; margin-bottom: 0.1rem; }
+    .INGENERO360AI-header { font-size: 26px; font-weight: 800; color: #031D44; margin-bottom: 0.1rem; }
     h3 { color: #031D44; font-size: 0.95rem !important; margin-bottom: 4px !important; }
 
     /* Final Price Card */
@@ -74,7 +101,16 @@ MODULE_DATA = {
 SCALES = {"Single Asset": 1.0, "System (8 Units)": 1.5, "Process Train": 2.0, "Full Plant": 2.5}
 
 # --- 3. TOP BAR (Inputs) ---
-st.markdown('<div class="ingex-header">INGEX <span style="font-weight:300; color:#64748B;">| Digital Investment Engine</span></div>', unsafe_allow_html=True)
+# Create columns for logo and heading
+col1, col2 = st.columns([1, 10])  # Adjust column widths as needed
+
+# Display logo in the first column
+with col1:
+    st.image(logo_url, width=70)  # Adjust width to fit
+
+# Display heading in the second column
+with col2:
+    st.markdown('<span style="font-weight:500; font-size:40px; color:#64748B;"> Digital Investment Engine</span>', unsafe_allow_html=True)
 
 t_col1, t_col2, t_col3 = st.columns([2, 1, 1])
 with t_col1:
@@ -134,7 +170,25 @@ with col_right:
         </div>
     """, unsafe_allow_html=True)
     
-    if st.button("Generate Official INGEX Quote", use_container_width=True):
+    if st.button("Generate Official INGENERO360AI Quote", use_container_width=True):
         st.toast("Quote Drafted: ~$2.97M for Full Plant")
 
-st.markdown(f"<div style='text-align: center; color: #94A3B8; font-size: 11px; margin-top:10px;'>INGEX by Ingenero | Trusted Digital Operations for Global Petrochemicals</div>", unsafe_allow_html=True)
+st.markdown(f"<div style='text-align: center; color: #94A3B8; font-size: 11px; margin-top:10px;'>INGENERO360AI by Ingenero | Trusted Digital Operations for Global Petrochemicals</div>", unsafe_allow_html=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
