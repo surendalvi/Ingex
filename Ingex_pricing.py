@@ -104,7 +104,16 @@ MODULE_DATA = {
 SCALES = {"Single Asset": 1.0, "System (8 Units)": 1.5, "Process Train": 2.0, "Full Plant": 2.5}
 
 # --- 3. TOP BAR (Inputs) ---
-st.markdown('<div class="ingex-header">INGENERO360AI <span style="font-weight:300; color:#64748B;">| Digital Investment Engine</span></div>', unsafe_allow_html=True)
+# Create columns for logo and heading
+col1, col2 = st.columns([1, 4])  # Adjust column widths as needed
+
+# Display logo in the first column
+with col1:
+    st.image(logo_url, width=100)  # Adjust width to fit
+
+# Display heading in the second column
+with col2:
+    st.markdown('<div class="ingex-header">INGENERO360AI <span style="font-weight:300; color:#64748B;">| Digital Investment Engine</span></div>', unsafe_allow_html=True)
 
 t_col1, t_col2, t_col3 = st.columns([2, 1, 1])
 with t_col1:
@@ -168,6 +177,7 @@ with col_right:
         st.toast("Quote Drafted: ~$2.97M for Full Plant")
 
 st.markdown(f"<div style='text-align: center; color: #94A3B8; font-size: 11px; margin-top:10px;'>INGENERO360AI by Ingenero | Trusted Digital Operations for Global Petrochemicals</div>", unsafe_allow_html=True)
+
 
 
 
