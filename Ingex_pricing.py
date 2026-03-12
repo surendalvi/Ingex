@@ -135,9 +135,10 @@ with col_right:
         </div>
     """, unsafe_allow_html=True)
     
-    if st.button("Generate Official INGEX Quote", use_container_width=True):
+    if st.button("Generate Official INGENERO360AI Quote", use_container_width=True):
         st.toast("Quote Drafted: ~$2.97M for Full Plant")
 
-st.markdown(f"<div style='text-align: center; color: #94A3B8; font-size: 11px; margin-top:10px;'>INGEX by Ingenero | Trusted Digital Operations for Global Petrochemicals</div>", unsafe_allow_html=True)
+st.markdown(f"<div style='text-align: center; color: #94A3B8; font-size: 11px; margin-top:10px;'>INGENERO360AI by Ingenero | Trusted Digital Operations for Global Petrochemicals</div>", unsafe_allow_html=True)
+
 
 
