@@ -2,7 +2,7 @@
 import streamlit as st
 
 # --- 1. PAGE CONFIG & UI ---
-st.set_page_config(page_title="INGEX Pricing", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="INGENERO360AI Pricing", layout="wide", initial_sidebar_state="collapsed")
 
 # Custom CSS for "Zero Scroll" and a polished Figma-style look
 st.markdown("""
@@ -139,3 +139,4 @@ with col_right:
         st.toast("Quote Drafted: ~$2.97M for Full Plant")
 
 st.markdown(f"<div style='text-align: center; color: #94A3B8; font-size: 11px; margin-top:10px;'>INGEX by Ingenero | Trusted Digital Operations for Global Petrochemicals</div>", unsafe_allow_html=True)
+
