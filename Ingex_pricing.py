@@ -1,6 +1,5 @@
 
 import streamlit as st
-logo_path = os.path.join(os.path.dirname(__file__), 'logo.png')
 # --- 1. PAGE CONFIG & UI ---
 st.set_page_config(page_title="INGENERO360AI Pricing", layout="wide", initial_sidebar_state="collapsed")
 
@@ -139,6 +138,7 @@ with col_right:
         st.toast("Quote Drafted: ~$2.97M for Full Plant")
 
 st.markdown(f"<div style='text-align: center; color: #94A3B8; font-size: 11px; margin-top:10px;'>INGENERO360AI by Ingenero | Trusted Digital Operations for Global Petrochemicals</div>", unsafe_allow_html=True)
+
 
 
 
