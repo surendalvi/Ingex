@@ -102,7 +102,7 @@ SCALES = {"Single Asset": 1.0, "System (8 Units)": 1.5, "Process Train": 2.0, "F
 
 # --- 3. TOP BAR (Inputs) ---
 # Create columns for logo and heading
-col1, col2 = st.columns([1, 20])  # Adjust column widths as needed
+col1, col2 = st.columns([1, 5])  # Adjust column widths as needed
 
 # Display logo in the first column
 with col1:
@@ -174,6 +174,7 @@ with col_right:
         st.toast("Quote Drafted: ~$2.97M for Full Plant")
 
 st.markdown(f"<div style='text-align: center; color: #94A3B8; font-size: 11px; margin-top:10px;'>INGENERO360AI by Ingenero | Trusted Digital Operations for Global Petrochemicals</div>", unsafe_allow_html=True)
+
 
 
 
