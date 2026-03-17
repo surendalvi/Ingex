@@ -47,13 +47,34 @@ PLANT_PORTFOLIO = {
 }
 
 INITIATIVE_DATA = {
-    "Plant Efficiency": "Dynamic Benchmarking, Soft Sensors, Fouling Prediction, Catalyst Life Monitoring.",
-    "Energy Optimization": "Driver Switchability, Steam Header Balancing, Fuel Loss Reduction.",
-    "Reliability": "100+ Failure Modes, Time to Failure, Bad Actor ID, Vibration Correlation.",
-    "Asset Metric Hub": "MTBF/MTTR, Asset TCO, ISO 55000 Compliance.",
-    "Sustainability": "Scope 1/2 Monitoring, Carbon Intensity, Water/Waste Efficiency.",
-    "MLOPS": "Drift Detection, Model Accuracy, Service Uptime, Latency Tracking.",
-    "Workflows": "Auto-Workorders, Digital Shift Handover, Alert Management."
+    "Plant Efficiency": [
+        "Dynamic Yield Benchmarking", "Soft sensors/VirtualLab", "Fouling Forecast (Exchangers)", 
+        "NOX/Emission Forecast", "Catalyst Health & Life Monitoring", "Real-time Optimization (RTO)"
+    ],
+    "Energy Optimization": [
+        "Driver Switchability (Steam vs Elec)", "Fuel/Steam Loss Reduction", "Steam Header Balancing", 
+        "Energy Intensity (SEC) Tracking", "Utility Cost Sensitivity Analysis"
+    ],
+    "Reliability": [
+        "Failure Mode Library (>100+)", "Time to Failure (Remaining Life)", "Bad Actor Identification", 
+        "Root Cause Analysis (RCA) Integration", "Vibration/Temp Correlation"
+    ],
+    "Asset Metric Hub": [
+        "Asset Management (TCO)", "Mean Time Between Failure (MTBF)", "Mean Time to Repair (MTTR)", 
+        "Maintenance Cost Ineffectiveness", "ISO 55000 Compliance Tracking"
+    ],
+    "Sustainability": [
+        "Scope 1 & 2 Emission Monitoring", "Water and Waste Management", "Resource Efficiency", 
+        "Carbon Intensity per Product Ton", "ESG Reporting Automation"
+    ],
+    "MLOPS": [
+        "Model Drift Detection", "Predictive Accuracy Metrics", "Inference Latency Tracking", 
+        "Service Uptime Monitoring", "Automated Model Re-training Logs"
+    ],
+    "Workflows": [
+        "Alert Management & Statistics", "Automatic Workorder (CMMS) Creation", 
+        "Digital Shift Handover Integration", "Action Item Audit Trail"
+    ]
 }
 
 # --- 4. TOP BAR ---
