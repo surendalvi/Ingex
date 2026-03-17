@@ -61,7 +61,7 @@ h_col1, h_col2, h_col3, h_col4 = st.columns([2, 3.2, 2, 2])
 with h_col1:
     if logo_url:  st.image(logo_url, width=600)  # Adjust width to fit
 with h_col2:
-    st.markdown('<span style="font-weight:500; font-size:20px; color:#64748B;"> Product Pricing Catalogue</span>', unsafe_allow_html=True)
+    st.markdown('<span style="font-weight:500; font-size:30px; color:#64748B;"> Product Pricing Catalogue</span>', unsafe_allow_html=True)
 with h_col3:
     sector = st.selectbox("Industry Sector", list(PLANT_PORTFOLIO.keys()))
 with h_col4:
