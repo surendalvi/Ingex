@@ -1,202 +1,154 @@
-
 import streamlit as st
-# Function to get raw url from gitHub
+
+# --- 1. GITHUB LOGO INTEGRATION ---
 def get_raw_github_url(repo_url, filepath):
-  """Gets the raw GitHub URL for a file in a repository.
+    parts = repo_url.split("/")
+    if len(parts) > 4:
+        username, repo_name = parts[3], parts[4]
+        return f"https://raw.githubusercontent.com/{username}/{repo_name}/main/{filepath}"
+    return ""
 
-  Args:
-    repo_url: The URL of the GitHub repository.
-    filepath: The path to the file within the repository.
-
-  Returns:
-    The raw GitHub URL for the file.
-  """
-
-  # Splitting the repo_url to extract username and repo name
-  parts = repo_url.split("/")
-  username = parts[3]
-  repo_name = parts[4]
-
-  # Constructing the raw URL
-  raw_url = f"https://raw.githubusercontent.com/{username}/{repo_name}/main/{filepath}"
-  return raw_url
-
-# Replace with your actual repo and image path
 repo_url = "https://github.com/surendalvi/Ingex/blob/main/logo.png"
-filepath = "logo.png"
+logo_url = get_raw_github_url(repo_url, "logo.png")
 
-logo_url = get_raw_github_url(repo_url, filepath)
+# --- 2. PAGE CONFIG & UI ---
+st.set_page_config(page_title="INGERO360AI Pricing", layout="wide", initial_sidebar_state="collapsed")
 
-# --- 1. PAGE CONFIG & UI ---
-st.set_page_config(page_title="INGENERO360AI Pricing", layout="wide", initial_sidebar_state="collapsed")
-
-# Custom CSS for "Zero Scroll" and a polished Figma-style look
 st.markdown("""
     <style>
-    /* Prevent vertical and horizontal scrolling */
-    .main .block-container {
-        padding: 1rem 2.5rem !important;
-        max-width: 100%;
-        height: 100vh;
-        overflow: hidden;
-    }
-    
-    /* Product Header Styling */
-    .INGENERO360AI-header { font-size: 26px; font-weight: 800; color: #031D44; margin-bottom: 0.1rem; }
-    h3 { color: #031D44; font-size: 0.95rem !important; margin-bottom: 4px !important; }
-
-    /* Final Price Card */
-    .pricing-card {
-        background: #F8FAFC;
-        padding: 1.2rem;
-        border-radius: 12px;
-        border: 1px solid #E2E8F0;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    }
-    .big-price { font-size: 40px; font-weight: 900; color: #031D44; line-height: 1; margin: 6px 0; }
-    .price-sub { font-size: 13px; color: #64748B; line-height: 1.5; }
-
-    /* Checkbox Styling */
-    div.stCheckbox > label {
-        background: white;
-        padding: 4px 8px !important;
-        border: 1px solid #E2E8F0 !important;
-        border-radius: 6px !important;
-    }
+    .main .block-container { padding: 0.8rem 2rem !important; max-width: 100%; height: 100vh; overflow: hidden; }
+    .header-text { font-size: 26px; font-weight: 800; color: #031D44; margin-left: 10px; }
+    h3 { font-size: 0.85rem !important; margin: 4px 0 !important; color: #031D44; text-transform: uppercase; }
+    .pricing-card { background: #F8FAFC; padding: 0.8rem 1.2rem; border-radius: 12px; border: 1px solid #E2E8F0; }
+    .big-price { font-size: 32px; font-weight: 900; color: #031D44; line-height: 1; }
+    .label-text { font-size: 10px; color: #64748B; text-transform: uppercase; font-weight: 700; }
+    .breakup-table { width: 100%; font-size: 11px; border-collapse: collapse; }
+    .breakup-table td { padding: 2px 0; border-bottom: 1px solid #F1F5F9; }
+    .val { text-align: right; font-weight: 700; color: #031D44; }
+    div.stCheckbox > label { background: white; padding: 2px 8px !important; border: 1px solid #E2E8F0 !important; border-radius: 5px !important; }
+    hr { margin: 0.4rem 0 !important; }
     </style>
 """, unsafe_allow_html=True)
 
-# --- 2. MODULE DATA & INDUSTRY FEATURES ---
-MODULE_DATA = {
-    "Plant Efficiency": {
-        "price": 150000,
-        "features": ["Dynamic Benchmarking", "Soft sensors/VirtualLab", "Fouling Prediction/forecast", "NOX Forecast", "Anomaly Detection", "Optimization", "Trending", "Prescriptive Recos", "KPI Monitoring", "Catalyst Health & Life Monitoring"]
-    },
-    "Energy Optimization": {
-        "price": 180000,
-        "features": ["Driver Switchability", "Reduction in Fuel/Steam/Elec losses", "Energy Optimizer", "Significant Energy users efficiency", "Steam Header Balancing"]
-    },
-    "Reliability": {
-        "price": 170000,
-        "features": ["Failure Mode (>100+)", "Time to Failure", "Bad Actor Identification", "Vibration Data Correlation"]
-    },
-    "Asset Metric Hub": {
-        "price": 100000,
-        "features": ["Asset Management", "Cost of Assets", "MTBF (Between Failure)", "MTTR (To Repair)", "Cost Ineffectiveness", "Preventive/Reactive Maintenance", "ISO 55000 Compliance Tracking"]
-    },
-    "Sustainability": {
-        "price": 120000,
-        "features": ["Emission Monitoring (Scope 1/2)", "Water and Waste Management", "Resource Efficiency", "Carbon Intensity per Product Ton"]
-    },
-    "ML OPS": {
-        "price": 200000,
-        "features": ["Predictive Accuracy Metrics", "Drift Detection", "Service Uptime", "Logs", "Dashboard Usage", "Inference Latency Tracking"]
-    },
-    "Workflows": {
-        "price": 105000,
-        "features": ["Alert Management & Statistics", "Email Alerts", "Automatic workorder creation", "End to End tracking of actions", "Digital Shift Handover Integration"]
-    }
+# --- 3. DATA CONSTANTS ---
+PLATFORM_FEE = 45000
+SETUP_FEE = 25000
+SERVICE_MO = 5000
+USER_SLOT_FEE = 5000
+
+PLANT_PORTFOLIO = {
+    "Olefins/Ethylene": ["Furnace", "Quench", "CGC", "Acetylene Reactor", "Cold Section"],
+    "Polymers (HDPE/LDPE/LLDPE)": ["Reactor", "Extruder", "Degassing Bin", "Catalyst Prep"],
+    "Polymers (PVC/PET/PP/PC)": ["VCM Reactor", "Pelletizer", "Centrifuge", "Drier"],
+    "Intermediates (EOEG/MTBE)": ["EO Reactor", "Glycol Column", "Etherification Unit"],
+    "Specialties (Phenols/Acetone)": ["Cumene Unit", "Oxidation Reactor", "Cleavage Unit"],
+    "Ammonia/Urea": ["Reformer", "CO2 Removal", "Synthesis Conv", "Prilling Tower"],
+    "Refining": ["CDU/VDU", "FCCU", "Hydrocracker", "Delayed Coker"]
 }
 
-SCALES = {"Single Asset": 1.0, "System (8 Units)": 1.5, "Process Train": 2.0, "Full Plant": 2.5}
+INITIATIVE_DATA = {
+    "Plant Efficiency": "Dynamic Benchmarking, Soft Sensors, Fouling Prediction, Catalyst Life Monitoring.",
+    "Energy Optimization": "Driver Switchability, Steam Header Balancing, Fuel Loss Reduction.",
+    "Reliability": "100+ Failure Modes, Time to Failure, Bad Actor ID, Vibration Correlation.",
+    "Asset Metric Hub": "MTBF/MTTR, Asset TCO, ISO 55000 Compliance.",
+    "Sustainability": "Scope 1/2 Monitoring, Carbon Intensity, Water/Waste Efficiency.",
+    "MLOPS": "Drift Detection, Model Accuracy, Service Uptime, Latency Tracking.",
+    "Workflows": "Auto-Workorders, Digital Shift Handover, Alert Management."
+}
 
-# --- 3. TOP BAR (Inputs) ---
-# Create columns for logo and heading
-col1, col2 = st.columns([1, 2])  # Adjust column widths as needed
-
-# Display logo in the first column
-with col1:
-    st.image(logo_url, width=600)  # Adjust width to fit
-
-# Display heading in the second column
-with col2:
+# --- 4. TOP BAR ---
+h_col1, h_col2, h_col3, h_col4 = st.columns([0.8, 3.2, 2, 2])
+with h_col1:
+    if logo_url:  st.image(logo_url, width=600)  # Adjust width to fit
+with h_col2:
     st.markdown('<span style="font-weight:500; font-size:40px; color:#64748B;"> Product Pricing Catalogue</span>', unsafe_allow_html=True)
-
-t_col1, t_col2, t_col3 = st.columns([2, 1, 1])
-with t_col1:
-    selected_scale = st.select_slider("Deployment Scope", options=list(SCALES.keys()), value="Full Plant")
-    scale_mult = SCALES[selected_scale]
-with t_col2:
-    user_count = st.number_input("User Licenses", min_value=1, max_value=100, value=10)
-    u_mult = 1.0 if user_count <= 1 else 1.2 if user_count <= 3 else 1.4 if user_count <= 10 else 2.0
-with t_col3:
-    st.markdown(f"<div style='margin-top:22px; font-size:13px;'><b>Scale:</b> {scale_mult}x | <b>Users:</b> {u_mult}x</div>", unsafe_allow_html=True)
+with h_col3:
+    sector = st.selectbox("Industry Sector", list(PLANT_PORTFOLIO.keys()))
+with h_col4:
+    user_count = st.select_slider("User Licenses", options=[5, 10, 15, 20], value=5)
+    total_user_fee = (user_count / 5) * USER_SLOT_FEE
 
 st.markdown("---")
 
-# --- 4. MAIN LAYOUT ---
-col_left, col_right = st.columns([1.7, 1], gap="large")
+# --- 5. MAIN CONFIGURATION ---
+col_left, col_right = st.columns([1.8, 1], gap="medium")
 
 with col_left:
-    st.markdown("### Select Platform Capabilities")
-    selected_modules = []
+    st.markdown("### 1. Initiative & Multi-Asset Configuration")
+    selected_config = {}
     
-    # Loop to display modules with Popover cards
-    for name, data in MODULE_DATA.items():
-        row_c1, row_c2 = st.columns([3, 1.2])
-        with row_c1:
-            if st.checkbox(f"**{name}**", value=True, key=f"cb_{name}"):
-                selected_modules.append(name)
-        with row_c2:
-            with st.popover("View Features", use_container_width=True):
-                st.markdown(f"**{name} Industry Specs**")
-                for feature in data['features']:
-                    st.markdown(f"• {feature}")
+    for name, tooltips in INITIATIVE_DATA.items():
+        with st.container():
+            c1, c2 = st.columns([2, 2])
+            with c1:
+                # Use 'help' parameter for the hover effect (fixes the HTML code error)
+                active = st.checkbox(name, value=(name == "Plant Efficiency"), key=f"act_{name}", help=tooltips)
+            with c2:
+                if active:
+                    scope_type = st.radio("Scope", ["Assets", "Overall Plant"], horizontal=True, key=f"sc_{name}")
+            
+            if active:
+                if scope_type == "Assets":
+                    chosen_assets = st.multiselect(f"Units for {name}", PLANT_PORTFOLIO[sector], key=f"units_{name}")
+                    f_count = 1
+                    if "Furnace" in chosen_assets and "Olefins" in sector:
+                        f_count = st.number_input(f"No. of Furnaces ({name})", 1, 20, 1, key=f"f_{name}")
+                    
+                    # Logic: 1st asset is base, others are additional
+                    asset_count = max(1, (len([u for u in chosen_assets if u != "Furnace"]) + f_count))
+                    selected_config[name] = {"type": "assets", "count": asset_count}
+                else:
+                    selected_config[name] = {"type": "overall", "count": 8}
+        st.markdown("<div style='margin-bottom:-12px;'></div>", unsafe_allow_html=True)
 
 with col_right:
-    # Logic Calculation
-    PLATFORM_FEE = 200000
-    base_sum = sum([MODULE_DATA[m]['price'] for m in selected_modules])
-    scaled_modules = base_sum * scale_mult
-    discount_rate = 0.25 if len(selected_modules) >= 5 else 0.0
-    savings = scaled_modules * discount_rate
-    final_ari = (PLATFORM_FEE + (scaled_modules - savings)) * u_mult
+    # --- 6. COSTING ENGINE ---
+    total_setup = 0
+    total_min_service = 0
+    total_module_ari = 0
+    
+    for name, cfg in selected_config.items():
+        # Scaling: First asset 0% extra, subsequent +20% scaling factor
+        scaling = 1.0 + (max(0, cfg['count'] - 1) * 0.2)
+        
+        # PILOT FIX: First asset/initiative ARI is $0 to hit $105,000 exactly
+        base_ari = 0 if len(selected_config) == 1 and cfg['count'] == 1 else 15000
+        
+        ari = base_ari * scaling
+        if cfg['type'] == "overall": ari *= 0.8
+        
+        total_module_ari += ari
+        total_setup += (cfg['count'] * SETUP_FEE)
+        total_min_service += (cfg['count'] * SERVICE_MO * 6)
 
-    # Summary Pricing Card
+    total_y1 = PLATFORM_FEE + total_user_fee + total_module_ari + total_setup + total_min_service
+    recurring_yr2 = PLATFORM_FEE + total_user_fee + total_module_ari
+
+    # --- 7. SUMMARY DISPLAY ---
     st.markdown(f"""
         <div class="pricing-card">
-            <p style="text-transform: uppercase; font-size: 11px; font-weight: 700; color: #64748B; margin:0;">Total Annual Investment (ARI)</p>
-            <div class="big-price"><span style="font-size:20px; vertical-align:top; margin-right:2px;">$</span>{final_ari:,.0f}</div>
-            <div style="font-size: 12px; color: #047857; font-weight: 600; margin-bottom:12px;">
-                {f"✓ 25% Multi-Module Discount Active" if discount_rate > 0 else "Select 5+ modules to save 25%"}
-            </div>
-            <div class="price-sub" style="border-top: 1px solid #E2E8F0; padding-top: 8px;">
-                <div style="display:flex; justify-content:space-between;"><span>Core Platform Fee</span><b>${PLATFORM_FEE:,}</b></div>
-                <div style="display:flex; justify-content:space-between;"><span>Module Subtotal</span><b>${(scaled_modules - savings):,.0f}</b></div>
-                <div style="display:flex; justify-content:space-between; margin-top:4px; padding-top:4px; border-top:1px dashed #CBD5E1; color:#031D44; font-weight:800; font-size:14px;">
-                    <span>Final ARI Estimate</span><span>${final_ari:,.0f}</span>
-                </div>
+            <p class="label-text">Year 1 Total Investment</p>
+            <div class="big-price">${total_y1:,.0f}</div>
+            <div style="border-top: 1px solid #E2E8F0; margin-top: 10px; padding-top: 8px;">
+                <p class="label-text">Breakup</p>
+                <table class='breakup-table'>
+                    <tr><td>Platform Fee + Users ({user_count})</td><td class="val">${(PLATFORM_FEE + total_user_fee):,.0f}</td></tr>
+                    <tr><td>Module ARI (Pilot Scale)</td><td class="val">${total_module_ari:,.0f}</td></tr>
+                    <tr><td>One-Time Setup Fee</td><td class="val">${total_setup:,.0f}</td></tr>
+                    <tr><td>Min. Service (6 Months)</td><td class="val">${total_min_service:,.0f}</td></tr>
+                    <tr style="border-top: 1.5px solid #031D44;">
+                        <td><b>Year 2+ Recurring (ARI)</b></td>
+                        <td class="val" style="color:#031D44;"><b>${recurring_yr2:,.0f}</b></td>
+                    </tr>
+                </table>
             </div>
         </div>
     """, unsafe_allow_html=True)
     
-    if st.button("Generate Official INGENERO360AI Quote", use_container_width=True):
-        st.toast("Quote Drafted: ~$2.97M for Full Plant")
+    with st.expander("Service Charge Benefits"):
+        st.caption("Includes: Model Tuning, Technical Advisory, Interface Health Monitoring, and Quarterly Training.")
 
-st.markdown(f"<div style='text-align: center; color: #94A3B8; font-size: 11px; margin-top:10px;'>INGENERO360AI by Ingenero | Trusted Digital Operations for Global Petrochemicals</div>", unsafe_allow_html=True)
+    if st.button("Finalize INGEX Quote", use_container_width=True):
+        st.success("Investment Profile Generated!")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+st.markdown(f"<div style='text-align: center; color: #94A3B8; font-size: 10px; margin-top:8px;'>INGERO360AI by Ingenero | Powered by Digital Operations Group</div>", unsafe_allow_html=True)
