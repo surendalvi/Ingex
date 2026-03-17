@@ -56,7 +56,7 @@ INITIATIVE_DATA = {
     "Asset Metric Hub": "Asset Management (TCO)", "Mean Time Between Failure (MTBF)", "Mean Time to Repair (MTTR)", 
         "Maintenance Cost Ineffectiveness", "ISO 55000 Compliance Tracking",
     "Sustainability": "Scope 1 & 2 Emission Monitoring", "Water and Waste Management", "Resource Efficiency", 
-        "Carbon Intensity per Product Ton", "ESG Reporting Automation"",
+        "Carbon Intensity per Product Ton", "ESG Reporting Automation",
     "MLOPS": "Model Drift Detection", "Predictive Accuracy Metrics", "Inference Latency Tracking", 
         "Service Uptime Monitoring", "Automated Model Re-training Logs",
     "Workflows": "Alert Management & Statistics", "Automatic Workorder (CMMS) Creation", "Action Item Audit Trail"
