@@ -57,7 +57,7 @@ INITIATIVE_DATA = {
 }
 
 # --- 4. TOP BAR ---
-h_col1, h_col2, h_col3, h_col4 = st.columns([0.8, 3.2, 2, 2])
+h_col1, h_col2, h_col3, h_col4 = st.columns([2, 3.2, 2, 2])
 with h_col1:
     if logo_url:  st.image(logo_url, width=600)  # Adjust width to fit
 with h_col2:
