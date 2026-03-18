@@ -93,7 +93,7 @@ INITIATIVE_INFO = {
 st.markdown(f"""
     <div class="nav-header">
         <div style="display: flex; align-items: center;">
-            <img src="{logo_url}" width="200">
+            <img src="{logo_url}" width="300">
             <div style="margin-left: 15px;">
                 <div style="font-size:40px; font-weight:800; color:#0F172A;">PRODUCT PRICING CATALOGUE</div>
                 <div style="font-size:10px; color:#64748B; font-weight:700; letter-spacing:1.5px;">ENTERPRISE FLEET MATRIX</div>
