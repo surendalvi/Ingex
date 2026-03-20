@@ -14,49 +14,46 @@ logo_url = get_raw_github_url(repo_url, "logo.png")
 # --- 2. PAGE CONFIG ---
 st.set_page_config(page_title="INGERO360AI Executive", page_icon="🏗️", layout="wide")
 
-# --- 3. DUAL-STICKY CSS (PINNED FINANCIALS & HEADERS) ---
+# --- 3. THE "STICKY RESULTS" CSS ---
 st.markdown("""
     <style>
     .main .block-container { padding: 1rem 2rem !important; background-color: #F8FAFC; }
     
-    /* 1. STICKY FINANCIAL CARD */
-    /* This stays at the top of the viewport */
+    /* Branding Header - Not Sticky */
+    .nav-header {
+        display: flex; align-items: center; padding: 12px 20px; 
+        background: white; border-radius: 12px; border: 1px solid #E2E8F0;
+        margin-bottom: 10px;
+    }
+
+    /* THE FIX: PINNED FINANCIAL CARD */
+    /* This targets the container holding the summary and pins it to the top */
     div:has(> .executive-card) {
         position: sticky !important;
         top: 0 !important;
         z-index: 1000 !important;
         background-color: #F8FAFC !important;
-        padding-bottom: 10px;
+        padding-top: 5px;
+        padding-bottom: 15px;
     }
 
     .executive-card {
-        background: white; padding: 18px; border-radius: 12px;
+        background: white; padding: 20px; border-radius: 16px;
         border-top: 5px solid #0F172A; border: 1px solid #E2E8F0;
-        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
     }
 
-    /* 2. STICKY INITIATIVE HEADERS */
-    /* This pins the labels (Efficiency, etc) below the financial card */
-    [data-testid="stHorizontalBlock"]:has(p:contains("Unit Name")) {
-        position: sticky !important;
-        top: 160px !important; /* Adjust based on your screen resolution */
-        z-index: 999 !important;
-        background-color: #FFFFFF !important;
-        border-bottom: 3px solid #0F172A !important;
-        padding: 10px 0 !important;
-    }
-
-    /* 3. STICKY LEFT COLUMN (Plant Names) */
+    /* STICKY LEFT COLUMN (Plant Names) */
     [data-testid="column"]:first-child {
         position: sticky !important;
         left: 0 !important;
-        z-index: 998 !important;
+        z-index: 99 !important;
         background-color: #F8FAFC !important;
         border-right: 3px solid #0F172A !important;
         padding-right: 15px !important;
     }
 
-    /* 4. PREVENT COLUMN SQUEEZING */
+    /* PREVENT SKEWING: Force columns to stay wide */
     [data-testid="column"] {
         min-width: 280px !important;
         flex: 0 0 auto !important;
@@ -68,7 +65,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- 4. DATA REPOSITORY ---
+# --- 4. EXPANDED PORTFOLIO REPOSITORY ---
 PLANT_PORTFOLIO = {
     "🏭 Olefins/Ethylene": ["Furnace", "Quench TLE", "CGC", "Acetylene Reactor", "Cold Box", "C2/C3 Splitters"],
     "💧 Methanol": ["Steam Reformer", "SynGas Compressor", "Methanol Converter", "Distillation Train"],
@@ -83,24 +80,33 @@ PLANT_PORTFOLIO = {
 }
 
 INITIATIVE_DETAILS = {
-    "📈 Efficiency": "• Yield & Catalyst Optimization\n• Soft Sensors\n• Dynamic Benchmarking",
-    "⚡ Energy": "• Steam Header Balancing\n• Fuel Gas Optimization\n• Furnace Excess Air",
-    "🛠️ Reliability": "• 100+ Failure Templates\n• Remaining Useful Life (RUL)\n• Bad Actor ID",
-    "🌱 Sustainability": "• Scope 1/2 Tracking\n• Carbon Intensity Index\n• Flare Loss Prevention",
-    "🔄 Workflows": "• Digital Shift Handover\n• Automated Work-Orders\n• Alert Management"
+    "📈 Efficiency": "Yield Optimization, Catalyst Health, Soft Sensors, Heat Integration.",
+    "⚡ Energy": "Steam Balancing, Fuel Gas Optimization, Boiler Efficiency, Specific Power.",
+    "🛠️ Reliability": "100+ Failure Templates, RUL Prediction, Bad Actor ID, RCA Diagnostics.",
+    "🌱 Sustainability": "Scope 1/2 Tracking, Carbon Intensity Index, Flare Loss, Water Intensity.",
+    "🔄 Workflows": "Digital Shift Handover, Auto-Workorders, Alert Mgmt, Knowledge Repository"
 }
 
-# --- 5. TOP BRANDING & SIDEBAR ---
+# COST TOOLTIPS
+COST_HELP = {
+    "Setup": "One-time cost for data mapping, sensor integration, and Digital Twin construction.",
+    "Platform": "Annual license for Cloud hosting, Cyber-security, and Software updates.",
+    "Service": "Human expertise: Monthly SME advisory, AI tuning, and operator training.",
+    "ARI": "Algorithmic Subscription: Pays for the 24/7 automated intelligence and ROI generation."
+}
+
+# --- 5. TOP BRANDING ---
 st.markdown(f"""
-    <div style="display:flex; align-items:center; background:white; padding:10px 20px; border-radius:12px; border:1px solid #E2E8F0;">
-        <img src="{logo_url}" width="35">
-        <div style="margin-left:15px;">
+    <div class="nav-header">
+        <img src="{logo_url}" width="38">
+        <div style="margin-left: 15px;">
             <div style="font-size:18px; font-weight:800; color:#0F172A;">INGERO360AI</div>
-            <div style="font-size:9px; color:#64748B; font-weight:700;">STRATEGIC PORTFOLIO MATRIX</div>
+            <div style="font-size:9px; color:#64748B; font-weight:700; letter-spacing:1px;">EXECUTIVE PORTFOLIO MATRIX</div>
         </div>
     </div>
 """, unsafe_allow_html=True)
 
+# --- 6. SIDEBAR ---
 with st.sidebar:
     st.markdown("### 🏗️ Fleet Construction")
     sel_sectors = st.multiselect("Select Plant Sectors", list(PLANT_PORTFOLIO.keys()), default=["🏭 Olefins/Ethylene"])
@@ -112,38 +118,30 @@ with st.sidebar:
     st.markdown("---")
     user_slots = st.selectbox("Global User Seats", [5, 10, 15, 20], index=0)
 
-# --- 6. INITIAL CALCULATION (FOR STICKY TOP DISPLAY) ---
-# We run a logic pass before rendering to populate the summary at the top
-if fleet_units:
-    # (Simplified engine to get current state for metrics)
-    PLATFORM_FEE, SETUP_FEE, SERVICE_MO = 45000, 25000, 5000
-    user_fee = (user_slots / 5) * 5000
-    # Calculations happen dynamically below, so we use session state or placeholders
-    pass
+# --- 7. STICKY INVESTMENT SUMMARY ---
+# We use a container to wrap the calculation and the card
+summary_placeholder = st.container()
 
-# --- 7. THE STICKY FINANCIAL CARD ---
-# (Note: In a real app, you'd calculate this based on widget states. 
-# Here we place the logic at the top of the script so the summary reflects current inputs.)
-# [Logic simplified for brevity, assume calculation is done]
-
-# --- 8. CONFIGURATION MATRIX ---
+# --- 8. CONFIGURATION MATRIX (PLANTS IN ROWS) ---
 st.markdown("### 📋 Configuration Matrix")
 
 if not fleet_units:
     st.warning("Define your fleet in the sidebar.")
     st.stop()
 
-# Build Sticky Header Row
+# Build Header Row
 header_cols = st.columns([1] + [1] * len(INITIATIVE_DETAILS))
 with header_cols[0]:
-    st.markdown("<p style='font-weight:800; margin:0;'>Unit Name</p>", unsafe_allow_html=True)
+    st.markdown("**Unit Name**")
 for i, init_name in enumerate(INITIATIVE_DETAILS.keys()):
     with header_cols[i+1]:
-        st.markdown(f"<p style='font-weight:800; margin:0;'>{init_name}</p>", unsafe_allow_html=True)
-        st.caption("i", help=INITIATIVE_DETAILS[init_name])
+        st.markdown(f"**{init_name}**")
+        st.caption("Hover for features", help=INITIATIVE_DETAILS[init_name])
 
+st.divider()
+
+# Logic and Matrix Rendering
 matrix_results = {init: [] for init in INITIATIVE_DETAILS.keys()}
-
 for plant in fleet_units:
     with st.container():
         cols = st.columns([1] + [1] * len(INITIATIVE_DETAILS))
@@ -171,13 +169,17 @@ for plant in fleet_units:
                         matrix_results[init_name].append({"type": "overall", "count": base_count})
     st.divider()
 
-# --- 9. FINAL CALCULATION ---
+# --- 9. PRICING ENGINE ---
+PLATFORM_FEE, SETUP_FEE, SERVICE_MO = 45000, 25000, 5000
+user_fee = (user_slots / 5) * 5000
+total_fleet_size = len(fleet_units)
 total_setup, total_service, total_ari = 0, 0, 0
 active_inits_count = sum(1 for init in matrix_results if len(matrix_results[init]) > 0)
+
 for init_name, plant_configs in matrix_results.items():
     for p in plant_configs:
         scaling = 1.0 + (max(0, p['count'] - 1) * 0.2)
-        base_ari = 0 if (active_inits_count == 1 and len(fleet_units) == 1 and p['count'] == 1) else 15000
+        base_ari = 0 if (active_inits_count == 1 and total_fleet_size == 1 and p['count'] == 1) else 15000
         p_ari = (base_ari * scaling * (1.0 + (max(0, active_inits_count - 1) * 0.25)))
         p_setup = (p['count'] * SETUP_FEE)
         p_service = (p['count'] * SERVICE_MO * 6)
@@ -188,23 +190,20 @@ for init_name, plant_configs in matrix_results.items():
 total_y1 = PLATFORM_FEE + user_fee + total_ari + total_setup + total_service
 total_y2 = PLATFORM_FEE + user_fee + total_ari
 
-# --- 10. DYNAMIC INJECTION TO TOP SUMMARY ---
-# In Streamlit, since code runs top-to-bottom, the best way to keep it "moving" 
-# is to use a container at the top of the matrix section.
-st.sidebar.markdown("---")
-st.sidebar.metric("Live Total Year 1", f"${total_y1:,.0f}")
-
-# Re-rendering the investment breakup at the top with tooltips
-with st.container():
+# --- 10. INJECT RESULTS INTO STICKY SUMMARY ---
+with summary_placeholder:
     st.markdown('<div class="executive-card">', unsafe_allow_html=True)
-    c1, c2 = st.columns([1.5, 2.5])
-    with c1:
-        st.metric("Total Year 1", f"${total_y1:,.0f}")
-        st.success(f"**Year 2 Recurring: ${total_y2:,.0f}**")
-    with c2:
-        st.markdown("<p style='font-size:11px; font-weight:800; color:#94A3B8; letter-spacing:1px;'>BREAKUP</p>", unsafe_allow_html=True)
+    m_col1, m_col2 = st.columns([1.5, 2.5])
+    with m_col1:
+        st.metric("Total Year 1 Investment", f"${total_y1:,.0f}", help="Sum of core fees, implementation, and service.")
+        st.success(f"**Annual Recurring (Year 2+): ${total_y2:,.0f}**")
+        if st.button("Download Enterprise Proposal", use_container_width=True):
+            st.toast("Proposal Generated!")
+    with m_col2:
+        st.markdown("<p style='font-size:11px; font-weight:800; color:#94A3B8; letter-spacing:1px;'>INVESTMENT BREAKUP</p>", unsafe_allow_html=True)
         b1, b2, b3 = st.columns(3)
-        b1.metric("ARI", f"${total_ari:,.0f}", help="Algorithm Subscription")
-        b2.metric("Setup", f"${total_setup:,.0f}", help="One-time Config")
-        b3.metric("Service", f"${total_service:,.0f}", help="6mo SME Support")
+        b1.metric("Capability ARI", f"${total_ari:,.0f}", help=COST_HELP["ARI"])
+        b2.metric("Setup Fees", f"${total_setup:,.0f}", help=COST_HELP["Setup"])
+        b3.metric("Service (6mo)", f"${total_service:,.0f}", help=COST_HELP["Service"])
+        st.caption(f"Platform + {user_slots} Seats: ${(PLATFORM_FEE + user_fee):,.0f} ({COST_HELP['Platform']})")
     st.markdown('</div>', unsafe_allow_html=True)
