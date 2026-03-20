@@ -84,7 +84,7 @@ INITIATIVE_DETAILS = {
     "⚡ Energy": "Steam Balancing, Fuel Gas Optimization, Boiler Efficiency, Specific Power.",
     "🛠️ Reliability": "100+ Failure Templates, RUL Prediction, Bad Actor ID, RCA Diagnostics.",
     "🌱 Sustainability": "Scope 1/2 Tracking, Carbon Intensity Index, Flare Loss, Water Intensity.",
-    "🔄 Workflows": "Digital Shift Handover, Auto-Workorders, Alert Mgmt, Knowledge Repository"
+    "🔄 Workflows": "Auto-Workorders, Alert Mgmt, Knowledge Repository"
 }
 
 # COST TOOLTIPS
@@ -98,9 +98,9 @@ COST_HELP = {
 # --- 5. TOP BRANDING ---
 st.markdown(f"""
     <div class="nav-header">
-        <img src="{logo_url}" width="38">
+        <img src="{logo_url}" width="300">
         <div style="margin-left: 15px;">
-            <div style="font-size:18px; font-weight:800; color:#0F172A;">INGERO360AI</div>
+            <div style="font-size:40px; font-weight:800; color:#0F172A;">PRODUCT PRICING CATALOGUE</div>
             <div style="font-size:9px; color:#64748B; font-weight:700; letter-spacing:1px;">EXECUTIVE PORTFOLIO MATRIX</div>
         </div>
     </div>
