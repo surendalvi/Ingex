@@ -14,60 +14,41 @@ logo_url = get_raw_github_url(repo_url, "logo.png")
 # --- 2. PAGE CONFIG ---
 st.set_page_config(page_title="INGERO360AI Executive", page_icon="🏗️", layout="wide")
 
-# --- 3. THE "DUAL-AXIS STICKY" CSS ---
+# --- 3. THE REFINED CSS (NO TOP FREEZE + HORIZONTAL SCROLL) ---
 st.markdown("""
     <style>
     .main .block-container { padding: 1rem 2rem !important; background-color: #F8FAFC; }
     
+    /* Branding Header */
     .nav-header {
-        display: flex; align-items: center; justify-content: space-between;
-        padding: 12px 20px; background: white; border-radius: 12px;
-        border: 1px solid #E2E8F0; margin-bottom: 10px;
+        display: flex; align-items: center; padding: 12px 20px; 
+        background: white; border-radius: 12px; border: 1px solid #E2E8F0;
     }
 
+    /* Financial Card - Tightened to prevent extra blocks */
     .executive-card {
-        background: white; padding: 24px; border-radius: 16px;
+        background: white; padding: 20px; border-radius: 16px;
         border-top: 5px solid #0F172A; border: 1px solid #E2E8F0;
-        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); margin-bottom: 20px;
+        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); margin-top: 15px;
     }
 
-    /* 1. HORIZONTAL SCROLL FIX: Force columns to stay wide */
+    /* HORIZONTAL SCROLL FIX: Force columns to stay wide */
     [data-testid="column"] {
         min-width: 280px !important;
         flex: 0 0 auto !important;
     }
     
-    /* 2. STICKY TOP HEADER ROW (Initiative Names) */
-    /* This targets the first row of the matrix and pins it to the top while scrolling down */
-    header_row_fix { position: relative; } /* Anchor */
-    
-    [data-testid="stHorizontalBlock"]:first-of-type {
-        position: sticky !important;
-        top: 0 !important;
-        z-index: 1001 !important;
-        background-color: #FFFFFF !important;
-        border-bottom: 3px solid #0F172A !important;
-        padding-top: 10px !important;
-        padding-bottom: 10px !important;
-    }
-
-    /* 3. STICKY LEFT COLUMN (Plant Names) */
-    /* This pins the plant names to the left while scrolling sideways */
+    /* STICKY LEFT COLUMN (Plant Names) */
     [data-testid="column"]:first-child {
         position: sticky !important;
         left: 0 !important;
-        z-index: 1002 !important; /* Higher than top header to intersection stays clean */
+        z-index: 99 !important;
         background-color: #F8FAFC !important;
         border-right: 3px solid #0F172A !important;
         padding-right: 15px !important;
     }
 
-    /* Top Left Cell Intersection (Unit Name) */
-    [data-testid="stHorizontalBlock"]:first-of-type > div:first-child {
-        z-index: 1003 !important;
-        background-color: #FFFFFF !important;
-    }
-
+    /* UI Font Polishing */
     [data-testid="stMetricValue"] { font-size: 30px !important; font-weight: 800 !important; color: #0F172A !important; }
     .stRadio > label { font-size: 11px !important; font-weight: 800 !important; color: #475569 !important; }
     </style>
@@ -88,27 +69,33 @@ PLANT_PORTFOLIO = {
 }
 
 INITIATIVE_DETAILS = {
-    "📈 Efficiency": "Yield & Catalyst Optimization, Soft Sensors, Dynamic Benchmarking.",
-    "⚡ Energy": "Steam Header Balancing, Fuel Gas Optimization, Boiler Efficiency.",
-    "🛠️ Reliability": "100+ Failure Modes, Remaining Useful Life (RUL), Bad Actor ID.",
-    "🌱 Sustainability": "Scope 1/2 Tracking, Carbon Intensity, Flare Loss Quantification.",
-    "🔄 Workflows": "Digital Shift Handover, Auto-Workorders, Alert Management."
+    "📈 Efficiency": "• Yield Optimization\n• Catalyst Health Monitoring\n• Soft Sensors\n• Heat Integration",
+    "⚡ Energy": "• Steam Header Balancing\n• Fuel Gas Optimization\n• Furnace Excess Air Control\n• Specific Power",
+    "🛠️ Reliability": "• 100+ Failure Templates\n• Remaining Useful Life (RUL)\n• Bad Actor ID\n• RCA Diagnostics",
+    "🌱 Sustainability": "• Scope 1/2 Tracking\n• Carbon Intensity Index\n• Flare Loss Quantification\n• Water Intensity",
+    "🔄 Workflows": "• Digital Shift Handover\n• Automated Work-Orders\n• Alert Management\n• Knowledge Repository"
+}
+
+# COST TOOLTIPS
+COST_HELP = {
+    "Setup": "One-time cost for data mapping, sensor integration, and Digital Twin construction.",
+    "Platform": "Annual license for Cloud hosting, Cyber-security, and Software updates.",
+    "Service": "Human expertise: Monthly SME advisory, AI tuning, and operator training.",
+    "ARI": "Algorithmic Subscription: Pays for the 24/7 automated intelligence and ROI generation."
 }
 
 # --- 5. TOP BRANDING ---
 st.markdown(f"""
     <div class="nav-header">
-        <div style="display: flex; align-items: center;">
-            <img src="{logo_url}" width="40">
-            <div style="margin-left: 15px;">
-                <div style="font-size:20px; font-weight:800; color:#0F172A;">INGERO360AI</div>
-                <div style="font-size:10px; color:#64748B; font-weight:700;">STRATEGIC PORTFOLIO MATRIX</div>
-            </div>
+        <img src="{logo_url}" width="40">
+        <div style="margin-left: 15px;">
+            <div style="font-size:20px; font-weight:800; color:#0F172A;">INGERO360AI</div>
+            <div style="font-size:10px; color:#64748B; font-weight:700; letter-spacing:1px;">STRATEGIC PORTFOLIO MATRIX</div>
         </div>
     </div>
 """, unsafe_allow_html=True)
 
-# --- 6. SIDEBAR ---
+# --- 6. SIDEBAR FLEET CONSTRUCTION ---
 with st.sidebar:
     st.markdown("### 🏗️ Fleet Construction")
     sel_sectors = st.multiselect("Select Plant Sectors", list(PLANT_PORTFOLIO.keys()), default=["🏭 Olefins/Ethylene"])
@@ -118,20 +105,17 @@ with st.sidebar:
         for i in range(qty):
             fleet_units.append({"name": f"{s.split(' ')[1]} #{i+1}", "sector": s, "id": f"{s}_{i}"})
     st.markdown("---")
-    user_slots = st.selectbox("User Licenses", [5, 10, 15, 20], index=0)
+    user_slots = st.selectbox("Global User Seats", [5, 10, 15, 20], index=0)
 
-# --- 7. TOP INVESTMENT SUMMARY ---
-summary_placeholder = st.container()
-
-# --- 8. THE MATRIX (PLANTS IN ROWS) ---
+# --- 7. CONFIGURATION MATRIX (PLANTS IN ROWS) ---
 st.markdown("### 📋 Portfolio Configuration Matrix")
-st.caption("👈 **Names are locked**. 👆 **Headers are locked**. Scroll freely to configure.")
+st.caption("👈 **Plant names are locked**. Scroll horizontally to configure capabilities.")
 
 if not fleet_units:
     st.warning("Define your fleet in the sidebar.")
     st.stop()
 
-# --- MATRIX HEADER ROW ---
+# Build Header Row
 header_cols = st.columns([1] + [1] * len(INITIATIVE_DETAILS))
 with header_cols[0]:
     st.markdown("**Unit Name**")
@@ -142,9 +126,8 @@ for i, init_name in enumerate(INITIATIVE_DETAILS.keys()):
 
 st.divider()
 
-# Matrix Logic
+# Logic and Matrix Rendering
 matrix_results = {init: [] for init in INITIATIVE_DETAILS.keys()}
-
 for plant in fleet_units:
     with st.container():
         cols = st.columns([1] + [1] * len(INITIATIVE_DETAILS))
@@ -172,7 +155,7 @@ for plant in fleet_units:
                         matrix_results[init_name].append({"type": "overall", "count": base_count})
     st.divider()
 
-# --- 9. PRICING ---
+# --- 8. CALCULATION ENGINE ---
 PLATFORM_FEE, SETUP_FEE, SERVICE_MO = 45000, 25000, 5000
 user_fee = (user_slots / 5) * 5000
 total_fleet = len(fleet_units)
@@ -193,18 +176,21 @@ for init_name, plant_configs in matrix_results.items():
 total_y1 = PLATFORM_FEE + user_fee + total_ari + total_setup + total_service
 total_y2 = PLATFORM_FEE + user_fee + total_ari
 
-# --- 10. RENDER TOP SUMMARY ---
-with summary_placeholder:
-    st.markdown('<div class="executive-card">', unsafe_allow_html=True)
-    m_col1, m_col2 = st.columns([1.5, 2.5])
-    with m_col1:
-        st.metric("Total Year 1 Investment", f"${total_y1:,.0f}", help="Sum of core fees, implementaton, and service.")
-        st.success(f"**Annual Recurring (Year 2+): ${total_y2:,.0f}**")
-    with m_col2:
-        st.markdown("<p style='font-size:11px; font-weight:800; color:#94A3B8; letter-spacing:1px;'>INVESTMENT BREAKUP</p>", unsafe_allow_html=True)
-        b1, b2, b3 = st.columns(3)
-        b1.metric("Capability ARI", f"${total_ari:,.0f}", help="Scaled subscription fee for AI modules.")
-        b2.metric("Setup Fees", f"${total_setup:,.0f}", help="One-time data connection and twin configuration.")
-        b3.metric("Service (6mo)", f"${total_service:,.0f}", help="Initial 6-month human advisory and tuning period.")
-        st.caption(f"Platform + {user_slots} Seats: ${(PLATFORM_FEE + user_fee):,.0f}")
-    st.markdown('</div>', unsafe_allow_html=True)
+# --- 9. INVESTMENT SUMMARY AT THE BOTTOM ---
+st.markdown('<div class="executive-card">', unsafe_allow_html=True)
+m_col1, m_col2 = st.columns([1.5, 2.5])
+with m_col1:
+    st.metric("Total Year 1 Investment", f"${total_y1:,.0f}", help="Sum of core fees, implementation, and service.")
+    st.success(f"**Annual Recurring (Year 2+): ${total_y2:,.0f}**")
+    if st.button("Finalize Enterprise Proposal", use_container_width=True):
+        st.balloons()
+with m_col2:
+    st.markdown("<p style='font-size:11px; font-weight:800; color:#94A3B8; letter-spacing:1px;'>INVESTMENT BREAKUP</p>", unsafe_allow_html=True)
+    b1, b2, b3 = st.columns(3)
+    b1.metric("Capability ARI", f"${total_ari:,.0f}", help=COST_HELP["ARI"])
+    b2.metric("Setup Fees", f"${total_setup:,.0f}", help=COST_HELP["Setup"])
+    b3.metric("Service (6mo)", f"${total_service:,.0f}", help=COST_HELP["Service"])
+    st.caption(f"Platform + {user_slots} Seats: ${(PLATFORM_FEE + user_fee):,.0f} ({COST_HELP['Platform']})")
+st.markdown('</div>', unsafe_allow_html=True)
+
+st.markdown("<div style='text-align: center; color: #CBD5E1; font-size: 10px; margin-top:30px;'>INGERO360AI | Enterprise Portfolio Matrix V40</div>", unsafe_allow_html=True)
