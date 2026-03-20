@@ -63,12 +63,16 @@ st.markdown("""
 
 # --- 4. DETAILED DATA REPOSITORY ---
 PLANT_PORTFOLIO = {
-    "🏭 Olefins": ["Furnace", "Quench", "CGC", "Acetylene Reactor", "Cold Section"],
-    "🧪 Polymers": ["Reactor", "Extruder", "VCM Unit", "Pelletizer"],
-    "💧 Methanol": ["Reformer", "Synthesis Reactor", "CO2 Removal"],
-    "⛽ Refining": ["CDU", "VDU", "Delayed Coker", "FCCU", "Hydrocracker"],
-    "❄️ ASU": ["MAC", "Purification", "Cold Box", "Expander"],
-    "🔧 Utility": ["Boiler", "Cooling Tower", "Air Compressor", "Flare"]
+    "🏭 Olefins/Ethylene": ["Furnace", "Quench", "CGC", "Acetylene Reactor", "Cold Section"],
+    "🧪 Polymers (PE/PP/PVC)": ["Reactor", "Extruder", "Degassing & Purge Bins", "VCM Recovery Unit", "Pelletizer"],
+    "💧 Methanol/Ammonia": ["Reformer", "Synthesis Reactor", "CO2 Removal", "Distillaion Unit"],
+    "🧩 Intermediates (EO/EG)": ["EO Reactor", "Glycol Column", "Etherification Unit"],
+    "🧩 Intermediates (MTBE)": ["Butamer", "Catofin", "Synthesis"],
+    "🧩 Intermediates (PHENOL)": ["Oxidation Reactors", "Cleavage Units", "Fractionation"],
+    "🔧 Utility & Offsites": ["Boiler/Steam", "Cooling Tower", "Air Compressor", "Water Treatment", "Flare System"],
+    "❄️ Air Separation (ASU)": ["Main Air Compressor (MAC)", "Purification Unit", "Cryogenic Cold Box", "Turbo-Expander",
+        "Product Storage & Backup"],
+    "⛽ Refining": ["CDU/VDU", "FCCU", "Hydrocracker", "Delayed Coker"]
 }
 
 INITIATIVE_HELP = {
