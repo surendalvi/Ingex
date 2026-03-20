@@ -12,7 +12,7 @@ repo_url = "https://github.com/surendalvi/Ingex/blob/main/logo.png"
 logo_url = get_raw_github_url(repo_url, "logo.png")
 
 # --- 2. PAGE CONFIG ---
-st.set_page_config(page_title="INGERO360AI Executive", page_icon="🏗️", layout="wide")
+st.set_page_config(page_title="INGERO360AI PRICING", page_icon="🏗️", layout="wide")
 
 # --- 3. THE "STICKY RESULTS" CSS ---
 st.markdown("""
@@ -108,7 +108,7 @@ st.markdown(f"""
 
 # --- 6. SIDEBAR ---
 with st.sidebar:
-    st.markdown("### 🏗️ Fleet Construction")
+    st.markdown("### 🏗️ PLANT PORTFOLIO")
     sel_sectors = st.multiselect("Select Plant Sectors", list(PLANT_PORTFOLIO.keys()), default=["🏭 Olefins/Ethylene"])
     fleet_units = []
     for s in sel_sectors:
