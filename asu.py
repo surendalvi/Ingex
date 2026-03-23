@@ -2,108 +2,105 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
-import plotly.graph_objects as go
 
-# --- 1. CONFIGURATION ---
-st.set_page_config(page_title="Jubail ASU Regional Optimizer", layout="wide")
-st.title("🛡️ Regional ASU Optimizer: Strategy & Gap Identification")
+# --- 1. PAGE SETUP ---
+st.set_page_config(page_title="Jubail Regional Optimizer", layout="wide")
+st.title("🛡️ Jubail Regional ASU Optimizer & Gap Analysis")
 
-# --- 2. DATA MODEL (Mocked for 5 ASUs) ---
-# In production, this would be a live SQL/Historian query
-if 'selected_asu' not in st.session_state:
-    st.session_state.selected_asu = "ASU-71" # Default selection
-
+# --- 2. DATA GENERATION (Simulated Real-Time Data) ---
+# This dictionary maps ASUs to their specific equipment health
+# In a real app, this data would come from your SQL/Historian
 asu_list = ["ASU-41", "ASU-51", "ASU-71", "ASU-81", "ASU-91"]
 
-# High-level ASU Status Data
-regional_data = pd.DataFrame({
+regional_summary = pd.DataFrame({
     "ASU": asu_list,
-    "Health_Index": [85, 80, 95, 65, 88], # % Health
-    "Current_SEC": [0.61, 0.63, 0.58, 0.72, 0.60], # kWh/Nm3
-    "Target_Flow": [48000, 42000, 58000, 25000, 52000],
-    "Current_Limit_High": [52000, 55000, 60000, 48000, 65000],
-    "New_MPC_Limit_High": [53500, 54000, 62000, 35000, 66500], # Suggested based on health
-    "Status": ["Stable", "Stable", "Optimized", "Gap Identified", "Stable"]
+    "Health_Index": [88, 82, 96, 62, 90],
+    "SEC_Actual": [0.605, 0.622, 0.581, 0.745, 0.598], # kWh/Nm3
+    "Current_Target": [45000, 48000, 55000, 42000, 50000],
+    "Optimized_Target": [48000, 43000, 62000, 28000, 54000],
+    "Current_MPC_HL": [52000, 55000, 60000, 48000, 65000],
+    "New_MPC_HL": [55000, 50000, 65000, 35000, 66000]
 })
 
-# --- 3. TOP LEVEL: OPPORTUNITY & REGIONAL HEAT MAP ---
-st.header("🌍 Regional Performance Overview")
+# --- 3. TOP SECTION: THE PRIZE (OPPORTUNITY) ---
+st.header("📈 Regional Opportunity & Strategy")
+c1, c2, c3 = st.columns(3)
+total_flow = regional_summary["Optimized_Target"].sum()
+energy_gap = (regional_summary["SEC_Actual"].mean() - 0.580) * total_flow / 1000 # MW
 
-col1, col2 = st.columns([1, 2])
+c1.metric("Total Regional Flow", f"{total_flow:,.0f} Nm3/h")
+c2.metric("Energy Opportunity Gap", f"{energy_gap:.2f} MW", delta="-7.4%", delta_color="normal")
+c3.metric("Venting Status", "0.0 Nm3/h", delta="Eliminated", delta_color="normal")
 
-with col1:
-    st.write("### Total Regional Opportunity")
-    total_flow = regional_data['Target_Flow'].sum()
-    avg_sec = regional_data['Current_SEC'].mean()
-    # Simple opportunity calc
-    potential_saving = (avg_sec - 0.575) * total_flow / 1000 # MW
-    st.metric("Total Energy Gap", f"{potential_saving:.2f} MW", delta="-6.2%", delta_color="normal")
-    st.info("💡 **Insight:** ASU-81 is currently the primary driver of regional inefficiency due to high Specific Energy.")
-
-with col2:
-    st.write("### ASU Health Heat Map")
-    # Heat map showing Health vs SEC
-    fig_heat = px.parallel_categories(regional_data, dimensions=['ASU', 'Status'],
-                                    color="Health_Index", color_continuous_scale='RdYlGn')
-    # Using a colored bar chart as a 'Heat Map' selector
-    fig_status = px.bar(regional_data, x="ASU", y="Health_Index", color="Health_Index",
-                       text="Current_SEC", color_continuous_scale='RdYlGn',
-                       title="ASU Health vs Specific Energy (SEC labeled on bars)")
-    st.plotly_chart(fig_status, use_container_width=True)
-
-# --- 4. OPTIMIZER RESULTS: TARGETS & MPC LIMITS ---
+# --- 4. REGIONAL HEATMAP (ASU SELECTION) ---
 st.divider()
-st.header("🎯 Optimizer Prescriptions: Targets & MPC Limits")
-st.write("Current vs. Optimized setpoints for the next 1-hour cycle.")
+st.subheader("🗺️ ASU Efficiency Heat Map")
+st.write("Click an ASU below to drill down into specific equipment failures.")
 
-# Formatting the output table
-display_df = regional_data[["ASU", "Target_Flow", "Current_Limit_High", "New_MPC_Limit_High", "Status"]]
-st.table(display_df.style.apply(lambda x: ['background-color: #ffcccc' if x.ASU == 'ASU-81' else '' for i in x], axis=1))
+# Create a heatmap-style bar chart
+fig_heat = px.bar(regional_summary, x="ASU", y="Health_Index", color="Health_Index",
+                 text="SEC_Actual", color_continuous_scale='RdYlGn',
+                 labels={'Health_Index': 'Health %', 'SEC_Actual': 'SEC (kWh/Nm3)'})
+fig_heat.update_traces(texttemplate='%{text} kWh/Nm3', textposition='outside')
+st.plotly_chart(fig_heat, use_container_width=True)
 
-# --- 5. DRILL-DOWN: EQUIPMENT PERFORMANCE ---
+# Selection Logic
+selected_asu = st.selectbox("Detailed Analysis for:", asu_list, index=3) # Default to ASU-81
+
+# --- 5. DRILL-DOWN: EQUIPMENT PERFORMANCE & GAP ---
 st.divider()
-st.header("🔍 Component Drill-Down & Gap Analysis")
-selected = st.selectbox("Select ASU to investigate Equipment Performance:", asu_list, index=2)
+st.subheader(f"🔍 {selected_asu} Component Drill-Down")
 
-# Specific Equipment Performance Mock Data
-equip_data = pd.DataFrame({
-    "Equipment": ["MAC", "Main HX", "Mol Sieves", "Expander", "Booster Comp", "Cold Box", "LP Column", "HP Column"],
-    "Health_Score": [92, 75, 96, 70, 94, 98, 85, 82], # % Performance vs Design
-    "SEC_Penalty": [0.008, 0.042, 0.002, 0.055, 0.001, 0.003, 0.012, 0.018] # kWh/Nm3 added
+# Mock equipment data - specific problems for the "Problematic One" (ASU-81)
+if selected_asu == "ASU-81":
+    h_scores = [85, 52, 90, 48, 88, 92, 72, 68] # Low health for HX and Expander
+    penalties = [0.015, 0.092, 0.005, 0.115, 0.002, 0.004, 0.025, 0.032]
+else:
+    h_scores = [95, 92, 98, 91, 96, 99, 94, 93]
+    penalties = [0.002, 0.005, 0.001, 0.004, 0.001, 0.001, 0.003, 0.004]
+
+equip_df = pd.DataFrame({
+    "Equipment": ["MAC", "Heat Exchangers", "Mol Sieves", "Expander", "Booster Comp", "Cold Box", "LP Column", "HP Column"],
+    "Health_Score": h_scores,
+    "SEC_Penalty": penalties
 })
 
-# Filter equipment data based on 'selected' ASU (Simulating different issues for ASU-81)
-if selected == "ASU-81":
-    equip_data["Health_Score"] = [80, 55, 90, 45, 85, 92, 70, 65]
-    equip_data["SEC_Penalty"] = [0.025, 0.085, 0.010, 0.120, 0.005, 0.008, 0.035, 0.045]
+col_a, col_b = st.columns([2, 1])
 
-c1, c2 = st.columns([2, 1])
-
-with c1:
-    st.write(f"#### {selected} Equipment Health Status")
-    fig_equip = px.bar(equip_performance, x='Equipment', y='Health_Score', color='Health_Score',
+with col_a:
+    fig_equip = px.bar(equip_df, x="Equipment", y="Health_Score", color="Health_Score",
                       range_y=[0, 100], color_continuous_scale='RdYlGn',
-                      title="Performance vs. Design Curve (%)")
+                      title="Asset Performance vs. Design (%)")
     st.plotly_chart(fig_equip, use_container_width=True)
 
-with c2:
-    st.write("#### Energy Loss Attribution")
-    # Identify top 2 gaps
-    top_gaps = equip_data.sort_values("SEC_Penalty", ascending=False).head(3)
+with col_b:
+    st.write("**Top Gap Contributors (kWh/Nm3)**")
+    top_gaps = equip_df.sort_values("SEC_Penalty", ascending=False).head(3)
     for i, row in top_gaps.iterrows():
-        st.warning(f"**{row['Equipment']}**: +{row['SEC_Penalty']:.3f} kWh/Nm3 Penalty")
+        st.warning(f"⚠️ **{row['Equipment']}**: +{row['SEC_Penalty']:.3f} Penalty")
     
-    total_penalty = equip_data['SEC_Penalty'].sum()
-    st.error(f"**Total Gap for {selected}:** {total_penalty:.3f} kWh/Nm3 above Design.")
+    total_penalty = equip_df["SEC_Penalty"].sum()
+    st.error(f"**Total Efficiency Gap:** {total_penalty:.3f} kWh/Nm3")
 
-# --- 6. 10-COMPRESSOR LOADING ADVISORY ---
+# --- 6. OPTIMIZER OUTPUTS (TARGETS & MPC) ---
 st.divider()
-st.subheader("💨 GAN Compressor Network Strategy")
-comp_cols = st.columns(10)
-for i in range(1, 11):
-    with comp_cols[i-1]:
-        ctype = "MP" if i <= 4 else "LP"
-        is_running = True if (i <= 4 or i <= 7) else False
-        st.write(f"**{ctype}-{i}**")
-        st.write("🟢" if is_running else "⚪")
-        st.caption("100%" if i <= 4 else "75%" if is_running else "OFF")
+st.subheader("📥 New Production Targets & MPC Limits")
+# Filtering to show only the selected ASU's new targets
+asu_row = regional_summary[regional_summary["ASU"] == selected_asu].iloc[0]
+
+res1, res2, res3 = st.columns(3)
+res1.metric("Optimized Target", f"{asu_row['Optimized_Target']:,} Nm3/h")
+res2.metric("Current MPC HL", f"{asu_row['Current_MPC_HL']:,} Nm3/h")
+res3.metric("New Recommended MPC HL", f"{asu_row['New_MPC_HL']:,}", 
+           delta=int(asu_row['New_MPC_HL'] - asu_row['Current_MPC_HL']))
+
+# --- 7. GAN COMPRESSOR LOADING ---
+st.divider()
+st.subheader("💨 Regional GAN Compressor Loading (Top 10)")
+comp_data = pd.DataFrame({
+    "Unit": [f"MP-0{i}" for i in range(1, 5)] + [f"LP-0{i}" for i in range(1, 7)],
+    "Priority": ["Primary (High Eff)"]*4 + ["Secondary"]*6,
+    "Target Load %": [100, 100, 100, 100, 85, 70, 0, 0, 0, 0],
+    "Mode": ["Base Load"]*4 + ["Swing"]*2 + ["Standby"]*4
+})
+st.table(comp_data)
