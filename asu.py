@@ -1,59 +1,96 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import numpy as np
 
-# --- 1. OVERALL OPPORTUNITY & GAP ---
-st.header("💰 Regional Energy Gap & Opportunity")
+# --- 1. SETTINGS & STYLING ---
+st.set_page_config(page_title="Jubail Regional Optimizer", layout="wide")
+st.title("🏗️ Jubail ASU Regional Optimizer & Gap Analysis")
+
+# --- 2. GLOBAL INPUTS (SIDEBAR) ---
+with st.sidebar:
+    st.header("📍 Regional Demand")
+    gan_demand = st.slider("Total GAN Demand (Nm3/h)", 100000, 300000, 185000)
+    gox_demand = st.slider("Total GOX Demand (Nm3/h)", 20000, 100000, 45000)
+    st.header("⚡ Energy Market")
+    pwr_cost = st.number_input("Power Price (SAR/MWh)", value=220)
+
+# --- 3. THE OPPORTUNITY (BEFORE vs AFTER) ---
+st.header("📈 Regional Opportunity Assessment")
+# Mock logic for Opportunity
+current_venting = 5200  # Nm3/h
+opt_venting = 0
+current_sec = 0.620     # kWh/Nm3
+opt_sec = 0.585         # kWh/Nm3
+total_flow = gan_demand + gox_demand
+
 col1, col2, col3 = st.columns(3)
+with col1:
+    st.metric("Venting Reduction", f"{current_venting} → {opt_venting} Nm3/h", delta="-100%")
+with col2:
+    energy_saving = (current_sec - opt_sec) * total_flow / 1000 # MW
+    st.metric("Energy Opportunity", f"{energy_saving:.2f} MW", delta=f"{(current_sec-opt_sec):.3f} SEC Improvement")
+with col3:
+    daily_saving = energy_saving * 24 * (pwr_cost/1000)
+    st.metric("Daily Cost Saving", f"{daily_saving:,.0f} SAR/Day", delta="Potential")
 
-# Mock Calculation
-current_pwr = 145.5 # MW
-opt_pwr = 138.2    # MW
-gap = current_pwr - opt_pwr
-
-col1.metric("Current Power", f"{current_pwr} MW", delta="High", delta_color="inverse")
-col2.metric("Optimized Power", f"{opt_pwr} MW")
-col3.metric("Opportunity (The Gap)", f"{gap:.1f} MW", delta="Saving Potential", delta_color="normal")
-
-# --- 2. COMPRESSOR LOADING STRATEGY ---
-st.subheader("💨 GAN Compressor Loading Strategy")
-# Logic: MP first, then LP
-comp_data = pd.DataFrame({
-    'Compressor': [f'MP-{i}' for i in range(1,5)] + [f'LP-{i}' for i in range(1,7)],
-    'Type': ['MP']*4 + ['LP']*6,
-    'Efficiency': [92, 91, 89, 90, 82, 81, 80, 83, 79, 81],
-    'Rec_Load': [100, 100, 100, 100, 85, 80, 0, 0, 0, 0] # Optimizer Output
-})
-st.dataframe(comp_data.style.background_gradient(subset=['Rec_Load'], cmap='Greens'))
-
-# --- 3. ASU DRILL-DOWN (THE GAP IDENTIFIER) ---
 st.divider()
-st.subheader("🎯 ASU Health Drill-Down")
-selected_asu = st.selectbox("Select ASU to investigate Gap:", ["ASU-41", "ASU-51", "ASU-71", "ASU-81", "ASU-91"])
 
-# Equipment Health Data Model
-# Values represent % deviation from 'Design' Performance (Negative is bad)
-equip_health = {
-    "MAC": -2.5,          # Fouled filters/intercoolers
-    "Heat Exchanger": -5.0, # High WETD
-    "Mol Sieves": -1.2,    # High Delta P
-    "Expander": -8.0,      # Seal wear
-    "Booster Comp": -0.5,
-    "HP Column": -4.0,     # Tray fouling
-    "LP Column": -0.2,
-    "Cold Box": -1.5       # Insulation vacuum loss
-}
+# --- 4. COMPRESSOR LOADING (10 UNITS) ---
+st.subheader("💨 GAN Compressor Loading Strategy")
+st.caption("Strategy: Priority loading for MP Compressors (Higher Efficiency).")
+comp_data = pd.DataFrame({
+    "Compressor": [f"MP-0{i}" for i in range(1, 5)] + [f"LP-0{i}" for i in range(1, 7)],
+    "Type": ["MP"]*4 + ["LP"]*6,
+    "Status": ["Running"]*6 + ["Standby"]*4,
+    "Current Load %": [100, 100, 95, 100, 80, 75, 0, 0, 0, 0],
+    "Efficiency (Design)": [92, 91, 90, 92, 84, 83, 85, 84, 82, 83]
+})
+# Highlight based on efficiency/load
+st.dataframe(comp_data.style.background_gradient(subset=['Current Load %'], cmap='YlGn'))
 
-st.write(f"### Diagnostic for {selected_asu}")
-cols = st.columns(4)
+# --- 5. ASU RANKING & DRILL-DOWN (GAP IDENTIFICATION) ---
+st.divider()
+st.header("🎯 ASU Performance & Equipment Gap")
 
-# Loop through equipment to show performance vs impact
-for i, (equip, health) in enumerate(equip_health.items()):
-    with cols[i % 4]:
-        color = "normal" if health > -2 else "inverse"
-        impact = abs(health) * 0.05 # Simple heuristic: 1% health loss = 0.05 kWh/Nm3 penalty
-        st.metric(equip, f"{health}%", delta=f"+{impact:.3f} SEC Impact", delta_color=color)
+# ASU Leaderboard based on SEC
+asu_summary = pd.DataFrame({
+    "ASU": ["ASU-41", "ASU-51", "ASU-71", "ASU-81", "ASU-91"],
+    "Rank": [2, 3, 1, 5, 4],
+    "Current SEC": [0.59, 0.61, 0.57, 0.68, 0.63],
+    "Problematic": [False, False, False, True, False]
+}).sort_values("Rank")
 
-# Gap Summary Text
-st.error(f"**Gap Analysis:** {selected_asu} is underperforming by **{sum(equip_health.values())/8:.1f}%** vs Design. "
-         f"The primary bottleneck is the **Expander (-8.0%)**, which is forcing higher MAC power to maintain liquid levels.")
+st.write("### 🏆 ASU Efficiency Leaderboard")
+rank_cols = st.columns(5)
+for i, row in asu_summary.iterrows():
+    with rank_cols[int(row['Rank'])-1]:
+        st.metric(f"Rank {row['Rank']}", row['ASU'], delta=f"{row['Current SEC']} kWh/Nm3")
+
+st.subheader("🔍 Equipment-Level Problem Identification")
+selected_asu = st.selectbox("Select ASU to Drill-Down:", asu_summary["ASU"])
+
+# Equipment data for drill down
+# Penalty values represent increase in SEC due to poor health
+equip_performance = pd.DataFrame({
+    "Equipment": ["MAC", "Main Heat Exchanger", "Molecular Sieves", "Expander", "Booster Compressor", "Cold Box", "LP Column", "HP Column"],
+    "Health %": [92, 78, 95, 72, 98, 94, 88, 85],
+    "Design Efficiency": [90, 100, 100, 88, 92, 100, 95, 95],
+    "SEC Impact (Penalty)": [0.012, 0.045, 0.005, 0.062, 0.002, 0.008, 0.015, 0.022]
+})
+
+c1, c2 = st.columns([2, 1])
+with c1:
+    st.write(f"**Diagnostic Summary for {selected_asu}**")
+    # Show health as a bar chart
+    fig = px.bar(equip_performance, x='Equipment', y='Health %', color='Health %', 
+                 color_continuous_scale='RdYlGn', range_color=[70, 100])
+    st.plotly_chart(fig, use_container_width=True)
+
+with c2:
+    st.write("**Top Gap Contributors**")
+    sorted_gap = equip_performance.sort_values("SEC Impact (Penalty)", ascending=False)
+    for i, row in sorted_gap.head(3).iterrows():
+        st.warning(f"**{row['Equipment']}**: +{row['SEC Impact (Penalty)']} kWh/Nm3 penalty")
+
+st.info(f"💡 **Gap Identification:** In {selected_asu}, the **Expander** and **Heat Exchanger** are the primary drivers of the energy gap. Fixing these would reduce specific energy by {sorted_gap['SEC Impact (Penalty)'].iloc[0:2].sum():.3f} kWh/Nm3.")
