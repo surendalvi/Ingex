@@ -3,12 +3,12 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 
-# --- 1. PAGE SETUP ---
-st.set_page_config(page_title="Jubail Regional Command Center", layout="wide")
+# --- 1. SETTINGS ---
+st.set_page_config(page_title="Jubail ASU Command Center", layout="wide")
 st.title("🚀 Jubail Regional ASU Command Center")
 st.markdown("### Integrated Optimizer Results, Demand Tracking & Gap Analysis")
 
-# --- 2. GLOBAL DEMAND (SIDEBAR INPUTS) ---
+# --- 2. SIDEBAR: GLOBAL INPUTS ---
 with st.sidebar:
     st.header("📊 Regional Demand Settings")
     curr_gan_demand = st.slider("Current GAN Demand (Nm3/h)", 100000, 250000, 185000)
@@ -16,24 +16,26 @@ with st.sidebar:
     total_demand = curr_gan_demand + curr_gox_demand
     
     st.header("⚡ Economic Context")
-    pwr_price = st.number_input("Power Price (SAR/MWh)", value=220)
+    # Using 'pwr_cost' consistently to avoid NameError
+    pwr_cost = st.number_input("Power Price (SAR/MWh)", value=220)
 
-# --- 3. REGIONAL DATA MODEL (Consolidated) ---
-# This table represents the 'Single View' of the Optimizer's decisions
+# --- 3. THE DATA MODEL ---
+asu_list = ["ASU-41", "ASU-51", "ASU-71", "ASU-81", "ASU-91"]
 asu_data = pd.DataFrame({
-    "ASU": ["ASU-41", "ASU-51", "ASU-71", "ASU-81", "ASU-91"],
+    "ASU": asu_list,
     "Health_Index": [88, 82, 96, 62, 90],
     "Current_Flow": [45000, 48000, 55000, 42000, 50000],
-    "Optimized_Target": [48000, 43000, 62000, 27000, 50000], # Sums to ~230k to meet demand
+    "Optimized_Target": [48000, 43000, 62000, 27000, 50000],
     "Current_MPC_HL": [52000, 55000, 60000, 48000, 65000],
     "New_MPC_HL": [55000, 50000, 65000, 35000, 66000],
     "SEC_Actual": [0.60, 0.62, 0.58, 0.74, 0.59],
     "Status": ["Stable", "Stable", "Pushing Limits", "Gap Identified", "Stable"]
 })
 
-# --- 4. TOP LEVEL: THE PRIZE & DEMAND TRACKING ---
+# --- 4. REGIONAL OPPORTUNITY (THE PRIZE) ---
 st.header("🌍 Regional Strategy Summary")
 total_opt_supply = asu_data["Optimized_Target"].sum()
+# Fixed the calculation logic to ensure no NameError
 energy_gap = (asu_data["SEC_Actual"].mean() - 0.575) * total_opt_supply / 1000 # MW
 
 c1, c2, c3, c4 = st.columns(4)
@@ -45,21 +47,20 @@ with c2:
 with c3:
     st.metric("Energy Opportunity Gap", f"{energy_gap:.2f} MW", delta="-8.1%", delta_color="normal")
 with c4:
-    daily_saving = energy_gap * 24 * (pwr_cost/1000)
+    daily_saving = energy_gap * 24 * (pwr_cost / 1000)
     st.metric("Potential Saving", f"{daily_saving:,.0f} SAR/Day")
 
 # --- 5. THE SINGLE VIEW: ALL ASU OPTIMIZER RESULTS ---
 st.divider()
 st.subheader("📋 Consolidated ASU Strategy Table")
-st.write("Prescribed production targets and MPC limit adjustments to meet the current demand.")
+st.write("Prescribed production targets and MPC limit adjustments to meet regional demand.")
 
-# Color-coding logic for MPC adjustments
 def highlight_limits(row):
     color = ''
     if row['New_MPC_HL'] > row['Current_MPC_HL']:
-        color = 'background-color: #d4edda' # Green for pushing capacity
+        color = 'background-color: #d4edda' # Green for pushing
     elif row['New_MPC_HL'] < row['Current_MPC_HL']:
-        color = 'background-color: #f8d7da' # Red for pulling back due to failure
+        color = 'background-color: #f8d7da' # Red for pulling back
     return [color] * len(row)
 
 st.dataframe(
@@ -67,7 +68,7 @@ st.dataframe(
     .format({"Current_Flow": "{:,}", "Optimized_Target": "{:,}", "Current_MPC_HL": "{:,}", "New_MPC_HL": "{:,}"})
 )
 
-# --- 6. REGIONAL HEAT MAP & DRILL-DOWN ---
+# --- 6. REGIONAL HEALTH HEAT MAP ---
 st.divider()
 st.subheader("🗺️ Regional Health Heat Map")
 fig_heat = px.bar(asu_data, x="ASU", y="Health_Index", color="Health_Index", 
@@ -75,9 +76,11 @@ fig_heat = px.bar(asu_data, x="ASU", y="Health_Index", color="Health_Index",
                  color_continuous_scale='RdYlGn', text="Status")
 st.plotly_chart(fig_heat, use_container_width=True)
 
-selected_asu = st.selectbox("Select ASU for Equipment-Level Gap Identification:", asu_data["ASU"], index=3)
+# Selection for Drill-Down
+selected_asu = st.selectbox("Select ASU for Equipment-Level Gap Identification:", asu_list, index=3)
 
 # --- 7. EQUIPMENT PERFORMANCE DRILL-DOWN ---
+# Using consistent naming to avoid NameErrors
 if selected_asu == "ASU-81":
     scores = [82, 55, 90, 45, 85, 92, 70, 65]
     impacts = [0.02, 0.08, 0.01, 0.12, 0.01, 0.01, 0.03, 0.04]
@@ -94,7 +97,7 @@ equip_df = pd.DataFrame({
 d1, d2 = st.columns([2, 1])
 with d1:
     fig_diag = px.bar(equip_df, x="Component", y="Health Score (%)", color="Health Score (%)",
-                     range_y=[0, 100], color_continuous_scale='RdYlGn', title=f"{selected_asu} Component Health")
+                     range_y=[0, 100], color_continuous_scale='RdYlGn', title=f"{selected_asu} Health Status")
     st.plotly_chart(fig_diag, use_container_width=True)
 with d2:
     st.write(f"**{selected_asu} Loss Attribution**")
@@ -107,12 +110,11 @@ with d2:
 
 # --- 8. GAN COMPRESSOR LOADING ---
 st.divider()
-st.subheader("💨 Regional GAN Compressor Advisory (10 Units)")
+st.subheader("💨 GAN Compressor Advisory (10 Units)")
 c_cols = st.columns(10)
 for i in range(1, 11):
     with c_cols[i-1]:
         label = "MP" if i <= 4 else "LP"
-        # Load logic: MP always 100% if healthy
         load = "100%" if i <= 4 else "85%" if i <= 6 else "OFF"
         color = "🟢" if load != "OFF" else "⚪"
         st.write(f"**{label}-{i}**\n\n{color}\n\n{load}")
