@@ -2,3 +2,4 @@ streamlit
 pyomo
 pandas
 numpy
+plotly
