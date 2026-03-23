@@ -3,3 +3,5 @@ pyomo
 pandas
 numpy
 plotly
+matplotlib
+jinja2
