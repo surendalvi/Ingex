@@ -1,99 +1,59 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from pyomo.environ import *
 
-# --- 1. SETUP & THEME ---
-st.set_page_config(page_title="Jubail ASU Optimizer", layout="wide")
-st.title("🛡️ Regional ASU Strategy & Optimization")
-st.markdown("""
-    *This dashboard analyzes real-time equipment health across Jubail ASUs to find the most 
-    energy-efficient production distribution while eliminating venting.*
-""")
+# --- 1. OVERALL OPPORTUNITY & GAP ---
+st.header("💰 Regional Energy Gap & Opportunity")
+col1, col2, col3 = st.columns(3)
 
-# --- 2. INPUT SECTION (Sidebar) ---
-with st.sidebar:
-    st.header("🎯 System Demands")
-    total_gan = st.slider("Total GAN Demand (Nm3/h)", 100000, 300000, 185000, help="Total gaseous nitrogen required by the regional network.")
-    total_gox = st.slider("Total GOX Demand (Nm3/h)", 20000, 100000, 45000)
-    
-    st.header("⚡ Economic Context")
-    pwr_price = st.number_input("Power Price (SAR/MWh)", value=220)
-    
-    st.header("🛠️ Asset Health Overrides")
-    st.info("Simulate equipment degradation to see how the optimizer re-ranks the ASUs.")
-    asu41_health = st.slider("ASU-41 Expander Efficiency (%)", 50, 100, 95)
-    asu71_fouling = st.slider("ASU-71 MHX Fouling (WETD °C)", 1.0, 5.0, 1.5)
+# Mock Calculation
+current_pwr = 145.5 # MW
+opt_pwr = 138.2    # MW
+gap = current_pwr - opt_pwr
 
-# --- 3. DATA MODEL & DIAGNOSIS ---
-# Mocking the Performance Data
-asu_stats = pd.DataFrame({
-    'ASU': ['ASU-41', 'ASU-51', 'ASU-71', 'ASU-81', 'ASU-91'],
-    'MAC_Eff': [88, 85, 91, 82, 89],
-    'Exp_Eff': [asu41_health, 88, 92, 75, 90],
-    'Col_DP': [0.4, 0.5, 0.3, 0.7, 0.4], # Bar
-    'WETD': [1.8, 2.0, asu71_fouling, 2.5, 1.6],
-    'Base_kWh_Nm3': [0.55, 0.58, 0.52, 0.65, 0.53]
+col1.metric("Current Power", f"{current_pwr} MW", delta="High", delta_color="inverse")
+col2.metric("Optimized Power", f"{opt_pwr} MW")
+col3.metric("Opportunity (The Gap)", f"{gap:.1f} MW", delta="Saving Potential", delta_color="normal")
+
+# --- 2. COMPRESSOR LOADING STRATEGY ---
+st.subheader("💨 GAN Compressor Loading Strategy")
+# Logic: MP first, then LP
+comp_data = pd.DataFrame({
+    'Compressor': [f'MP-{i}' for i in range(1,5)] + [f'LP-{i}' for i in range(1,7)],
+    'Type': ['MP']*4 + ['LP']*6,
+    'Efficiency': [92, 91, 89, 90, 82, 81, 80, 83, 79, 81],
+    'Rec_Load': [100, 100, 100, 100, 85, 80, 0, 0, 0, 0] # Optimizer Output
 })
+st.dataframe(comp_data.style.background_gradient(subset=['Rec_Load'], cmap='Greens'))
 
-# Calculate a "Ranking Score" (Lower Specific Energy = Higher Rank)
-asu_stats['Rank'] = asu_stats['Base_kWh_Nm3'].rank(ascending=True)
-asu_stats = asu_stats.sort_values('Rank')
+# --- 3. ASU DRILL-DOWN (THE GAP IDENTIFIER) ---
+st.divider()
+st.subheader("🎯 ASU Health Drill-Down")
+selected_asu = st.selectbox("Select ASU to investigate Gap:", ["ASU-41", "ASU-51", "ASU-71", "ASU-81", "ASU-91"])
 
-# --- 4. TABS: THE USER JOURNEY ---
-tab1, tab2, tab3 = st.tabs(["📊 Asset Ranking & Health", "⚙️ Equipment Deep-Dive", "✅ Optimized Targets"])
+# Equipment Health Data Model
+# Values represent % deviation from 'Design' Performance (Negative is bad)
+equip_health = {
+    "MAC": -2.5,          # Fouled filters/intercoolers
+    "Heat Exchanger": -5.0, # High WETD
+    "Mol Sieves": -1.2,    # High Delta P
+    "Expander": -8.0,      # Seal wear
+    "Booster Comp": -0.5,
+    "HP Column": -4.0,     # Tray fouling
+    "LP Column": -0.2,
+    "Cold Box": -1.5       # Insulation vacuum loss
+}
 
-# TAB 1: RANKING
-with tab1:
-    st.subheader("🏆 Efficiency Leaderboard")
-    st.write("ASUs are ranked based on their current Specific Energy Consumption (SEC).")
-    
-    cols = st.columns(5)
-    for i, row in asu_stats.iterrows():
-        with cols[int(row['Rank'])-1]:
-            st.metric(label=f"Rank {int(row['Rank'])}: {row['ASU']}", 
-                      value=f"{row['Base_kWh_Nm3']} kWh", 
-                      delta="-Best" if row['Rank']==1 else None)
-            st.progress(int(row['MAC_Eff']))
-            st.caption(f"MAC Efficiency: {row['MAC_Eff']}%")
+st.write(f"### Diagnostic for {selected_asu}")
+cols = st.columns(4)
 
-# TAB 2: EQUIPMENT PERFORMANCE
-with tab2:
-    st.subheader("🔍 Sub-Component Health Monitoring")
-    col_a, col_b = st.columns(2)
-    
-    with col_a:
-        st.markdown("**Cold Box & Heat Exchanger Performance**")
-        fig_wetd = px.bar(asu_stats, x='ASU', y='WETD', color='WETD', 
-                          title="Warm End Temp Difference (Lower is Better)",
-                          color_continuous_scale='RdYlGn_r')
-        st.plotly_chart(fig_wetd, use_container_width=True)
-        
-    with col_b:
-        st.markdown("**Distillation Column Stability**")
-        fig_dp = px.scatter(asu_stats, x='ASU', y='Col_DP', size='Col_DP', color='Col_DP',
-                            title="Column Delta P (Flooding Risk Indicator)")
-        st.plotly_chart(fig_dp, use_container_width=True)
+# Loop through equipment to show performance vs impact
+for i, (equip, health) in enumerate(equip_health.items()):
+    with cols[i % 4]:
+        color = "normal" if health > -2 else "inverse"
+        impact = abs(health) * 0.05 # Simple heuristic: 1% health loss = 0.05 kWh/Nm3 penalty
+        st.metric(equip, f"{health}%", delta=f"+{impact:.3f} SEC Impact", delta_color=color)
 
-# TAB 3: OPTIMIZATION RESULTS
-with tab3:
-    st.subheader("🎯 Optimal Production Setpoints")
-    st.success(f"Global Minimum Cost found for {total_gan + total_gox:,.0f} Nm3/hr demand.")
-    
-    # Simple logic for target distribution based on rank for demonstration
-    # In reality, this calls the Pyomo solve() function
-    asu_stats['Target_Flow'] = [55000, 50000, 45000, 40000, 0] # Example dist
-    
-    res_col1, res_col2 = st.columns([2, 1])
-    
-    with res_col1:
-        st.bar_chart(asu_stats.set_index('ASU')['Target_Flow'])
-    
-    with res_col2:
-        st.write("**Action Plan for MPC**")
-        for i, row in asu_stats.iterrows():
-            status = "🟢 FULL LOAD" if row['Target_Flow'] > 50000 else "🟡 PARTIAL" if row['Target_Flow'] > 0 else "🔴 SHUTDOWN"
-            st.write(f"**{row['ASU']}:** {status} → **{row['Target_Flow']:,} Nm3/hr**")
-
-    st.divider()
-    st.info("💡 **Insight:** ASU-81 has been ramped down to minimum because its high WETD and low Expander efficiency make it the most expensive unit in the region.")
+# Gap Summary Text
+st.error(f"**Gap Analysis:** {selected_asu} is underperforming by **{sum(equip_health.values())/8:.1f}%** vs Design. "
+         f"The primary bottleneck is the **Expander (-8.0%)**, which is forcing higher MAC power to maintain liquid levels.")
