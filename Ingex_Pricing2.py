@@ -100,7 +100,7 @@ st.markdown(f"""
     <div class="nav-header">
         <img src="{logo_url}" width="300">
         <div style="margin-left: 15px;">
-            <div style="font-size:40px; font-weight:800; color:#0F172A;">PRODUCT PRICING CATALOGUE</div>
+            <div style="font-size:30px; font-weight:800; color:#0F172A;">PRODUCT PRICING CATALOGUE</div>
             <div style="font-size:9px; color:#64748B; font-weight:700; letter-spacing:1px;">EXECUTIVE PORTFOLIO MATRIX</div>
         </div>
     </div>
