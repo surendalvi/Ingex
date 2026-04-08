@@ -1,252 +1,140 @@
 import streamlit as st
+import streamlit.components.v1 as components
 
-# --- 1. GITHUB LOGO INTEGRATION ---
-def get_raw_github_url(repo_url, filepath):
-    parts = repo_url.split("/")
-    if len(parts) > 4:
-        username, repo_name = parts[3], parts[4]
-        return f"https://raw.githubusercontent.com/{username}/{repo_name}/main/{filepath}"
-    return ""
-
-repo_url = "https://github.com/surendalvi/Ingex/blob/main/logo.png"
-logo_url = get_raw_github_url(repo_url, "logo.png")
-
-# --- 2. PAGE CONFIG ---
+# --- 1. PAGE CONFIGURATION ---
 st.set_page_config(
-    page_title="INGERO360AI Command Matrix", 
-    page_icon="🏗️", 
-    layout="wide",
-    initial_sidebar_state="expanded"
+    page_title="Ingenero360AI | Agent Architecture",
+    page_icon="🤖",
+    layout="wide"
 )
 
-# --- 3. PREMIUM CSS: THE "NO-SKEW" ARCHITECTURE ---
-st.markdown("""
-    <style>
-    /* Global Background */
-    .main .block-container { padding: 1rem 2rem !important; background-color: #F8FAFC; }
+# --- 2. CSS FOR THE TREE DIAGRAM (Integrated MAS Logic) ---
+# This CSS handles the visual hierarchy of L0 to L4 Agents
+TREE_CSS = """
+<style>
+    :root {
+        --orch-bg: #EEEDFE; --orch-border: #7F77DD; --orch-text: #26215C;
+        --l1-bg: #E6F1FB; --l1-border: #378ADD; --l1-text: #042C53;
+        --l2-bg: #FAECE7; --l2-border: #D85A30; --l2-text: #5D2412;
+        --l3-bg: #EAF3DE; --l3-border: #639922; --l3-text: #1E3106;
+        --l4-bg: #FAEEDA; --l4-border: #BA7517; --l4-text: #4A2E09;
+    }
+    .mas-tree { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; }
+    .node-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 30px; }
+    .node {
+        padding: 12px 18px; border-radius: 10px; border: 2px solid;
+        text-align: center; width: 240px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    .node .title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .node .desc { font-size: 11px; line-height: 1.4; opacity: 0.9; }
     
-    /* Sticky Branding Header (Optional - set to relative to scroll away) */
-    .nav-header {
-        display: flex; align-items: center; padding: 12px 20px; 
-        background: white; border-radius: 12px; border: 1px solid #E2E8F0;
-        margin-bottom: 10px;
-    }
+    .c-orch { background: var(--orch-bg); border-color: var(--orch-border); color: var(--orch-text); }
+    .c-l1 { background: var(--l1-bg); border-color: var(--l1-border); color: var(--l1-text); }
+    .c-l2 { background: var(--l2-bg); border-color: var(--l2-border); color: var(--l2-text); }
+    .c-l3 { background: var(--l3-bg); border-color: var(--l3-border); color: var(--l3-text); }
+    .c-l4 { background: var(--l4-bg); border-color: var(--l4-border); color: var(--l4-text); }
 
-    /* THE PINNED FINANCIAL COMMAND CENTER */
-    div:has(> .executive-card) {
-        position: sticky !important;
-        top: 0 !important;
-        z-index: 1000 !important;
-        background-color: #F8FAFC !important;
-        padding-top: 5px;
-        padding-bottom: 15px;
-    }
+    .connector { height: 20px; width: 2px; background: #CBD5E1; }
+    .level-row { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; width: 100%; }
+    .section-label { font-size: 12px; font-weight: 800; color: #94A3B8; margin-top: 10px; text-transform: uppercase; }
+</style>
+"""
 
-    .executive-card {
-        background: white; padding: 22px; border-radius: 16px;
-        border-top: 5px solid #0F172A; border: 1px solid #E2E8F0;
-        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
-    }
+# --- 3. MASTER DATA REPOSITORY ---
+TECH_DATA = {
+    "Olefins": {"l1": ["Furnace Kinetic Agent", "Quench Oil Agent", "CGC Efficiency Agent"], "l2": ["TMT Safety Limits", "Pass Flow Balance"]},
+    "Methanol": {"l1": ["Reformer Slip Agent", "SynGas Ratio Agent", "Methanol Purity Agent"], "l2": ["S/C Ratio Bounds", "Catalyst ΔP"]},
+    "Ammonia": {"l1": ["N2/H2 Balance Agent", "Shift Converter Agent", "SynLoop Purge Agent"], "l2": ["Converter Temp Profile", "SynGas Purity"]},
+    "EOEG": {"l1": ["Selectivity Agent", "Glycol Ratio Agent", "EO Reactor Agent"], "l2": ["Catalyst Selectivity Bounds", "Vapor Concentration"]},
+    "MTBE": {"l1": ["Etherification Agent", "Methanol Recovery Agent", "Reactor Heat Agent"], "l2": ["Methanol/C4 Ratio", "Isomerization Limits"]},
+    "Polymers": {"l1": ["Polymerization Rate Agent", "Grade Transition Agent", "Extruder Torque Agent"], "l2": ["Melt Index Bounds", "Reactor Pressure"]},
+    "Phenols": {"l1": ["Oxidation Agent", "Cleavage Yield Agent", "Fractionation Agent"], "l2": ["Peroxide Safety Limits", "Tar Formation Control"]},
+    "Refining": {"l1": ["Fractionation Cut-Point Agent", "Pre-heat Train Agent", "Coker Cycle Agent"], "l2": ["ASTM D86 Specs", "Hydraulic Flooding Limits"]},
+    "ASU": {"l1": ["Cryogenic Separation Agent", "Air Compression Agent", "PPU Health Agent"], "l2": ["Oxygen Purity Target", "Expander Delta-T"]},
+    "Utilities": {"l1": ["Steam Header Agent", "Boiler Firing Agent", "Flare Leak Agent"], "l2": ["HP/LP Steam Balance", "Emission Compliance"]}
+}
 
-    /* PREVENT SKEWING: Force columns to stay wide and scrollable */
-    [data-testid="column"] {
-        min-width: 280px !important;
-        flex: 0 0 auto !important;
-    }
+INITIATIVE_DATA = {
+    "Production Efficiency": {"l3": "Yield/Selectivity Optimizer", "l4": "Throughput Advice Bus"},
+    "Energy Optimization": {"l3": "Specific Energy (SEC) Optimizer", "l4": "Energy Intensity Bus"},
+    "Reliability": {"l3": "Asset Health/RUL Optimizer", "l4": "Maintenance Advisory Bus"},
+    "Sustainability & Asset Metric Hub": {"l3": "Carbon/Flare Intensity Optimizer", "l4": "ESG Compliance Bus"},
+    "Workflows": {"l3": "Digital SOP/Alert Orchestrator", "l4": "Shift Handover Bus"}
+}
+
+# --- 4. STREAMLIT UI ---
+st.title("🌐 Ingenero360AI | Enterprise MAS Dashboard")
+st.markdown("### Digital Solution Multi-Agent Hierarchy")
+
+with st.sidebar:
+    st.header("⚙️ Configuration")
+    tech_choice = st.selectbox("Select Technology", list(TECH_DATA.keys()))
+    init_choice = st.selectbox("Select Initiative", list(INITIATIVE_DATA.keys()))
     
-    /* STICKY LEFT COLUMN: Unit Names stay locked */
-    [data-testid="column"]:first-child {
-        position: sticky !important;
-        left: 0 !important;
-        z-index: 99 !important;
-        background-color: #F8FAFC !important;
-        border-right: 3px solid #0F172A !important;
-        padding-right: 15px !important;
-    }
+    st.divider()
+    st.info("**Agent Logic Hierarchy:**\n\n"
+            "**L0:** Domain Orchestrator\n"
+            "**L1:** Primary Sensing Agents\n"
+            "**L2:** Guardrail Constraints\n"
+            "**L3:** Strategic Optimizers\n"
+            "**L4:** Result Bus (Decision Support)")
 
-    /* UI Font Polishing */
-    [data-testid="stMetricValue"] { font-size: 28px !important; font-weight: 800 !important; color: #0F172A !important; }
-    .stRadio > label { font-size: 11px !important; font-weight: 800 !important; color: #475569 !important; }
-    h4 { margin-bottom: 0px !important; }
-    </style>
-""", unsafe_allow_html=True)
-
-# --- 4. COMPREHENSIVE TECHNOLOGY & AGENT REPOSITORY ---
-PLANT_PORTFOLIO = {
-    "🏭 Olefins/Ethylene": ["Furnace", "Quench TLE", "CGC", "Acetylene Reactor", "Cold Box", "C2/C3 Splitters"],
-    "💧 Methanol": ["Steam Reformer", "SynGas Compressor", "Methanol Converter", "Distillation Train"],
-    "🌬️ Ammonia": ["Primary Reformer", "Shift Converter", "CO2 Stripper", "Synthesis Loop", "Refrigeration Unit"],
-    "🧬 EO/EG": ["EO Reactor", "EO Stripper", "Glycol Column", "Cycle Gas Compressor", "Re-run Column"],
-    "⚗️ MTBE": ["Synthesis Reactor", "Catalyst Bed", "Methanol Recovery Column", "Debutanizer"],
-    "💎 Phenols": ["Oxidation Reactor", "Cleavage Unit", "Fractionation Train", "Hydrogenation Unit"],
-    "🧪 Polymers (PE/PP)": ["Polymerization Reactor", "Extruder", "Pelletizer", "Degassing Bin", "Cycle Gas Comp"],
-    "⛽ Refining Complex": ["CDU", "VDU", "Delayed Coker", "FCCU", "Hydrocracker", "SRU"],
-    "❄️ ASU": ["Main Air Compressor", "Cold Box", "Turbo-Expander", "PPU (Purification)"],
-    "🔧 Utilities": ["HP/MP Boilers", "Cooling Tower Fans", "DM Water Plant", "Flare System", "Air Compressors"]
-}
-
-INITIATIVE_AGENT_DETAILS = {
-    "📈 Production Efficiency": """
-    **MAS Logic:**
-    • Yield Prediction Agent: Real-time conversion vs. selectivity.
-    • Soft Sensors: Inferential quality predictors for lab-free monitoring.
-    • Catalyst Activity Agent: Tracking deactivation rates.
-    • Throughput Maximizer: L3 Optimizer for high-value recovery.
-    """,
-    "⚡ Energy Optimization": """
-    **MAS Logic:**
-    • Furnace Firing Agent: Managing excess air & stack loss.
-    • Steam Header Agent: Balancing HP/MP/LP distribution.
-    • Specific Power Agent: Optimizer for MAC/CGC/Turbines.
-    • Fuel Gas Balancer: Minimizing specific energy consumption (SEC).
-    """,
-    "🛠️ Asset Reliability": """
-    **MAS Logic:**
-    • 100+ Failure Templates: Physics-based health monitoring.
-    • RUL Predictor: Remaining Useful Life analytics.
-    • Vibration Analyst: L1 High-frequency data processing.
-    • Bad Actor ID: Historical maintenance bottleneck analysis.
-    """,
-    "🌱 Sustainability Hub": """
-    **MAS Logic:**
-    • Scope 1/2 Tracker: Continuous CO2e footprinting.
-    • Flare Loss Agent: Hydrocarbon loss quantification.
-    • Carbon Intensity Agent: Real-time emissions per ton produced.
-    • Water Intensity Agent: DM & Cooling water efficiency.
-    """,
-    "🔄 Digital Workflows": """
-    **MAS Logic:**
-    • Shift Summarizer: Auto-KPI & bypass event reporting.
-    • Auto-Workorder Agent: Links AI alerts to SAP/CMMS.
-    • Knowledge Base Agent: Digital repository of historical incidents.
-    • Alert Triage Agent: DCS nuisance alarm filtering.
-    """
-}
-
-COST_DEFINITIONS = {
-    "Platform": "Annual core license. Covers secure Cloud hosting (Azure/AWS), Cybersecurity, and Core SW updates.",
-    "Setup": "One-time cost for implementation: Data ingestion, tag mapping, and building the Digital Twin physics models.",
-    "ARI": "Algorithm Subscription: Pays for the 24/7 automated intelligence, predictive insights, and ROI generation.",
-    "Service": "Human Expertise: Monthly SME advisory, algorithmic tuning, and operator adoption training.",
-    "Logic": "ARI is the cost of the 'Software Brain' (Auto-Logic); Service is for 'Human Knowledge' (Advisory)."
-}
-
-# --- 5. TOP BRANDING ---
-st.markdown(f"""
-    <div class="nav-header">
-        <img src="{logo_url}" width="38">
-        <div style="margin-left: 15px;">
-            <div style="font-size:18px; font-weight:800; color:#0F172A;">INGERO360AI</div>
-            <div style="font-size:9px; color:#64748B; font-weight:700; letter-spacing:1px;">EXECUTIVE COMMAND CENTER V43</div>
+# --- 5. TREE GENERATION LOGIC ---
+def generate_tree(tech, init):
+    t_info = TECH_DATA[tech]
+    i_info = INITIATIVE_DATA[init]
+    
+    html = f"""
+    {TREE_CSS}
+    <div class="mas-tree">
+        <div class="node-container">
+            <div class="node c-orch">
+                <div class="title">{tech} Orchestrator</div>
+                <div class="desc">Fleet-wide coordination & state management</div>
+            </div>
+            <div class="connector"></div>
+            <div class="section-label">L1 · Primary Technology Agents</div>
+            <div class="level-row">
+                {" ".join([f'<div class="node c-l1"><div class="title">{a}</div><div class="desc">Domain Physics/Kinetics</div></div>' for a in t_info['l1']])}
+            </div>
+            <div class="connector"></div>
+            <div class="section-label">L2 · Constraint Guardrails</div>
+            <div class="level-row">
+                {" ".join([f'<div class="node c-l2"><div class="title">{a}</div><div class="desc">Safety & Quality Bounds</div></div>' for a in t_info['l2']])}
+            </div>
+            <div class="connector"></div>
+            <div class="section-label">L3 · {init} Optimizer</div>
+            <div class="node c-l3">
+                <div class="title">{i_info['l3']}</div>
+                <div class="desc">Strategic Multi-Objective Solver</div>
+            </div>
+            <div class="connector"></div>
+            <div class="section-label">L4 · Result Bus</div>
+            <div class="node c-l4">
+                <div class="title">{i_info['l4']}</div>
+                <div class="desc">Actionable Advisory for Operators</div>
+            </div>
         </div>
     </div>
-""", unsafe_allow_html=True)
+    """
+    return html
 
-# --- 6. SIDEBAR FLEET CONSTRUCTION ---
-with st.sidebar:
-    st.markdown("### 🏗️ Fleet Construction")
-    sel_sectors = st.multiselect("Select Plant Sectors", list(PLANT_PORTFOLIO.keys()), default=["🏭 Olefins/Ethylene"])
-    
-    fleet_units = []
-    for s in sel_sectors:
-        qty = st.number_input(f"Qty: {s.split(' ')[1]}", 1, 15, 1, key=f"q_{s}")
-        for i in range(qty):
-            fleet_units.append({"name": f"{s.split(' ')[1]} #{i+1}", "sector": s, "id": f"{s}_{i}"})
-    
-    st.markdown("---")
-    user_slots = st.selectbox("Global User Seats", [5, 10, 15, 20], index=0)
+# --- 6. RENDER ---
+tree_html = generate_tree(tech_choice, init_choice)
+components.html(tree_html, height=850, scrolling=True)
 
-# --- 7. STICKY INVESTMENT SUMMARY ---
-summary_placeholder = st.container()
-
-# --- 8. THE PLANT-CENTRIC MATRIX ---
-st.markdown("### 📋 Unit-Wise Configuration Matrix")
-st.caption("👈 **Unit Names are locked**. Scroll horizontally to configure Strategic Initiatives.")
-
-if not fleet_units:
-    st.warning("Please define your fleet in the sidebar to view the matrix.")
-    st.stop()
-
-# Build Static Header Row
-header_cols = st.columns([1] + [1] * len(INITIATIVE_AGENT_DETAILS))
-with header_cols[0]:
-    st.markdown("**Physical Unit**")
-for i, init_name in enumerate(INITIATIVE_AGENT_DETAILS.keys()):
-    with header_cols[i+1]:
-        st.markdown(f"**{init_name.split(' ')[1]}**")
-        st.caption("Agent Details", help=INITIATIVE_AGENT_DETAILS[init_name])
-
+# --- 7. AGENT SCRIPTING DETAILS ---
 st.divider()
+st.markdown("### 📝 Agent Role Details")
 
-# Rendering Matrix Rows
-matrix_results = {init: [] for init in INITIATIVE_AGENT_DETAILS.keys()}
+col1, col2 = st.columns(2)
+with col1:
+    st.write(f"**Technology Stack: {tech_choice}**")
+    for a in TECH_DATA[tech_choice]['l1']:
+        st.write(f"- `{a}`: Responsible for ingestion of DCS/Historian data and applying {tech_choice}-specific physics/kinetic models.")
+with col2:
+    st.write(f"**Initiative Stack: {init_choice}**")
+    st.write(f"- `{INITIATIVE_DATA[init_choice]['l3']}`: Consumes L1/L2 data to solve for the best economic/technical operating point.")
+    st.write(f"- `{INITIATIVE_DATA[init_choice]['l4']}`: Formats the L3 output into human-readable advice or automated setpoint changes.")
 
-for plant in fleet_units:
-    with st.container():
-        cols = st.columns([1] + [1] * len(INITIATIVE_AGENT_DETAILS))
-        with cols[0]:
-            st.markdown(f"#### {plant['name']}")
-            st.caption(f"{plant['sector'].split(' ')[1]}")
-        
-        for i, init_name in enumerate(INITIATIVE_AGENT_DETAILS.keys()):
-            with cols[i+1]:
-                active = st.checkbox(f"Activate", key=f"en_{plant['id']}_{init_name}")
-                if active:
-                    sc = st.radio("Scope", ["Assets", "Overall"], horizontal=True, key=f"sc_{plant['id']}_{init_name}")
-                    if sc == "Assets":
-                        chosen = st.multiselect("Units", PLANT_PORTFOLIO[plant['sector']], key=f"u_{plant['id']}_{init_name}")
-                        f_cnt = 0
-                        if "Furnace" in chosen and "Olefins" in plant['sector']:
-                            f_cnt = st.number_input("Furnaces", 1, 30, 1, key=f"f_{plant['id']}_{init_name}")
-                        count = max(1, len([u for u in chosen if u != "Furnace"]) + f_cnt)
-                        matrix_results[init_name].append({"type": "asset", "count": count})
-                    else:
-                        base_count = 8
-                        if "Olefins" in plant['sector']:
-                            f_ov = st.number_input("Furnaces", 1, 30, 1, key=f"fov_{plant['id']}_{init_name}")
-                            base_count = 4 + f_ov
-                        matrix_results[init_name].append({"type": "overall", "count": base_count})
-    st.divider()
-
-# --- 9. PRICING ENGINE ---
-PLATFORM_FEE, SETUP_FEE, SERVICE_MO = 45000, 25000, 5000
-user_fee = (user_slots / 5) * 5000
-total_fleet_size = len(fleet_units)
-total_setup, total_service, total_ari = 0, 0, 0
-active_inits_count = sum(1 for init in matrix_results if len(matrix_results[init]) > 0)
-
-for init_name, plant_configs in matrix_results.items():
-    for p in plant_configs:
-        scaling = 1.0 + (max(0, p['count'] - 1) * 0.2)
-        base_ari = 0 if (active_inits_count == 1 and total_fleet_size == 1 and p['count'] == 1) else 15000
-        p_ari = (base_ari * scaling * (1.0 + (max(0, active_inits_count - 1) * 0.25)))
-        p_setup = (p['count'] * SETUP_FEE)
-        p_service = (p['count'] * SERVICE_MO * 6)
-        if p['type'] == "overall":
-            p_ari *= 0.8; p_setup *= 0.8; p_service *= 0.8
-        total_ari += p_ari; total_setup += p_setup; total_service += p_service
-
-total_y1 = PLATFORM_FEE + user_fee + total_ari + total_setup + total_service
-total_y2 = PLATFORM_FEE + user_fee + total_ari
-
-# --- 10. INJECT RESULTS INTO STICKY SUMMARY ---
-with summary_placeholder:
-    st.markdown('<div class="executive-card">', unsafe_allow_html=True)
-    m_col1, m_col2 = st.columns([1.5, 2.5])
-    
-    with m_col1:
-        st.metric("Total Year 1 Investment", f"${total_y1:,.0f}", help=f"Total CAPEX + OPEX for implementation. {COST_DEFINITIONS['Logic']}")
-        st.success(f"**Annual Recurring (Year 2+): ${total_y2:,.0f}**")
-        if st.button("Download Enterprise Proposal", use_container_width=True):
-            st.toast("Generating Strategic Quote...")
-    
-    with m_col2:
-        st.markdown("<p style='font-size:11px; font-weight:800; color:#94A3B8; letter-spacing:1px;'>INVESTMENT BREAKUP</p>", unsafe_allow_html=True)
-        b1, b2, b3 = st.columns(3)
-        b1.metric("Capability ARI", f"${total_ari:,.0f}", help=COST_DEFINITIONS["ARI"])
-        b2.metric("Setup Fees", f"${total_setup:,.0f}", help=COST_DEFINITIONS["Setup"])
-        b3.metric("Service (6mo)", f"${total_service:,.0f}", help=COST_DEFINITIONS["Service"])
-        st.caption(f"Platform + {user_slots} Seats: ${(PLATFORM_FEE + user_fee):,.0f} ( {COST_DEFINITIONS['Platform']} )")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-st.markdown("<div style='text-align: center; color: #CBD5E1; font-size: 10px; margin-top:30px;'>INGERO360AI | Sector-Initiative-Agent Matrix V43</div>", unsafe_allow_html=True)
+st.markdown("<br><center><small>Ingenero360AI | Confidential Strategy Matrix</small></center>", unsafe_allow_html=True)
