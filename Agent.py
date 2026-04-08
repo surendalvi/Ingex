@@ -8,7 +8,6 @@ st.set_page_config(
     layout="wide"
 )
 
-# logo_url fallback
 logo_url = "https://raw.githubusercontent.com/surendalvi/Ingex/main/logo.png"
 
 # --- 2. THE STRATEGIC MATRIX THEME (CSS) ---
@@ -18,7 +17,6 @@ st.markdown(f"""
     
     .main .block-container {{ padding: 1rem 2rem !important; background-color: #0F172A; font-family: 'Inter', sans-serif; color: white; }}
     
-    /* CLEAN HEADER */
     .nav-header {{
         display: flex; align-items: center; padding: 15px 25px; 
         background: rgba(30, 41, 59, 0.4); border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -31,7 +29,6 @@ st.markdown(f"""
         width: 100%; border-collapse: separate; border-spacing: 8px; table-layout: fixed;
     }}
     
-    /* HEADERS */
     th.col-header {{
         background: rgba(30, 41, 59, 0.8); color: #94A3B8; font-size: 11px; font-weight: 800;
         text-transform: uppercase; letter-spacing: 1px; padding: 15px; border-radius: 8px;
@@ -43,33 +40,30 @@ st.markdown(f"""
         width: 160px; text-align: left;
     }}
 
-    /* MATRIX CELLS */
     td.matrix-cell {{
         background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255,255,255,0.05);
-        border-radius: 8px; padding: 12px; vertical-align: top;
+        border-radius: 8px; padding: 15px; vertical-align: top;
         transition: all 0.3s ease;
     }}
     td.matrix-cell:hover {{
         background: rgba(30, 41, 59, 0.6); border-color: rgba(56, 189, 248, 0.3);
-        transform: translateY(-2px);
     }}
 
-    /* AGENT TAGS INSIDE CELLS */
-    .agent-block {{ margin-bottom: 8px; }}
-    .lvl-label {{ font-size: 8px; font-weight: 900; letter-spacing: 0.5px; margin-bottom: 2px; }}
-    .agent-name {{ font-size: 10.5px; font-weight: 600; line-height: 1.3; }}
+    /* BULLET LIST STYLING */
+    .agent-list {{ list-style-type: none; padding: 0; margin: 0; }}
+    .agent-item {{ margin-bottom: 12px; position: relative; padding-left: 20px; }}
+    .agent-item::before {{
+        content: "•"; position: absolute; left: 0; font-weight: bold;
+    }}
     
-    /* COMMON DNA COLORS (L1, L2) */
-    .c-dna {{ color: #94A3B8; opacity: 0.8; }}
-    
-    /* UNCOMMON INTELLIGENCE COLORS (L3, L4) */
-    .u-brain {{ color: #F97316; }}   /* L3 Highlights */
-    .u-result {{ color: #10B981; }}  /* L4 Highlights */
+    .lvl-label {{ font-size: 9px; font-weight: 900; letter-spacing: 0.5px; margin-bottom: 2px; text-transform: uppercase; }}
+    .agent-name {{ font-size: 11px; font-weight: 600; line-height: 1.3; color: #F1F5F9; }}
+    .model-tag {{ font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #64748B; margin-top: 2px; }}
 
-    .model-tag {{ font-family: 'JetBrains Mono', monospace; font-size: 7.5px; color: #475569; margin-top: 2px; }}
-
-    /* RADIO BUTTONS */
-    .stRadio > label {{ font-size: 11px !important; font-weight: 800 !important; color: #64748B !important; text-transform: uppercase; }}
+    /* LEVEL-SPECIFIC HIGHLIGHTS */
+    .l1-l2 .lvl-label {{ color: #94A3B8; }}
+    .l3 .lvl-label {{ color: #F97316; }}
+    .l4 .lvl-label {{ color: #10B981; }}
 </style>
 """, unsafe_allow_html=True)
 
@@ -109,13 +103,13 @@ st.markdown(f"""
     </div>
 """, unsafe_allow_html=True)
 
-# --- 5. INTERACTIVE FOCUS FILTERS ---
+# --- 5. INTERACTIVE FOCUS FILTERS (DEFAULTS APPLIED) ---
 st.markdown("<p style='font-size:11px; font-weight:800; color:#475569; text-transform:uppercase; margin-left:5px;'>Filter View</p>", unsafe_allow_html=True)
 c1, c2 = st.columns(2)
 with c1:
-    filter_tech = st.multiselect("Focus Technology (Rows)", PARENT_AGENTS, default=["Olefins", "Refining", "Ammonia", "Utilities"])
+    filter_tech = st.multiselect("Parent Agents", PARENT_AGENTS, default=["Olefins"])
 with c2:
-    filter_init = st.multiselect("Focus Initiative (Columns)", CHILD_AGENTS, default=CHILD_AGENTS)
+    filter_init = st.multiselect("Child Agents", CHILD_AGENTS, default=["Production Efficiency"])
 
 # --- 6. GENERATE MATRIX HTML ---
 matrix_html = f"""
@@ -140,19 +134,25 @@ for tech in filter_tech:
         intel = INIT_INTEL[init]
         matrix_html += f"""
                 <td class="matrix-cell">
-                    <div class="agent-block c-dna">
-                        <div class="lvl-label">L1-L2 · COMMON</div>
-                        <div class="agent-name">{dna['l1']} / {dna['l2']}</div>
-                    </div>
-                    <div class="agent-block u-brain">
-                        <div class="lvl-label">L3 · UNCOMMON</div>
-                        <div class="agent-name">{intel['l3']}</div>
-                        <div class="model-tag">{intel['m']}</div>
-                    </div>
-                    <div class="agent-block u-result">
-                        <div class="lvl-label">L4 · OUTCOME</div>
-                        <div class="agent-name">{intel['l4']}</div>
-                    </div>
+                    <ul class="agent-list">
+                        <li class="agent-item l1-l2">
+                            <div class="lvl-label">Level 1: Sensing</div>
+                            <div class="agent-name">{dna['l1']}</div>
+                        </li>
+                        <li class="agent-item l1-l2">
+                            <div class="lvl-label">Level 2: Guardrails</div>
+                            <div class="agent-name">{dna['l2']}</div>
+                        </li>
+                        <li class="agent-item l3">
+                            <div class="lvl-label">Level 3: Optimizer</div>
+                            <div class="agent-name">{intel['l3']}</div>
+                            <div class="model-tag">{intel['m']}</div>
+                        </li>
+                        <li class="agent-item l4">
+                            <div class="lvl-label">Level 4: Result Bus</div>
+                            <div class="agent-name">{intel['l4']}</div>
+                        </li>
+                    </ul>
                 </td>
         """
     matrix_html += "</tr>"
@@ -164,15 +164,15 @@ matrix_html += """
 """
 
 st.divider()
-components.html(matrix_html, height=800, scrolling=True)
+components.html(matrix_html, height=600, scrolling=True)
 
 # --- 7. FOOTER LEGEND ---
 st.markdown(f"""
 <div style="background: rgba(30, 41, 59, 0.4); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); margin-top: 20px;">
     <div style="display:flex; gap:40px; align-items:center;">
-        <div style="font-size:11px; color:#94A3B8;"><span style="color:#475569; font-weight:800; margin-right:8px;">■</span><b>COMMON DNA:</b> Foundational Physics & Safety (L1-L2)</div>
-        <div style="font-size:11px; color:#94A3B8;"><span style="color:#F97316; font-weight:800; margin-right:8px;">■</span><b>UNCOMMON BRAIN:</b> Strategic Initiative Optimization (L3)</div>
-        <div style="font-size:11px; color:#94A3B8;"><span style="color:#10B981; font-weight:800; margin-right:8px;">■</span><b>OUTCOME:</b> Real-time Result Bus & Advisory (L4)</div>
+        <div style="font-size:11px; color:#94A3B8;"><span style="color:#94A3B8; font-weight:800; margin-right:8px;">■</span>Foundational Technology Logic (L1-L2)</div>
+        <div style="font-size:11px; color:#94A3B8;"><span style="color:#F97316; font-weight:800; margin-right:8px;">■</span>Strategic Initiative Optimizer (L3)</div>
+        <div style="font-size:11px; color:#94A3B8;"><span style="color:#10B981; font-weight:800; margin-right:8px;">■</span>Actionable Result Advisory (L4)</div>
     </div>
 </div>
 """, unsafe_allow_html=True)
