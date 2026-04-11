@@ -1,129 +1,192 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
-# --- PAGE CONFIG ---
-st.set_page_config(page_title="Ingenero360AI | Strategic Agentic-AI", layout="wide", initial_sidebar_state="collapsed")
+# --- 1. CONFIGURATION & THEME ---
+st.set_page_config(page_title="Ingenero360AI | The Strategic Brain", layout="wide", initial_sidebar_state="collapsed")
 
-# --- THEME & STYLING ---
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@500&display=swap');
-    .main { background-color: #0F172A; font-family: 'Inter', sans-serif; color: white; }
     
-    /* Header & Hero */
-    .hero-section {
-        padding: 80px 40px; text-align: center;
-        background: linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
-        border-bottom: 3px solid #F97316;
-    }
-    .hero-h1 { font-size: 56px; font-weight: 800; letter-spacing: -2px; margin-bottom: 10px; color: white; }
-    .orange-text { color: #F97316; }
+    .main { background-color: #0B0F1A; font-family: 'Inter', sans-serif; color: #E2E8F0; }
     
-    /* Info Boxes */
-    .info-card {
-        background: rgba(30, 41, 59, 0.5); padding: 30px; border-radius: 15px;
-        border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px;
+    /* Hero Branding */
+    .hero-container {
+        padding: 100px 50px; text-align: center;
+        background: radial-gradient(circle at top right, #1E293B, #0B0F19);
+        border-bottom: 2px solid #F97316; margin-bottom: 40px;
     }
-    .stat-box { text-align: center; padding: 40px; background: #1E293B; border-radius: 20px; border-top: 5px solid #10B981; }
-    .stat-val { font-size: 48px; font-weight: 800; color: #10B981; }
+    .hero-h1 { font-size: 72px; font-weight: 800; letter-spacing: -3px; color: white; margin-bottom: 0px; }
+    .hero-tag { font-size: 20px; color: #F97316; font-weight: 700; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 20px; }
+    .hero-p { font-size: 22px; color: #94A3B8; max-width: 850px; margin: 0 auto; line-height: 1.6; }
 
-    /* Matrix Styling */
-    .matrix-cell {
-        background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 10px; padding: 15px; margin-bottom: 10px;
+    /* The Data Alchemy Section */
+    .alchemy-box {
+        background: linear-gradient(90deg, rgba(56, 189, 248, 0.05) 0%, rgba(15, 23, 42, 0) 100%);
+        border-left: 4px solid #38BDF8; padding: 40px; border-radius: 0 15px 15px 0; margin: 50px 0;
     }
-    .sub-agent-label { font-size: 9px; font-weight: 900; color: #38BDF8; text-transform: uppercase; }
+
+    /* Agent Cards */
+    .agent-card {
+        background: rgba(30, 41, 59, 0.4); padding: 30px; border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.05); height: 100%; transition: 0.4s;
+    }
+    .agent-card:hover { border-color: #F97316; transform: translateY(-10px); background: rgba(30, 41, 59, 0.6); }
+    .agent-role { color: #F97316; font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+    .agent-name { font-size: 22px; font-weight: 700; color: white; margin: 10px 0; }
+    .agent-desc { font-size: 14px; color: #94A3B8; line-height: 1.5; }
+
+    /* ROI Stats */
+    .roi-section { display: flex; justify-content: space-around; padding: 60px 0; background: #0F172A; border-radius: 20px; margin: 40px 0; }
+    .roi-item { text-align: center; }
+    .roi-val { font-size: 56px; font-weight: 900; color: #10B981; }
+    .roi-label { font-size: 14px; color: #94A3B8; text-transform: uppercase; font-weight: 700; }
+
+    /* Tab Styling */
+    .stTabs [data-baseweb="tab-list"] { gap: 40px; }
+    .stTabs [data-baseweb="tab"] { font-size: 18px; font-weight: 700; color: #94A3B8; }
+    .stTabs [aria-selected="true"] { color: #F97316 !important; }
 </style>
 """, unsafe_allow_html=True)
 
-# --- NAVIGATION ---
-tabs = st.tabs(["🏠 Home", "🧠 Architecture", "📊 Strategic Matrix", "📈 Impact & About"])
+# --- 2. HERO SECTION ---
+st.markdown("""
+<div class="hero-container">
+    <div class="hero-tag">Digital Foundations to Strategic Autonomy</div>
+    <h1 class="hero-h1">Ingenero<span style="color:#F97316">360AI</span></h1>
+    <p class="hero-p">
+        Meet the <b>Strategic Brain</b> of the modern industrial enterprise. 
+        A modular Multi-Agent Ecosystem that transforms raw data into high-margin autonomous inferences.
+    </p>
+</div>
+""", unsafe_allow_html=True)
 
-# --- TAB 1: HOME (THE PITCH) ---
-with tabs[0]:
+# --- 3. THE DATA ALCHEMY (Importance of Analytics) ---
+st.markdown("""
+<div class="alchemy-box">
+    <h2 style="color:white; margin-bottom:15px;">The Alchemy of Data Analytics</h2>
+    <p style="font-size:18px; color:#CBD5E1; max-width:1000px;">
+        Raw data is just noise—a chaotic stream of 1s and 0s from thousands of sensors. 
+        <b>Analytics is the catalyst</b> that turns this noise into magic. By applying deep-tier physics 
+        and Agentic-AI, we don't just see what is happening; we <b>infer what is possible</b>. 
+        Raw data says "Temperature is 600°C." Ingenero360AI says "You can increase yield by 2.1% 
+        without risking metallurgy." That is the power of a Strategic Brain.
+    </p>
+</div>
+""", unsafe_allow_html=True)
+
+# --- 4. MEET THE AGENTS (Role-Based) ---
+st.write("## Meet the Agents of Intelligence")
+st.write("Our Multi-Agent System (MAS) replaces rigid code with autonomous roles.")
+
+a_col1, a_col2, a_col3 = st.columns(3)
+with a_col1:
     st.markdown("""
-    <div class="hero-section">
-        <h1 class="hero-h1">Ingenero<span class="orange-text">360AI</span></h1>
-        <p style="font-size:22px; color:#94A3B8; max-width:900px; margin:0 auto;">
-            The Strategic Multi-Agent Ecosystem for Industrial Autonomy. 
-            Deploy the <b>Strategic Brain</b> that orchestrates profit, reliability, and sustainability.
-        </p>
+    <div class="agent-card">
+        <div class="agent-role">The Grand Conductor</div>
+        <div class="agent-name">L0: Master Orchestrator</div>
+        <div class="agent-desc">Synchronizes all agents. It uses <b>GenAI</b> to translate complex plant physics into executive intent and ensures the fleet moves as one unit.</div>
+    </div>
+    """, unsafe_allow_html=True)
+with a_col2:
+    st.markdown("""
+    <div class="agent-card">
+        <div class="agent-role">The Physics Seer</div>
+        <div class="agent-name">L1: Sensing Agent</div>
+        <div class="agent-desc">The "Eyes" of the system. Uses <b>Soft Sensors</b> and kinetic models to see unmeasured variables—calculating catalyst health and internal purities in real-time.</div>
+    </div>
+    """, unsafe_allow_html=True)
+with a_col3:
+    st.markdown("""
+    <div class="agent-card">
+        <div class="agent-role">The Safety Sentinel</div>
+        <div class="agent-name">L2: Guardrail Agent</div>
+        <div class="agent-desc">The "Enforcer." It monitors metallurgical and environmental limits 24/7, ensuring that every profitable move remains 100% safe.</div>
     </div>
     """, unsafe_allow_html=True)
 
-    st.write("## Why Ingenero360AI?")
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        st.markdown("""<div class="info-card"><h3>Agentic Autonomy</h3><p>Beyond monitoring. Autonomous Sub-Agents (L0-L4) negotiate constraints to find the global optimum.</p></div>""", unsafe_allow_html=True)
-    with c2:
-        st.markdown("""<div class="info-card"><h3>Industry DNA</h3><p>Pre-configured Parent Agents for Olefins, Refining, and Ammonia. Physics-ready from Day 1.</p></div>""", unsafe_allow_html=True)
-    with c3:
-        st.markdown("""<div class="info-card"><h3>Strategic ROI</h3><p>Specifically designed to solve multi-objective goals: High Yields, Low Carbon, Zero Failure.</p></div>""", unsafe_allow_html=True)
+st.write("") # Spacer
 
-# --- TAB 2: ARCHITECTURE (THE AGENTS) ---
-with tabs[1]:
-    st.write("## The 5-Level Agentic Architecture")
-    st.info("Ingenero360AI is powered by a hierarchy of specialized Sub-Agents. This modularity allows us to build a 'Common DNA' for your technology while hot-swapping 'Uncommon Intelligence' for your specific goals.")
-    
-    col_a, col_b = st.columns(2)
-    with col_a:
-        st.markdown("""
-        #### Foundational Sub-Agents (Common)
-        * **L0 Master Orchestrator:** Fleet governance & GenAI coordination.
-        * **L1 Sensing Sub-Agents:** High-fidelity Physics & Soft Sensors.
-        * **L2 Guardrail Sub-Agents:** Safety & Metallurgical constraints.
-        """)
-    with col_b:
-        st.markdown("""
-        #### Strategic Sub-Agents (Uncommon)
-        * **L3 Optimizer Sub-Agents:** The Brain (MINLP / Predictive RUL).
-        * **L4 Result Bus Sub-Agents:** Forecasted Advisory & Actionable KPIs.
-        """)
-
-# --- TAB 3: STRATEGIC MATRIX (INTERACTIVE) ---
-with tabs[2]:
-    st.write("## Strategic Solution Matrix")
-    st.write("Select your Parent and Child agents to see the Agentic-AI configuration.")
-    
-    # Simple Matrix Logic
-    parents = ["Olefins", "Refining", "Ammonia", "Methanol", "Utilities"]
-    children = ["Production Efficiency", "Energy Optimization", "Reliability", "Sustainability"]
-    
-    sel_p = st.selectbox("Select Technology (Parent Agent)", parents)
-    sel_c = st.selectbox("Select Initiative (Child Agent)", children)
-    
-    st.markdown(f"""
-    <div style="background:#1E293B; padding:30px; border-radius:15px; border-left:5px solid #F97316;">
-        <h3>Configuration: {sel_p} + {sel_c}</h3>
-        <div class="matrix-cell">
-            <div class="sub-agent-label">Base Foundation Sub-Agents</div>
-            <p>• {sel_p} Kinetic Model (L1)<br>• {sel_p} Safety Guardrail (L2)</p>
-        </div>
-        <div class="matrix-cell" style="border-color:#F97316;">
-            <div class="sub-agent-label" style="color:#F97316;">+ Incremental Strategy Sub-Agents</div>
-            <p>• {sel_c} Optimizer (L3)<br>• {sel_c} Result Bus (L4)</p>
-        </div>
+a_col4, a_col5 = st.columns([1.5, 1.5])
+with a_col4:
+    st.markdown("""
+    <div class="agent-card" style="border-color:#F97316;">
+        <div class="agent-role" style="color:#F97316;">The Strategy Alchemist</div>
+        <div class="agent-name">L3: Strategic Optimizer</div>
+        <div class="agent-desc">The <b>"Brain"</b>. Using <b>MINLP</b> and <b>Optimizers</b>, it solves for the highest profit, lowest energy, or best reliability based on your chosen initiative.</div>
+    </div>
+    """, unsafe_allow_html=True)
+with a_col5:
+    st.markdown("""
+    <div class="agent-card" style="border-color:#10B981;">
+        <div class="agent-role" style="color:#10B981;">The Executive Oracle</div>
+        <div class="agent-name">L4: Result Bus Agent</div>
+        <div class="agent-desc">The <b>"Voice"</b>. It translates deep math into <b>Generative Advisory</b> and <b>What-If Forecasting</b>, showing you the exact ROI before you make a move.</div>
     </div>
     """, unsafe_allow_html=True)
 
-# --- TAB 4: IMPACT & CONTACT ---
-with tabs[3]:
-    st.write("## Proven Global Impact")
-    v1, v2 = st.columns(2)
-    with v1:
-        st.markdown('<div class="stat-box"><div class="stat-val">$100M+</div><div style="color:#94A3B8;">Realized Client ROI</div></div>', unsafe_allow_html=True)
-    with v2:
-        st.markdown('<div class="stat-box" style="border-color:#38BDF8;"><div class="stat-val" style="color:#38BDF8;">$500M+</div><div style="color:#94A3B8;">Identified Potential</div></div>', unsafe_allow_html=True)
-    
-    st.write("### What Our Clients Say")
-    st.markdown("> \"Ingenero360AI didn't just give us data; it gave us a strategy. We saw a 3% yield increase in 60 days.\" — *VP Operations, Global Petrochemical Major*")
-    
-    st.divider()
-    st.write("### Contact Our Strategic Advisory Team")
+# --- 5. TABS: INDUSTRIES & INITIATIVES ---
+st.markdown("<br><br>", unsafe_allow_html=True)
+tab1, tab2, tab3 = st.tabs(["🏗️ Industries Covered", "🎯 Strategic Initiatives", "📦 Product Package"])
+
+with tab1:
+    st.write("### Built-in Technology DNA")
+    st.write("Ingenero360AI is pre-configured for the world's most complex industrial sectors.")
+    ind_cols = st.columns(5)
+    ind_cols[0].metric("Olefins", "Ethylene/Propylene")
+    ind_cols[1].metric("Refining", "CDU/Coker/FCCU")
+    ind_cols[2].metric("Ammonia", "Synthesis Loop")
+    ind_cols[3].metric("Methanol", "Reformer Kinetics")
+    ind_cols[4].metric("Utilities", "Steam/Power/Flare")
+
+with tab2:
+    st.write("### Hot-Swap Your Strategic Goal")
+    st.write("Choose your 'Child Agent' to pivot the entire ecosystem's focus.")
+    st.markdown("""
+    - **📈 Production Efficiency:** Maximize yield and throughput (MINLP).
+    - **⚡ Energy Optimization:** Minimize specific energy consumption (SEC).
+    - **🛠️ Asset Reliability:** Predictive maintenance and RUL (Remaining Useful Life).
+    - **🌱 Sustainability Hub:** Real-time Carbon Intensity & ESG tracking.
+    """)
+
+with tab3:
+    st.write("### The Ingenero Portfolio")
+    p1, p2 = st.columns(2)
+    with p1:
+        st.info("**IngeneroX (The Toolkit):** Digital enablement for engineers. The 'Tools' to monitor, analyze, and build.")
+    with p2:
+        st.success("**Ingenero360AI (The Brain):** The autonomous strategic ecosystem. The 'Solution' that orchestrates intent.")
+
+# --- 6. ROI & TESTIMONIALS ---
+st.markdown("""
+<div class="roi-section">
+    <div class="roi-item">
+        <div class="roi-val">$100M+</div>
+        <div class="roi-label">Realized Client ROI</div>
+    </div>
+    <div class="roi-item">
+        <div class="roi-val" style="color:#38BDF8;">$500M+</div>
+        <div class="roi-label">Identified Potential</div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+st.write("### Voices of Authority")
+st.markdown("> \"Ingenero360AI transformed our noise into knowledge. We identified $12M in energy savings within 90 days without replacing a single piece of hardware.\" — *Operations Director, Fortune 500 Petrochemical.*")
+
+# --- 7. ABOUT & CONTACT ---
+st.divider()
+c_left, c_right = st.columns(2)
+with c_left:
+    st.write("### About Us")
+    st.write("Ingenero is a global leader in industrial AI and specialized engineering. We bridge the gap between complex physics and digital intelligence, helping the world's largest plants reach their technical and economic potential.")
+
+with c_right:
+    st.write("### Request an Executive Briefing")
     with st.form("contact"):
         st.text_input("Name")
-        st.text_input("Email")
-        st.selectbox("Interest", ["Olefins", "Refining", "Sustainability", "General Inquiry"])
-        st.form_submit_button("Request Executive Briefing")
+        st.text_input("Corporate Email")
+        st.selectbox("Primary Interest", ["Olefins", "Refining", "Sustainability", "Reliability", "General Inquiry"])
+        st.form_submit_button("Consult an Expert")
 
-st.markdown("<center style='color:#475569; margin-top:50px;'>Ingenero.AI | Digital Foundations to Strategic Autonomy</center>", unsafe_allow_html=True)
+st.markdown("<center style='color:#475569; margin:40px 0;'>Ingenero.AI | 360-Degree Strategic Intelligence</center>", unsafe_allow_html=True)
