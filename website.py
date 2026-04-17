@@ -158,7 +158,7 @@ elif page == "Architecture":
         "Layered Agentic AI Architecture",
         """
         **Level 0:** Ingenero.AI Platform  
-        **Level 1:** Products (IngeneroX, Ingenero360AI)  
+        **Level 1:** Products (Ingenero360AI)  
         **Level 2:** Primary Agents (Plant‑level intelligence)  
         **Level 3:** Domain & Asset Agents  
         **Level 4:** Cross‑Domain Functional AI Agents  
