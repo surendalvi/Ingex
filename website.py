@@ -1,235 +1,275 @@
 import streamlit as st
 
-# -------------------------
-# Page Configuration
-# -------------------------
+# -------------------------------------------------
+# Page Config
+# -------------------------------------------------
 st.set_page_config(
     page_title="Ingenero360AI | Agentic AI for Industrial Operations",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
 )
 
-# -------------------------
+# -------------------------------------------------
+# Custom CSS (Enterprise Look & Feel)
+# -------------------------------------------------
+def load_css():
+    st.markdown("""
+    <style>
+
+    .block-container {
+        max-width: 1200px;
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+
+    h1, h2, h3 {
+        color: #0B4C8C;
+        font-weight: 600;
+    }
+
+    p {
+        font-size: 17px;
+        line-height: 1.7;
+        color: #1F2933;
+    }
+
+    section[data-testid="stSidebar"] {
+        background-color: #F5F7FA;
+        padding-top: 2rem;
+    }
+
+    .stButton button {
+        background-color: #0B4C8C;
+        color: white;
+        font-weight: 600;
+        padding: 0.6rem 1.2rem;
+        border-radius: 6px;
+        border: none;
+    }
+
+    .stButton button:hover {
+        background-color: #093A6A;
+    }
+
+    hr {
+        border: 0;
+        height: 1px;
+        background: #E5E7EB;
+        margin: 2.5rem 0;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+load_css()
+
+# -------------------------------------------------
+# Helpers
+# -------------------------------------------------
+def section(title, body):
+    st.markdown(f"## {title}")
+    st.markdown(body)
+
+def divider():
+    st.markdown("<hr />", unsafe_allow_html=True)
+
+# -------------------------------------------------
 # Sidebar Navigation
-# -------------------------
+# -------------------------------------------------
 st.sidebar.title("Ingenero360AI")
 page = st.sidebar.radio(
     "Navigate",
     [
         "Home",
-        "Platform & Architecture",
+        "Platform",
+        "Architecture",
         "Solutions",
         "Industries",
         "Agents",
         "Case Studies",
         "Testimonials",
-        "Request Demo"
-    ]
+        "Request a Demo"
+    ],
 )
 
-# -------------------------
-# Utility Functions
-# -------------------------
-def section_title(text):
-    st.markdown(f"## {text}")
-
-def paragraph(text):
-    st.markdown(f"<p style='font-size:18px'>{text}</p>", unsafe_allow_html=True)
-
-# -------------------------
-# Pages
-# -------------------------
-
+# =================================================
 # HOME
+# =================================================
 if page == "Home":
     st.markdown("# Ingenero360AI")
-    st.markdown("### Agentic AI for Industrial Operations")
-
-    paragraph(
-        "Autonomous asset intelligence with governed execution and "
-        "GenAI‑powered decision support for complex industrial operations."
-    )
-
-    st.columns(3)
-    st.success("✅ Agentic AI, not dashboards")
-    st.success("✅ Accountable actions, not recommendations")
-    st.success("✅ GenAI only for human decision support")
-
-    section_title("Why Ingenero360AI")
-    paragraph(
-        "Ingenero360AI brings together deep process expertise, autonomous AI agents, "
-        "governed execution workflows, and GenAI‑powered user interaction into one "
-        "enterprise‑grade platform."
-    )
-
-    section_title("What You Can Achieve")
-    st.markdown("""
-    - Improve plant efficiency and throughput  
-    - Reduce energy intensity and emissions  
-    - Increase asset reliability  
-    - Standardize optimization across plants  
-    - Convert AI insights into real business outcomes  
-    """)
-
-# PLATFORM & ARCHITECTURE
-elif page == "Platform & Architecture":
-    section_title("Platform Overview")
-
-    paragraph(
-        "Ingenero360AI is built as a layered Agentic AI architecture designed "
-        "for trust, scalability, and real‑world execution."
-    )
-
-    section_title("Architecture Layers")
+    st.markdown("### Agentic AI Platform for Industrial Operations")
 
     st.markdown("""
-    **Level‑0:** Ingenero.AI Platform  
-    **Level‑1:** Products (IngeneroX, Ingenero360AI)  
-    **Level‑2:** Primary Agents (Plant‑level intelligence)  
-    **Level‑3:** Domain & Asset Agents  
-    **Level‑4:** Cross‑Domain Functional Agents  
-    **Level‑5:** Model Agents (Digital Twins, Optimizers)  
-    **Level‑6:** Results & Insights  
-    **Level‑7:** Action Governance & Accountability  
-    **Level‑8:** Decision & User Layer (GenAI, Dashboards, Copilots)  
+    Ingenero360AI delivers **autonomous asset intelligence** with built‑in governance
+    and **GenAI‑powered decision support**, enabling measurable and sustainable
+    operational excellence across complex industrial environments.
     """)
 
-    paragraph(
-        "This separation ensures AI autonomy without sacrificing control, trust, "
-        "or accountability."
+    st.button("Request a Demo")
+
+    divider()
+
+    section(
+        "Why Ingenero360AI",
+        """
+        - Agentic AI that reasons and acts across assets  
+        - Governed workflows that ensure accountability  
+        - GenAI only at the interface — never in plant control  
+        """
     )
 
+    divider()
+
+    section(
+        "Proven Across Technologies",
+        """
+        Methanol • Ammonia • Urea • Polymers • Phenols • Olefins • BTX • EO/EG • MTBE • Utilities
+        """
+    )
+
+# =================================================
+# PLATFORM
+# =================================================
+elif page == "Platform":
+    section(
+        "What is Ingenero360AI?",
+        """
+        Ingenero360AI is an enterprise‑grade Agentic AI platform designed for
+        process industries. It combines autonomous AI agents, deep process
+        expertise, advanced optimization models, and governance frameworks
+        into a single operational intelligence system.
+        """
+    )
+
+    section(
+        "Core Principles",
+        """
+        - Outcome‑driven intelligence, not isolated analytics  
+        - Continuous reasoning, not point‑in‑time recommendations  
+        - Trust, transparency, and accountability by design  
+        """
+    )
+
+# =================================================
+# ARCHITECTURE
+# =================================================
+elif page == "Architecture":
+    section(
+        "Layered Agentic AI Architecture",
+        """
+        **Level 0:** Ingenero.AI Platform  
+        **Level 1:** Products (IngeneroX, Ingenero360AI)  
+        **Level 2:** Primary Agents (Plant‑level intelligence)  
+        **Level 3:** Domain & Asset Agents  
+        **Level 4:** Cross‑Domain Functional AI Agents  
+        **Level 5:** Model Agents (Digital Twins, Optimizers)  
+        **Level 6:** Results & Insights  
+        **Level 7:** Action Governance & Accountability  
+        **Level 8:** Decision & User Layer (GenAI, Dashboards, Copilots)  
+        """
+    )
+
+    st.caption("This structure ensures autonomy without sacrificing safety or control.")
+
+# =================================================
 # SOLUTIONS
+# =================================================
 elif page == "Solutions":
-    section_title("Solutions")
+    section(
+        "Plant Efficiency",
+        "Throughput improvement, constraint removal, and stable operations."
+    )
+    section(
+        "Energy Optimization",
+        "Fuel, steam, and power optimization across processes and utilities."
+    )
+    section(
+        "Reliability & Asset Performance",
+        "Failure prediction, degradation tracking, and maintenance decision support."
+    )
+    section(
+        "Sustainability & Energy Transition",
+        "Energy intensity reduction, emissions tracking, and ESG readiness."
+    )
 
-    st.markdown("""
-    ### Plant Efficiency
-    - Throughput optimization
-    - Bottleneck identification
-    - Cross‑asset coordination
-
-    ### Energy Optimization
-    - Fuel, steam, and power optimization
-    - Utilities coordination
-    - Energy intensity reduction
-
-    ### Reliability & Asset Performance
-    - Degradation monitoring
-    - Failure prediction
-    - Maintenance decision support
-
-    ### Sustainability & Energy Transition
-    - Emissions and water optimization
-    - ESG performance tracking
-    - Regulatory readiness
-    """)
-
+# =================================================
 # INDUSTRIES
+# =================================================
 elif page == "Industries":
-    section_title("Industries Served")
-
-    st.markdown("""
-    - Fertilizers (Ammonia, Urea)
-    - Petrochemicals (Olefins, Polymers, EO/EG)
-    - Chemicals (Phenols, MTBE, BTX)
-    - Refining
-    - Air Separation Units
-    - Utilities & Energy Systems
-    """)
-
-    paragraph(
-        "Ingenero360AI scales across technologies while preserving deep, "
-        "process‑specific intelligence."
+    section(
+        "Industries We Serve",
+        """
+        - Fertilizers (Ammonia, Urea)  
+        - Petrochemicals (Olefins, Polymers, EO/EG)  
+        - Chemicals (Phenols, MTBE, BTX)  
+        - Refining & Energy  
+        - Air Separation Units  
+        - Utilities & Infrastructure  
+        """
     )
 
+# =================================================
 # AGENTS
+# =================================================
 elif page == "Agents":
-    section_title("Agent Ecosystem")
-
-    st.markdown("""
-    ### Primary Agents
-    Outcome‑driven agents that coordinate plant objectives.
-
-    ### Domain & Asset Agents
-    Furnace, Reformer, Compressor, Distillation, Utilities, and more – each with
-    physics‑based intelligence.
-
-    ### Functional Agents
-    - Process Efficiency
-    - Energy Optimization
-    - Reliability
-    - Sustainability
-    - Asset Hub
-    - APC
-    - ORA – Operator Round Automation
-    - Turnaround Management
-
-    ### Model Agents
-    Digital Twins, Virtual Labs, Benchmarking, Optimizers
-    """)
-
-    paragraph(
-        "Together, these agents behave like a digital operations team—reasoning, "
-        "collaborating, and continuously optimizing."
+    section(
+        "Agent Ecosystem",
+        """
+        **Primary Agents** – Plant‑level outcome coordination  
+        **Domain & Asset Agents** – Furnace, Reformer, Distillation, Compression, Utilities  
+        **Functional Agents** – Process Efficiency, Energy, Reliability, Sustainability  
+        **ORA** – Operator Round Automation  
+        **TAM** – Turnaround Management  
+        **Model Agents** – Digital Twins, Virtual Labs, Optimizers  
+        """
     )
 
+# =================================================
 # CASE STUDIES
+# =================================================
 elif page == "Case Studies":
-    section_title("Case Studies")
-
-    paragraph(
-        "Ingenero360AI has delivered measurable value across integrated "
-        "chemical and petrochemical complexes."
+    section(
+        "Multi‑Technology Optimization",
+        """
+        Integrated deployment across Methanol, Ammonia, Polymers, Olefins,
+        EO/EG, MTBE, and Utilities delivering significant multi‑million‑dollar
+        value with disciplined execution.
+        """
     )
 
-    st.markdown("""
-    **Multi‑Technology Optimization**
-    - Methanol, Ammonia, Urea, Polymers, Phenols
-    - Olefins, BTX, EO/EG, MTBE, Utilities
-    - Significant multi‑million‑dollar value identified and realized
-
-    **Fertilizer Operations**
-    - Energy intensity reduction
-    - Improved reliability
-
-    **Utilities Optimization**
-    - Steam, power, cooling water optimization
-    """)
-
+# =================================================
 # TESTIMONIALS
+# =================================================
 elif page == "Testimonials":
-    section_title("Client Testimonials")
-
     st.info(
-        "“Ingenero360AI has become a strategic enabler in our journey toward "
+        "“Ingenero360AI has become a critical enabler in our journey toward "
         "data‑driven, energy‑efficient, and operationally excellent manufacturing.”"
     )
-
     st.caption("— Chief Executive Officer, Integrated Chemical Enterprise")
 
     st.info(
-        "“What stood out was Ingenero’s deep understanding of plant operations "
-        "and their ability to convert insights into actions our teams could implement.”"
+        "“Ingenero’s deep process understanding and accountable AI approach "
+        "turned complex insights into actions our teams could implement.”"
     )
-
     st.caption("— Head of Operations")
 
-# REQUEST DEMO
-elif page == "Request Demo":
-    section_title("Request a Demo")
-
-    paragraph(
-        "Talk to our experts to understand how Ingenero360AI can transform "
-        "your operations."
+# =================================================
+# REQUEST DEMO (STABLE IMPLEMENTATION)
+# =================================================
+elif page == "Request a Demo":
+    section(
+        "Request a Demo",
+        "Engage with our experts to understand how Ingenero360AI can transform your operations."
     )
 
-    with st.form("demo_form"):
-        name = st.text_input("Name")
-        company = st.text_input("Company")
-        role = st.text_input("Role")
-        email = st.text_input("Email")
-        submitted = st.form_submit_button("Submit")
+    with st.form("demo_form_v2", clear_on_submit=True):
+        st.text_input("Full Name", key="name")
+        st.text_input("Company", key="company")
+        st.text_input("Role / Designation", key="role")
+        st.text_input("Work Email", key="email")
+        st.text_area("Brief Description of Your Challenge", key="challenge")
 
-        if submitted:
-            st.success("Thank you. Our team will reach out shortly.")
+        submit = st.form_submit_button("Submit")
+
+    if submit:
+        st.success("Thank you. Our team will reach out shortly.")
