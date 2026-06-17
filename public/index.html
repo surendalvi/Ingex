@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ingenero360AI Sales Showcase | Demo Hub</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png" onerror="this.style.display='none'">
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo">
+        <span class="logo-accent">INGENERO</span><span class="logo-main">360° AI</span>
+        <span class="badge">Sales Hub</span>
+      </div>
+      <nav class="nav-links">
+        <button id="admin-btn" class="btn btn-secondary hidden">
+          <i class="fa-solid fa-gear"></i> Manage Cloud Links
+        </button>
+        <button id="help-btn" class="btn btn-secondary">
+          <i class="fa-solid fa-cloud-arrow-up"></i> How to Host Online
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Cinematic Section -->
+  <main class="main-container">
+    <section class="hero-showcase">
+      <div class="showcase-layout">
+        <!-- Main Player -->
+        <div class="player-container">
+          <div id="player-placeholder" class="player-placeholder">
+            <div class="placeholder-content">
+              <div class="play-icon-glow">
+                <i class="fa-solid fa-play"></i>
+              </div>
+              <h2>Ingenero360AI Demo Hub</h2>
+              <p>Select a video from the library below to start showcasing our advanced AI and optimization potential.</p>
+            </div>
+          </div>
+          <video id="main-video" class="main-video hidden" controls autoplay playsinline></video>
+        </div>
+
+        <!-- Selected Video Details -->
+        <div class="video-info-panel">
+          <div class="tags-row" id="active-tags">
+            <span class="category-tag">Industrial AI</span>
+          </div>
+          <h1 id="active-title" class="video-title">Select a Demo Video</h1>
+          <p id="active-description" class="video-description">
+            Choose from the grid below to view live demonstrations of Ingenero's Agentic AI applications, Process Optimizers, and Operational Dashboards.
+          </p>
+          
+          <div class="video-stats-row">
+            <span class="stat-item" id="active-size">
+              <i class="fa-solid fa-hard-drive"></i> -- MB
+            </span>
+            <span class="stat-item" id="active-date">
+              <i class="fa-solid fa-calendar-days"></i> --
+            </span>
+          </div>
+
+          <div class="action-buttons">
+            <button id="copy-link-btn" class="btn btn-primary" disabled>
+              <i class="fa-solid fa-link"></i> Copy Link to Share
+            </button>
+            <span id="copy-toast" class="toast hidden">Copied Link!</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Video Explorer Section -->
+    <section class="explorer-section">
+      <div class="explorer-header">
+        <div class="section-title-group">
+          <h2>Demo Videos Library</h2>
+          <p>Instantly showcase our capabilities to clients and sales prospects</p>
+        </div>
+        
+        <!-- Search and Filters -->
+        <div class="controls-group">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="search-input" placeholder="Search demos...">
+            <button id="clear-search" class="clear-btn hidden"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="filter-tabs-container">
+        <div class="filter-tabs" id="filter-tabs">
+          <button class="filter-tab active" data-category="all">All Demos</button>
+          <button class="filter-tab" data-category="agentic ai">Agentic AI</button>
+          <button class="filter-tab" data-category="optimizers">Optimizers</button>
+          <button class="filter-tab" data-category="dashboards">Dashboards</button>
+          <button class="filter-tab" data-category="demos">General Demos</button>
+        </div>
+      </div>
+
+      <!-- Videos Grid -->
+      <div id="videos-grid" class="videos-grid">
+        <!-- Cards loaded dynamically via JavaScript -->
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <p>Loading showcase library...</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Help / Online Hosting Guide Modal -->
+  <div id="help-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-globe"></i> How to Host this App & Share Online</h3>
+        <button id="close-modal-btn" class="close-modal-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-intro">To share this showcase with clients and colleagues so it runs 24/7 without needing your laptop open, we use <strong>GitHub Pages</strong> for the site and <strong>Google Drive / OneDrive</strong> for the video storage.</p>
+        
+        <div class="guide-steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <h4>Upload Videos to Cloud Storage</h4>
+              <p>Upload the video files from <code>E:\Demos</code> to Google Drive or OneDrive.</p>
+              <ul>
+                <li><strong>Google Drive</strong>: Upload files, right-click, select <strong>Share</strong>, and set permission to <strong>"Anyone with the link can view"</strong>. Copy the link.</li>
+                <li><strong>OneDrive</strong>: Upload files, right-click, select <strong>Share</strong>, ensure it is set to <strong>"Anyone with the link can view"</strong>. Copy the link.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <h4>Update `videos.json` with Cloud Links</h4>
+              <p>Open the project's <code>public/videos.json</code> file in a text editor. Locate the video items and update their <code>onlineUrl</code> field with the copied share link.</p>
+              <pre><code>{
+  "filename": "AFP demo 1.mp4",
+  "title": "AFP Demo 1",
+  "category": "Demos",
+  ...
+  "onlineUrl": "PASTE_YOUR_GOOGLE_DRIVE_OR_ONEDRIVE_LINK_HERE"
+}</code></pre>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <h4>Host on GitHub Pages (Free)</h4>
+              <ol>
+                <li>Create a free repository on GitHub (e.g. <code>ingenero-showcase</code>).</li>
+                <li>Commit and push the contents of the <code>public/</code> folder to this repository.</li>
+                <li>In your GitHub Repository, go to <strong>Settings</strong> > <strong>Pages</strong>.</li>
+                <li>Under <strong>Build and deployment</strong>, select the <code>main</code> branch (root) and click <strong>Save</strong>.</li>
+                <li>Within 1-2 minutes, your showcase will be online at <code>https://&lt;your-username&gt;.github.io/ingenero-showcase/</code>!</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-note">
+          <i class="fa-solid fa-circle-info"></i>
+          <p><strong>Note:</strong> When you open the hosted website, the application automatically converts Google Drive and OneDrive links into direct playback streams, ensuring a premium streaming experience.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Link Manager / Admin Modal -->
+  <div id="admin-modal" class="modal-overlay hidden">
+    <div class="modal-card" style="max-width: 800px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-gear"></i> Manage Cloud Video Links</h3>
+        <button id="close-admin-btn" class="close-modal-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-intro">Paste your Google Drive share links for each video here. These links will be saved to your local database and updated in your <code>videos.json</code> file, ready for pushing to GitHub.</p>
+        
+        <div id="admin-video-list" class="admin-video-list">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="app-footer">
+    <div class="footer-content">
+      <p>&copy; 2026 Ingenero. All rights reserved. Ingenero360AI is a registered trademark of Ingenero.</p>
+      <div class="footer-links">
+        <a href="https://www.ingenero.com" target="_blank">Official Website</a>
+        <a href="mailto:info@ingenero.com">Contact Sales</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+[
+  {
+    "filename": "AFP demo 1.mp4",
+    "title": "AFP Demo 1",
+    "category": "Demos",
+    "tags": [
+      "AFP",
+      "Process modeling"
+    ],
+    "description": "Advanced Flowsheet Predictor (AFP) demo showing chemical process modeling, forecasting, and operational optimization.",
+    "localUrl": "videos/AFP%20demo%201.mp4",
+    "onlineUrl": "https://drive.google.com/file/d/1QHlTRLDKVGvM50Ot-GOV8LbDdBb0r7WJ/view?usp=drive_link",
+    "sizeBytes": 32568062,
+    "modifiedAt": "2026-06-17T16:27:17.377Z"
+  },
+  {
+    "filename": "Ammonia_Dashboard.mp4",
+    "title": "Ammonia Dashboard",
+    "category": "Dashboards",
+    "tags": [
+      "Ammonia",
+      "Dashboards"
+    ],
+    "description": "Comprehensive process dashboard for monitoring ammonia plant operation, energy efficiency, and yield analytics.",
+    "localUrl": "videos/Ammonia_Dashboard.mp4",
+    "onlineUrl": "https://drive.google.com/file/d/1ReSnCcgnzD_wFVHmSGIC__vIaXIsbNgC/view?usp=drive_link",
+    "sizeBytes": 80761981,
+    "modifiedAt": "2026-06-17T16:27:02.371Z"
+  },
+  {
+    "filename": "APC Tracker.mp4",
+    "title": "APC Tracker",
+    "category": "Dashboards",
+    "tags": [
+      "APC",
+      "Dashboards"
+    ],
+    "description": "Advanced Process Control Tracker for real-time monitoring, analytics, and control performance auditing.",
+    "localUrl": "videos/APC%20Tracker.mp4",
+    "onlineUrl": "https://drive.google.com/file/d/1aHE7_8LUVRuZPwEvq87LJ7Bz7n4sWEjV/view?usp=drive_link",
+    "sizeBytes": 103024730,
+    "modifiedAt": "2026-06-17T16:27:13.505Z"
+  },
+  {
+    "filename": "Catofin Agentic AI.mp4",
+    "title": "Catofin Agentic AI",
+    "category": "Agentic AI",
+    "tags": [
+      "Agentic AI",
+      "GenAI"
+    ],
+    "description": "State-of-the-art Agentic AI assistant guiding plant operators through Catofin process diagnostics and operational controls.",
+    "localUrl": "videos/Catofin%20Agentic%20AI.mp4",
+    "onlineUrl": "https://drive.google.com/file/d/1qhn-CaefChjQNF37-ZrxVy0iLtxYI8p_/view?usp=drive_link",
+    "sizeBytes": 147555797,
+    "modifiedAt": "2026-06-17T16:26:56.819Z"
+  },
+  {
+    "filename": "DCU demo.mp4",
+    "title": "DCU Demo",
+    "category": "Demos",
+    "tags": [
+      "DCU",
+      "Process"
+    ],
+    "description": "Delayed Coker Unit (DCU) operation demo highlighting key operational metrics, safety parameters, and operator flows.",
+    "localUrl": "videos/DCU%20demo.mp4",
+    "onlineUrl": "https://drive.google.com/file/d/1IOMuf7aLB1ls6_G0lMGQt_xqkBYZ_uzV/view?usp=drive_link",
+    "sizeBytes": 53911646,
+    "modifiedAt": "2026-06-17T16:27:26.515Z"
+  },
+  {
+    "filename": "Furnace_Optimizer_Professional.mp4",
+    "title": "Furnace Optimizer Professional",
+    "category": "Optimizers",
+    "tags": [
+      "Optimizers",
+      "Furnace"
+    ],
+    "description": "Real-time combustion optimization and thermal efficiency tracker for process heaters and steam cracking furnaces.",
+    "localUrl": "videos/Furnace_Optimizer_Professional.mp4",
+    "onlineUrl": "https://drive.google.com/file/d/1oUy_EzIKMFD2X11S-Ldj31PhewdRPGdL/view?usp=drive_link",
+    "sizeBytes": 25204292,
+    "modifiedAt": "2026-06-17T16:27:37.097Z"
+  },
+  {
+    "filename": "Generic Outlier Detection 2.mp4",
+    "title": "Generic Outlier Detection 2",
+    "category": "Dashboards",
+    "tags": [
+      "Analytics",
+      "ML"
+    ],
+    "description": "Machine learning powered outlier detection dashboard for multi-dimensional process variables and early anomaly warning.",
+    "localUrl": "videos/Generic%20Outlier%20Detection%202.mp4",
+    "onlineUrl": "https://drive.google.com/file/d/1alO5aE_OvMASzfzq5Yzb8pFRmYC-U1YM/view?usp=drive_link",
+    "sizeBytes": 31188890,
+    "modifiedAt": "2026-06-17T16:26:41.278Z"
+  },
+  {
+    "filename": "Ingenero GenAI.mp4",
+    "title": "Ingenero GenAI",
+    "category": "Agentic AI",
+    "tags": [
+      "GenAI",
+      "Agentic AI"
+    ],
+    "description": "Generative AI applications in industrial engineering and design query answering, standard searching, and calculator assistance.",
+    "localUrl": "videos/Ingenero%20GenAI.mp4",
+    "onlineUrl": "https://drive.google.com/file/d/1rUQFJky41hIFJIm7r5auAOJxfzEWTpi9/view?usp=drive_link",
+    "sizeBytes": 7069758,
+    "modifiedAt": "2026-06-17T16:27:52.074Z"
+  },
+  {
+    "filename": "Methanol Synthesis Video.mp4",
+    "title": "Methanol Synthesis Video",
+    "category": "Optimizers",
+    "tags": [
+      "Optimizers",
+      "Methanol"
+    ],
+    "description": "Process optimization showcase for methanol synthesis reactors, catalyst deactivation models, and loop recovery.",
+    "localUrl": "videos/Methanol%20Synthesis%20Video.mp4",
+    "onlineUrl": "https://drive.google.com/file/d/1rrEVsxFEhwPX3U155hkAzYmIiNodFxnM/view?usp=drive_link",
+    "sizeBytes": 21592182,
+    "modifiedAt": "2026-06-17T16:26:57.416Z"
+  }
+]
