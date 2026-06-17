@@ -207,14 +207,8 @@ body {
 }
 
 .showcase-layout {
-  display: grid;
-  grid-template-columns: 1.6fr 1fr;
-}
-
-@media (max-width: 1024px) {
-  .showcase-layout {
-    grid-template-columns: 1fr;
-  }
+  display: flex;
+  flex-direction: column;
 }
 
 /* Video Player section */
@@ -225,14 +219,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-right: 1px solid var(--card-border);
-}
-
-@media (max-width: 1024px) {
-  .player-container {
-    border-right: none;
-    border-bottom: 1px solid var(--card-border);
-  }
+  border-bottom: 1px solid var(--card-border);
+  width: 100%;
 }
 
 .main-video {
@@ -300,7 +288,7 @@ body {
 
 /* Info Panel styling */
 .video-info-panel {
-  padding: 3rem;
+  padding: 2rem 2.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;

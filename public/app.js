@@ -7,6 +7,7 @@ let searchQuery = '';
 // DOM Elements
 const videosGrid = document.getElementById('videos-grid');
 const mainVideo = document.getElementById('main-video');
+const mainIframe = document.getElementById('main-iframe');
 const playerPlaceholder = document.getElementById('player-placeholder');
 const activeTitle = document.getElementById('active-title');
 const activeDescription = document.getElementById('active-description');
@@ -157,7 +158,7 @@ async function fetchVideos() {
   }
 }
 
-// Check for deep links in URL query params
+// Check for deep links in URL query params or fallback to localStorage
 function handleDeepLink() {
   const urlParams = new URLSearchParams(window.location.search);
   const videoParam = urlParams.get('video');
@@ -166,7 +167,7 @@ function handleDeepLink() {
     const videoName = decodeURIComponent(videoParam);
     const video = videos.find(v => v.filename === videoName);
     if (video) {
-      selectVideo(video, false); // select and scroll, do not auto-scroll if unwanted, but we do smooth scrolling
+      selectVideo(video, false); // select, do not scroll on initial load
       
       // Smooth scroll to player on load if deep linked
       const playerElement = document.querySelector('.hero-showcase');
@@ -174,23 +175,31 @@ function handleDeepLink() {
         playerElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }
+  } else {
+    // Fallback to localStorage active video so we don't lose context
+    const cachedVideoName = localStorage.getItem('ingenero_active_video');
+    if (cachedVideoName) {
+      const video = videos.find(v => v.filename === cachedVideoName);
+      if (video) {
+        selectVideo(video, false);
+      }
+    }
   }
 }
 
-// Convert OneDrive and Google Drive share URLs to direct streaming/download URLs
-function getDirectVideoUrl(videoObj) {
-  // If we have an onlineUrl set, prioritize it; otherwise use localUrl
-  const url = videoObj.onlineUrl && videoObj.onlineUrl.trim() !== "" ? videoObj.onlineUrl : videoObj.localUrl;
-  
-  if (!url) return '';
-  if (!url.startsWith('http')) return url; // Relative local path (e.g. "videos/MyVideo.mp4")
+// Check if URL is Google Drive or OneDrive
+function isEmbedSource(url) {
+  if (!url) return false;
+  return url.includes('drive.google.com') || url.includes('onedrive.live.com');
+}
 
-  // 1. Google Drive direct stream url conversion
+// Convert OneDrive and Google Drive share URLs to embed preview URLs
+function getEmbedUrl(url) {
+  if (!url) return '';
+  
+  // Google Drive
   if (url.includes('drive.google.com')) {
     let fileId = '';
-    // Formats:
-    // https://drive.google.com/file/d/FILE_ID/view?usp=sharing
-    // https://drive.google.com/open?id=FILE_ID
     const matches = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
     if (matches && matches[1]) {
       fileId = matches[1];
@@ -201,23 +210,19 @@ function getDirectVideoUrl(videoObj) {
       }
     }
     if (fileId) {
-      return `https://docs.google.com/uc?export=download&id=${fileId}`;
+      return `https://drive.google.com/file/d/${fileId}/preview`;
     }
   }
 
-  // 2. OneDrive direct link conversion
+  // OneDrive
   if (url.includes('onedrive.live.com')) {
-    // If it's already an embed link:
-    // https://onedrive.live.com/embed?cid=...&resid=...&authkey=...
-    // Convert to download link:
-    // https://onedrive.live.com/download?cid=...&resid=...&authkey=...
     if (url.includes('/embed')) {
-      return url.replace('/embed', '/download');
+      return url;
     }
-    // Redirect sharing link:
     if (url.includes('redir?')) {
-      return url.replace('redir?', 'download?');
+      return url.replace('redir?', 'embed?');
     }
+    return url;
   }
 
   return url;
@@ -258,13 +263,38 @@ function selectVideo(video, shouldScroll = true) {
   // Enable copy button
   copyLinkBtn.removeAttribute('disabled');
 
-  // Load and play video
-  const streamUrl = getDirectVideoUrl(video);
-  mainVideo.src = streamUrl;
+  const url = video.onlineUrl && video.onlineUrl.trim() !== "" ? video.onlineUrl : video.localUrl;
   
-  // Swap placeholder and video player
+  if (isEmbedSource(url)) {
+    // Hide native video player, show iframe
+    mainVideo.classList.add('hidden');
+    mainVideo.src = '';
+    
+    mainIframe.src = getEmbedUrl(url);
+    mainIframe.classList.remove('hidden');
+  } else {
+    // Hide iframe, show native video player
+    mainIframe.classList.add('hidden');
+    mainIframe.src = 'about:blank';
+    
+    mainVideo.src = url;
+    mainVideo.classList.remove('hidden');
+    mainVideo.load();
+    mainVideo.play().catch(e => {
+      console.log('Autoplay was prevented by browser security. User must click play.', e);
+    });
+  }
+
+  // Update browser URL query parameter without page reload
+  const baseUrl = window.location.origin + window.location.pathname;
+  const newUrl = `${baseUrl}?video=${encodeURIComponent(video.filename)}`;
+  window.history.replaceState({ path: newUrl }, '', newUrl);
+
+  // Save selected video to local storage
+  localStorage.setItem('ingenero_active_video', video.filename);
+
+  // Swap placeholder
   playerPlaceholder.classList.add('hidden');
-  mainVideo.classList.remove('hidden');
   
   // Auto-scroll to player if requested (for mobile/tablet experience)
   if (shouldScroll) {
