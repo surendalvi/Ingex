@@ -122,12 +122,46 @@ function setupEventListeners() {
   });
 
   // Show admin button only if hosted locally
-  const isLocal = window.location.hostname === 'localhost' || 
-                  window.location.hostname === '127.0.0.1' || 
-                  window.location.hostname.startsWith('192.168.') ||
-                  window.location.hostname.startsWith('10.');
   if (isLocal) {
     adminBtn.classList.remove('hidden');
+  }
+
+  // Click logo to reset view and clear video parameter (acts as Home button)
+  const logoBtn = document.getElementById('logo-btn');
+  if (logoBtn) {
+    logoBtn.addEventListener('click', () => {
+      activeVideo = null;
+      mainVideo.classList.add('hidden');
+      mainVideo.src = '';
+      mainIframe.classList.add('hidden');
+      mainIframe.src = 'about:blank';
+      playerPlaceholder.classList.remove('hidden');
+      
+      // Reset details panel
+      activeTitle.textContent = 'Select a Demo Video';
+      activeDescription.textContent = 'Choose from the grid below to view live demonstrations of Ingenero\'s Agentic AI applications, Process Optimizers, and Operational Dashboards.';
+      activeTags.innerHTML = '<span class="category-tag">Industrial AI</span>';
+      activeSize.innerHTML = `<i class="fa-solid fa-hard-drive"></i> -- MB`;
+      activeDate.innerHTML = `<i class="fa-solid fa-calendar-days"></i> --`;
+      copyLinkBtn.setAttribute('disabled', 'true');
+      
+      // Reset URL to base
+      const baseUrl = window.location.origin + window.location.pathname;
+      window.history.replaceState({ path: baseUrl }, '', baseUrl);
+      
+      // Reset grid highlights
+      document.querySelectorAll('.video-card').forEach(card => {
+        card.classList.remove('active-card');
+        card.style.borderColor = '';
+        card.style.boxShadow = '';
+      });
+      
+      // Smooth scroll back to top explorer grid
+      const explorerElement = document.querySelector('.explorer-section');
+      if (explorerElement) {
+        explorerElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
   }
 }
 
@@ -158,7 +192,7 @@ async function fetchVideos() {
   }
 }
 
-// Check for deep links in URL query params or fallback to localStorage
+// Check for deep links in URL query params
 function handleDeepLink() {
   const urlParams = new URLSearchParams(window.location.search);
   const videoParam = urlParams.get('video');
@@ -173,15 +207,6 @@ function handleDeepLink() {
       const playerElement = document.querySelector('.hero-showcase');
       if (playerElement) {
         playerElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }
-  } else {
-    // Fallback to localStorage active video so we don't lose context
-    const cachedVideoName = localStorage.getItem('ingenero_active_video');
-    if (cachedVideoName) {
-      const video = videos.find(v => v.filename === cachedVideoName);
-      if (video) {
-        selectVideo(video, false);
       }
     }
   }
@@ -289,9 +314,6 @@ function selectVideo(video, shouldScroll = true) {
   const baseUrl = window.location.origin + window.location.pathname;
   const newUrl = `${baseUrl}?video=${encodeURIComponent(video.filename)}`;
   window.history.replaceState({ path: newUrl }, '', newUrl);
-
-  // Save selected video to local storage
-  localStorage.setItem('ingenero_active_video', video.filename);
 
   // Swap placeholder
   playerPlaceholder.classList.add('hidden');
