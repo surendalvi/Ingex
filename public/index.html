@@ -35,6 +35,46 @@
 
   <!-- Hero Cinematic Section -->
   <main class="main-container">
+    <!-- Video Explorer Section -->
+    <section class="explorer-section">
+      <div class="explorer-header">
+        <div class="section-title-group">
+          <h2>Demo Videos Library</h2>
+          <p>Instantly showcase our capabilities to clients and sales prospects</p>
+        </div>
+        
+        <!-- Search and Filters -->
+        <div class="controls-group">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="search-input" placeholder="Search demos...">
+            <button id="clear-search" class="clear-btn hidden"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="filter-tabs-container">
+        <div class="filter-tabs" id="filter-tabs">
+          <button class="filter-tab active" data-category="all">All Demos</button>
+          <button class="filter-tab" data-category="agentic ai">Agentic AI</button>
+          <button class="filter-tab" data-category="optimizers">Optimizers</button>
+          <button class="filter-tab" data-category="dashboards">Dashboards</button>
+          <button class="filter-tab" data-category="demos">General Demos</button>
+        </div>
+      </div>
+
+      <!-- Videos Grid -->
+      <div id="videos-grid" class="videos-grid">
+        <!-- Cards loaded dynamically via JavaScript -->
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <p>Loading showcase library...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hero Cinematic Section -->
     <section class="hero-showcase">
       <div class="showcase-layout">
         <!-- Main Player -->
@@ -77,45 +117,6 @@
             </button>
             <span id="copy-toast" class="toast hidden">Copied Link!</span>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Video Explorer Section -->
-    <section class="explorer-section">
-      <div class="explorer-header">
-        <div class="section-title-group">
-          <h2>Demo Videos Library</h2>
-          <p>Instantly showcase our capabilities to clients and sales prospects</p>
-        </div>
-        
-        <!-- Search and Filters -->
-        <div class="controls-group">
-          <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <input type="text" id="search-input" placeholder="Search demos...">
-            <button id="clear-search" class="clear-btn hidden"><i class="fa-solid fa-xmark"></i></button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Category Filter Tabs -->
-      <div class="filter-tabs-container">
-        <div class="filter-tabs" id="filter-tabs">
-          <button class="filter-tab active" data-category="all">All Demos</button>
-          <button class="filter-tab" data-category="agentic ai">Agentic AI</button>
-          <button class="filter-tab" data-category="optimizers">Optimizers</button>
-          <button class="filter-tab" data-category="dashboards">Dashboards</button>
-          <button class="filter-tab" data-category="demos">General Demos</button>
-        </div>
-      </div>
-
-      <!-- Videos Grid -->
-      <div id="videos-grid" class="videos-grid">
-        <!-- Cards loaded dynamically via JavaScript -->
-        <div class="loading-state">
-          <div class="spinner"></div>
-          <p>Loading showcase library...</p>
         </div>
       </div>
     </section>
