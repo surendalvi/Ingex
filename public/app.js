@@ -3,6 +3,10 @@ let videos = [];
 let activeVideo = null;
 let currentCategory = 'all';
 let searchQuery = '';
+let isAdmin = false;
+
+// Determine if running locally or on server
+const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
 // DOM Elements
 const videosGrid = document.getElementById('videos-grid');
@@ -21,19 +25,42 @@ const clearSearchBtn = document.getElementById('clear-search');
 const filterTabs = document.getElementById('filter-tabs');
 
 // Modal Elements
-const helpBtn = document.getElementById('help-btn');
-const helpModal = document.getElementById('help-modal');
-const closeModalBtn = document.getElementById('close-modal-btn');
-
 const adminBtn = document.getElementById('admin-btn');
 const adminModal = document.getElementById('admin-modal');
 const closeAdminBtn = document.getElementById('close-admin-btn');
 const adminVideoList = document.getElementById('admin-video-list');
 
+// Login modal elements
+const loginModal = document.getElementById('login-modal');
+const closeLoginBtn = document.getElementById('close-login-btn');
+const loginForm = document.getElementById('login-form');
+const loginUsernameInput = document.getElementById('login-username');
+const loginPasswordInput = document.getElementById('login-password');
+const loginError = document.getElementById('login-error');
+
+// Logout button
+const adminLogoutBtn = document.getElementById('admin-logout-btn');
+
+// File upload elements
+const dropZone = document.getElementById('drop-zone');
+const fileInput = document.getElementById('file-input');
+const browseBtn = document.getElementById('browse-btn');
+const uploadProgressContainer = document.getElementById('upload-progress-container');
+const uploadFilename = document.getElementById('upload-filename');
+const uploadPercent = document.getElementById('upload-percent');
+const uploadProgressBar = document.getElementById('upload-progress-bar');
+const uploadStatus = document.getElementById('upload-status');
+
+// Add cloud link elements
+const addLinkInput = document.getElementById('add-link-input');
+const addLinkBtn = document.getElementById('add-link-btn');
+const addLinkStatus = document.getElementById('add-link-status');
+
 // Initialize App
 document.addEventListener('DOMContentLoaded', () => {
   fetchVideos();
   setupEventListeners();
+  checkAdminStatus();
 });
 
 // Event Listeners Setup
@@ -90,22 +117,19 @@ function setupEventListeners() {
       });
   });
 
-  // Modal Open/Close
-  helpBtn.addEventListener('click', () => helpModal.classList.remove('hidden'));
-  closeModalBtn.addEventListener('click', () => helpModal.classList.add('hidden'));
-  
-  // Close modal when clicking outside content area
-  helpModal.addEventListener('click', (e) => {
-    if (e.target === helpModal) {
-      helpModal.classList.add('hidden');
+
+
+  // Admin Modal Open/Close (triggers login if not logged in)
+  adminBtn.addEventListener('click', () => {
+    if (isAdmin) {
+      adminModal.classList.remove('hidden');
+      renderAdminList();
+    } else {
+      loginModal.classList.remove('hidden');
+      loginUsernameInput.focus();
     }
   });
 
-  // Admin Modal Open/Close
-  adminBtn.addEventListener('click', () => {
-    adminModal.classList.remove('hidden');
-    renderAdminList();
-  });
   closeAdminBtn.addEventListener('click', () => adminModal.classList.add('hidden'));
   adminModal.addEventListener('click', (e) => {
     if (e.target === adminModal) {
@@ -113,18 +137,150 @@ function setupEventListeners() {
     }
   });
 
-  // Handle ESC key to close modal
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      helpModal.classList.add('hidden');
-      adminModal.classList.add('hidden');
+  // Login Modal close listeners
+  closeLoginBtn.addEventListener('click', () => {
+    loginModal.classList.add('hidden');
+    loginError.classList.add('hidden');
+    loginForm.reset();
+  });
+  loginModal.addEventListener('click', (e) => {
+    if (e.target === loginModal) {
+      loginModal.classList.add('hidden');
+      loginError.classList.add('hidden');
+      loginForm.reset();
     }
   });
 
-  // Show admin button only if hosted locally
-  if (isLocal) {
-    adminBtn.classList.remove('hidden');
-  }
+  // Handle ESC key to close all modals
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      adminModal.classList.add('hidden');
+      loginModal.classList.add('hidden');
+      loginError.classList.add('hidden');
+      loginForm.reset();
+    }
+  });
+
+  // Login Form submit handler
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = loginUsernameInput.value.trim();
+    const password = loginPasswordInput.value;
+    loginError.classList.add('hidden');
+
+    try {
+      const response = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+
+      const data = await response.json();
+      if (response.ok && data.success) {
+        isAdmin = true;
+        loginModal.classList.add('hidden');
+        loginForm.reset();
+        updateAdminButtonUI();
+        adminModal.classList.remove('hidden');
+        renderAdminList();
+      } else {
+        loginError.textContent = data.error || 'Invalid credentials';
+        loginError.classList.remove('hidden');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      loginError.textContent = 'Network error. Try again.';
+      loginError.classList.remove('hidden');
+    }
+  });
+
+  // Logout button handler
+  adminLogoutBtn.addEventListener('click', async () => {
+    try {
+      const response = await fetch('/api/admin/logout', { method: 'POST' });
+      if (response.ok) {
+        isAdmin = false;
+        adminModal.classList.add('hidden');
+        updateAdminButtonUI();
+        fetchVideos(); // Refresh videos list
+      } else {
+        alert('Logout failed.');
+      }
+    } catch (err) {
+      console.error('Logout error:', err);
+    }
+  });
+
+  // Drag and drop file upload handlers
+  browseBtn.addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', (e) => {
+    if (e.target.files.length > 0) {
+      handleFileUpload(e.target.files[0]);
+    }
+  });
+
+  ['dragenter', 'dragover'].forEach(eventName => {
+    dropZone.addEventListener(eventName, (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropZone.classList.add('dragover');
+    }, false);
+  });
+
+  ['dragleave', 'dragend', 'drop'].forEach(eventName => {
+    dropZone.addEventListener(eventName, (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropZone.classList.remove('dragover');
+    }, false);
+  });
+
+  dropZone.addEventListener('drop', (e) => {
+    const dt = e.dataTransfer;
+    const files = dt.files;
+    if (files.length > 0) {
+      handleFileUpload(files[0]);
+    }
+  }, false);
+
+  // Add video link button handler
+  addLinkBtn.addEventListener('click', async () => {
+    const linkInput = addLinkInput.value.trim();
+    if (!linkInput) {
+      showAddLinkStatus('Error: Please enter a link or iframe code.', 'error');
+      return;
+    }
+
+    addLinkBtn.disabled = true;
+    showAddLinkStatus('Processing cloud video link...', 'info');
+
+    try {
+      const response = await fetch('/api/videos/add-by-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ linkInput })
+      });
+
+      const data = await response.json();
+      if (response.ok && data.success) {
+        showAddLinkStatus(`Success: ${data.message}`, 'success');
+        addLinkInput.value = '';
+        setTimeout(() => {
+          addLinkStatus.classList.add('hidden');
+        }, 4000);
+        // Refresh videos list
+        await fetchVideos();
+        renderAdminList();
+      } else {
+        showAddLinkStatus(`Error: ${data.error || 'Failed to add video link.'}`, 'error');
+      }
+    } catch (err) {
+      console.error('Add video link error:', err);
+      showAddLinkStatus('Error: Network error occurred.', 'error');
+    } finally {
+      addLinkBtn.disabled = false;
+    }
+  });
 
   // Click logo to reset view and clear video parameter (acts as Home button)
   const logoBtn = document.getElementById('logo-btn');
@@ -215,10 +371,39 @@ function handleDeepLink() {
 // Check if URL is an iframe embed source (Google Drive, OneDrive, or SharePoint)
 function isEmbedSource(url) {
   if (!url) return false;
+  
+  // SharePoint Sharing links (containing ':v:/g/') are not embeds. They can be played natively!
+  if (url.includes('sharepoint.com') && !url.includes('embed.aspx')) {
+    return false;
+  }
+  
   return url.includes('drive.google.com') || 
-         url.includes('onedrive.live.com') ||
-         url.includes('sharepoint.com') ||
+         (url.includes('onedrive.live.com') && url.includes('embed')) ||
+         url.includes('embed.aspx') ||
          url.includes('onedrive.com');
+}
+
+// Convert sharing links to direct download streams for native playback
+function getDirectStreamUrl(url) {
+  if (!url) return '';
+  
+  // OneDrive Personal
+  if (url.includes('onedrive.live.com') && !url.includes('download')) {
+    if (url.includes('redir?')) {
+      return url.replace('redir?', 'download?');
+    }
+    if (url.includes('embed?')) {
+      return url.replace('embed?', 'download?');
+    }
+  }
+  
+  // OneDrive Business / SharePoint Sharing Links (e.g. contains /:v:/g/)
+  if (url.includes('sharepoint.com') && !url.includes('download=1') && !url.includes('embed.aspx')) {
+    const separator = url.includes('?') ? '&' : '?';
+    return `${url}${separator}download=1`;
+  }
+  
+  return url;
 }
 
 // Convert OneDrive and Google Drive share URLs to embed preview URLs
@@ -310,7 +495,8 @@ function selectVideo(video, shouldScroll = true) {
     mainIframe.classList.add('hidden');
     mainIframe.src = 'about:blank';
     
-    mainVideo.src = url;
+    const playUrl = getDirectStreamUrl(url);
+    mainVideo.src = playUrl;
     mainVideo.classList.remove('hidden');
     mainVideo.load();
     mainVideo.play().catch(e => {
@@ -357,6 +543,11 @@ function renderGrid() {
   
   // Filter videos
   const filteredVideos = videos.filter(video => {
+    // Hide from main grid if unlisted/hidden, EXCEPT if it is the currently active video (loaded via direct link)
+    if (video.hidden && (!activeVideo || activeVideo.filename !== video.filename)) {
+      return false;
+    }
+
     const matchesCategory = currentCategory === 'all' || video.category.toLowerCase() === currentCategory;
     const matchesSearch = video.title.toLowerCase().includes(searchQuery) || 
                           video.description.toLowerCase().includes(searchQuery) ||
@@ -469,7 +660,116 @@ function formatDateShort(dateString) {
   });
 }
 
-// Render Admin Panel list
+// Check if user is logged in as admin
+async function checkAdminStatus() {
+  try {
+    const response = await fetch('/api/admin/check');
+    if (response.ok) {
+      const data = await response.json();
+      isAdmin = data.loggedIn;
+      updateAdminButtonUI();
+      adminBtn.classList.remove('hidden');
+    } else {
+      adminBtn.classList.add('hidden');
+    }
+  } catch (err) {
+    console.error('Failed to check admin status', err);
+    isAdmin = false;
+    adminBtn.classList.add('hidden');
+  }
+}
+
+// Update admin button UI based on login status
+function updateAdminButtonUI() {
+  if (isAdmin) {
+    adminBtn.innerHTML = '<i class="fa-solid fa-gear"></i> Admin Dashboard';
+  } else {
+    adminBtn.innerHTML = '<i class="fa-solid fa-lock"></i> Admin Portal';
+  }
+}
+
+// File Upload functionality with progress bar
+function handleFileUpload(file) {
+  const allowedExtensions = ['.mp4', '.webm', '.ogg', '.mov'];
+  const ext = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+  
+  if (!allowedExtensions.includes(ext)) {
+    showUploadStatus('Error: Only video files (.mp4, .webm, .ogg, .mov) are allowed.', 'error');
+    return;
+  }
+
+  if (file.size > 500 * 1024 * 1024) {
+    showUploadStatus('Error: Video file exceeds the 500MB size limit.', 'error');
+    return;
+  }
+
+  // Show progress
+  uploadProgressContainer.classList.remove('hidden');
+  uploadFilename.textContent = file.name;
+  uploadProgressBar.style.width = '0%';
+  uploadPercent.textContent = '0%';
+  showUploadStatus('Uploading video file...', 'info');
+
+  const formData = new FormData();
+  formData.append('video', file);
+
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', '/api/videos/upload', true);
+
+  xhr.upload.addEventListener('progress', (e) => {
+    if (e.lengthComputable) {
+      const percent = Math.round((e.loaded / e.total) * 100);
+      uploadProgressBar.style.width = `${percent}%`;
+      uploadPercent.textContent = `${percent}%`;
+    }
+  });
+
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      if (xhr.status === 200) {
+        showUploadStatus('Success: Video uploaded and added to library!', 'success');
+        fileInput.value = '';
+        setTimeout(() => {
+          uploadProgressContainer.classList.add('hidden');
+          uploadStatus.classList.add('hidden');
+        }, 4000);
+        // Refresh videos lists
+        fetchVideos().then(() => {
+          if (adminModal.classList.contains('hidden') === false) {
+            renderAdminList();
+          }
+        });
+      } else {
+        let errorMsg = 'Upload failed.';
+        try {
+          const res = JSON.parse(xhr.responseText);
+          errorMsg = res.error || errorMsg;
+        } catch(e) {}
+        showUploadStatus(`Error: ${errorMsg}`, 'error');
+      }
+    }
+  };
+
+  xhr.send(formData);
+}
+
+function showUploadStatus(msg, type) {
+  uploadStatus.textContent = msg;
+  uploadStatus.className = 'admin-save-status';
+  if (type === 'success') uploadStatus.classList.add('success');
+  else if (type === 'error') uploadStatus.classList.add('error');
+  uploadStatus.classList.remove('hidden');
+}
+
+function showAddLinkStatus(msg, type) {
+  addLinkStatus.textContent = msg;
+  addLinkStatus.className = 'admin-save-status';
+  if (type === 'success') addLinkStatus.classList.add('success');
+  else if (type === 'error') addLinkStatus.classList.add('error');
+  addLinkStatus.classList.remove('hidden');
+}
+
+// Render Admin Panel list with full inputs for each video
 function renderAdminList() {
   adminVideoList.innerHTML = '';
   
@@ -479,33 +779,93 @@ function renderAdminList() {
   }
 
   videos.forEach(video => {
-    const row = document.createElement('div');
-    row.className = 'admin-video-row';
-    row.innerHTML = `
+    const card = document.createElement('div');
+    card.className = 'admin-video-row';
+    card.dataset.filename = video.filename;
+    
+    // Check which category is selected
+    const categories = ['Agentic AI', 'Optimizers', 'Dashboards', 'Demos'];
+    let categoryOptions = '';
+    categories.forEach(cat => {
+      const isSelected = video.category === cat ? 'selected' : '';
+      categoryOptions += `<option value="${cat}" ${isSelected}>${cat === 'Demos' ? 'General Demos' : cat}</option>`;
+    });
+
+    card.innerHTML = `
       <div class="admin-row-header">
         <span class="admin-row-title">${video.title}</span>
         <span class="admin-row-filename">${video.filename}</span>
       </div>
-      <div class="admin-input-group">
-        <input type="text" id="input-${encodeURIComponent(video.filename)}" 
-               placeholder="Paste Google Drive / OneDrive share link..." 
-               value="${video.onlineUrl || ''}">
-        <button class="admin-save-btn" data-filename="${encodeURIComponent(video.filename)}">
-          <i class="fa-solid fa-floppy-disk"></i> Save
+      
+      <div class="admin-edit-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.75rem; width: 100%;">
+        <div class="form-group">
+          <label class="admin-field-label">Title</label>
+          <input type="text" class="admin-edit-title" value="${video.title}" placeholder="Video Title">
+        </div>
+        <div class="form-group">
+          <label class="admin-field-label">Category</label>
+          <select class="admin-edit-category">
+            ${categoryOptions}
+          </select>
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+          <label class="admin-field-label">Cloud Share Link (OneDrive/SharePoint/Google Drive)</label>
+          <input type="text" class="admin-edit-url" value="${video.onlineUrl || ''}" placeholder="https://onedrive.live.com/embed?cid=...">
+        </div>
+        <div class="form-group">
+          <label class="admin-field-label">Tags (comma separated)</label>
+          <input type="text" class="admin-edit-tags" value="${(video.tags || []).join(', ')}" placeholder="e.g. AI, Process, Chemical">
+        </div>
+        <div class="form-group">
+          <label class="admin-field-label">File Size (MB)</label>
+          <input type="number" step="0.01" min="0" class="admin-edit-size" value="${video.sizeBytes ? (video.sizeBytes / (1024 * 1024)).toFixed(2) : ''}" placeholder="e.g. 15.50" ${video.localUrl ? 'disabled title="Calculated automatically from disk"' : ''}>
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+          <label class="admin-field-label">Description</label>
+          <textarea class="admin-edit-description" rows="3" placeholder="Enter video description...">${video.description || ''}</textarea>
+        </div>
+        <div class="form-group" style="grid-column: span 2; display: flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem;">
+          <input type="checkbox" class="admin-edit-hidden" id="hide-${encodeURIComponent(video.filename)}" ${video.hidden ? 'checked' : ''} style="width: auto; margin-right: 0.5rem; cursor: pointer;">
+          <label for="hide-${encodeURIComponent(video.filename)}" class="admin-field-label" style="display: inline; text-transform: none; font-weight: 500; cursor: pointer; margin-bottom: 0;">Hide from main library grid (Unlisted, but playable via direct link)</label>
+        </div>
+      </div>
+
+      <div class="admin-row-actions" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.75rem;">
+        <div>
+          <button class="btn btn-secondary btn-sm admin-save-btn" data-filename="${encodeURIComponent(video.filename)}" style="background: var(--accent-blue);">
+            <i class="fa-solid fa-floppy-disk"></i> Save Changes
+          </button>
+          <span class="admin-save-status hidden" id="status-${encodeURIComponent(video.filename)}">Saved!</span>
+        </div>
+        <button class="btn btn-danger btn-sm admin-delete-btn" data-filename="${encodeURIComponent(video.filename)}">
+          <i class="fa-solid fa-trash-can"></i> Delete Video
         </button>
       </div>
-      <div class="admin-save-status hidden" id="status-${encodeURIComponent(video.filename)}">Saved successfully!</div>
     `;
-    adminVideoList.appendChild(row);
+    adminVideoList.appendChild(card);
   });
 
   // Attach event listeners to all save buttons
   adminVideoList.querySelectorAll('.admin-save-btn').forEach(btn => {
     btn.addEventListener('click', async (e) => {
       const filename = decodeURIComponent(e.currentTarget.dataset.filename);
-      const input = document.getElementById(`input-${encodeURIComponent(filename)}`);
+      const rowEl = e.currentTarget.closest('.admin-video-row');
       const statusEl = document.getElementById(`status-${encodeURIComponent(filename)}`);
-      const onlineUrl = input.value.trim();
+      
+      const title = rowEl.querySelector('.admin-edit-title').value.trim();
+      const category = rowEl.querySelector('.admin-edit-category').value;
+      const onlineUrl = rowEl.querySelector('.admin-edit-url').value.trim();
+      const tagsString = rowEl.querySelector('.admin-edit-tags').value;
+      const description = rowEl.querySelector('.admin-edit-description').value.trim();
+      const hidden = rowEl.querySelector('.admin-edit-hidden').checked;
+      
+      const sizeInput = rowEl.querySelector('.admin-edit-size');
+      const sizeMB = sizeInput.value.trim();
+      const sizeBytes = sizeMB ? parseFloat(sizeMB) * 1024 * 1024 : 0;
+
+      const tags = tagsString.split(',')
+        .map(t => t.trim())
+        .filter(t => t.length > 0);
 
       // Show saving state
       e.currentTarget.disabled = true;
@@ -514,37 +874,83 @@ function renderAdminList() {
       statusEl.classList.remove('hidden');
 
       try {
-        const response = await fetch('/api/videos/update-link', {
+        const response = await fetch('/api/videos/update-metadata', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ filename, onlineUrl })
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ filename, title, category, onlineUrl, tags, description, hidden, sizeBytes })
         });
 
-        if (response.ok) {
-          statusEl.textContent = 'Link saved successfully!';
+        const data = await response.json();
+        if (response.ok && data.success) {
+          statusEl.textContent = 'Saved!';
           statusEl.className = 'admin-save-status success';
           
-          // Update local videos array
+          // Update local videos array and refresh the grid
           const videoIdx = videos.findIndex(v => v.filename === filename);
           if (videoIdx !== -1) {
+            videos[videoIdx].title = title;
+            videos[videoIdx].category = category;
             videos[videoIdx].onlineUrl = onlineUrl;
-            // Re-render main video grid in case details updated
+            videos[videoIdx].tags = tags;
+            videos[videoIdx].description = description;
+            videos[videoIdx].hidden = hidden;
+            videos[videoIdx].sizeBytes = sizeBytes;
             renderGrid();
+            
+            // Update the display header in the admin row too
+            rowEl.querySelector('.admin-row-title').textContent = title;
           }
         } else {
-          throw new Error('Server returned an error');
+          throw new Error(data.error || 'Server error');
         }
       } catch (err) {
-        console.error('Failed to save link:', err);
-        statusEl.textContent = 'Failed to save link. Try again.';
+        console.error('Failed to save metadata:', err);
+        statusEl.textContent = 'Save failed. Try again.';
         statusEl.className = 'admin-save-status error';
       } finally {
         e.currentTarget.disabled = false;
         setTimeout(() => {
           statusEl.classList.add('hidden');
         }, 3000);
+      }
+    });
+  });
+
+  // Attach event listeners to delete buttons
+  adminVideoList.querySelectorAll('.admin-delete-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      const filename = decodeURIComponent(e.currentTarget.dataset.filename);
+      const confirmed = confirm(`Are you sure you want to delete "${filename}" from the server? This will permanently delete the video file from the E:\\Demos directory and clean up its metadata.`);
+      
+      if (!confirmed) return;
+
+      e.currentTarget.disabled = true;
+
+      try {
+        const response = await fetch('/api/videos/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ filename })
+        });
+
+        const data = await response.json();
+        if (response.ok && data.success) {
+          // Refresh list
+          await fetchVideos();
+          renderAdminList();
+          
+          // Reset main video view if active video was deleted
+          if (activeVideo && activeVideo.filename === filename) {
+            document.getElementById('logo-btn').click();
+          }
+        } else {
+          alert(`Failed to delete video: ${data.error || 'Server error'}`);
+          e.currentTarget.disabled = false;
+        }
+      } catch (err) {
+        console.error('Delete error:', err);
+        alert('Delete failed. Network error.');
+        e.currentTarget.disabled = false;
       }
     });
   });

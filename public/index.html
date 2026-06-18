@@ -24,10 +24,7 @@
       </div>
       <nav class="nav-links">
         <button id="admin-btn" class="btn btn-secondary hidden">
-          <i class="fa-solid fa-gear"></i> Manage Cloud Links
-        </button>
-        <button id="help-btn" class="btn btn-secondary">
-          <i class="fa-solid fa-cloud-arrow-up"></i> How to Host Online
+          <i class="fa-solid fa-lock"></i> Admin Portal
         </button>
       </nav>
     </div>
@@ -183,15 +180,78 @@
     </div>
   </div>
 
-  <!-- Link Manager / Admin Modal -->
+  <!-- Login Modal -->
+  <div id="login-modal" class="modal-overlay hidden">
+    <div class="modal-card" style="max-width: 400px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-lock"></i> Admin Login</h3>
+        <button id="close-login-btn" class="close-modal-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="login-form">
+          <div class="form-group" style="margin-bottom: 1.25rem;">
+            <label for="login-username" class="admin-field-label">Username</label>
+            <input type="text" id="login-username" required autocomplete="username">
+          </div>
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label for="login-password" class="admin-field-label">Password</label>
+            <input type="password" id="login-password" required autocomplete="current-password">
+          </div>
+          <div id="login-error" class="admin-save-status error hidden" style="margin-bottom: 1rem; opacity: 1;">Invalid credentials</div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+            <i class="fa-solid fa-right-to-bracket"></i> Login
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video CMS Admin Modal -->
   <div id="admin-modal" class="modal-overlay hidden">
     <div class="modal-card" style="max-width: 800px;">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-gear"></i> Manage Cloud Video Links</h3>
-        <button id="close-admin-btn" class="close-modal-btn">&times;</button>
+        <h3><i class="fa-solid fa-gear"></i> Video Showcase Manager</h3>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <button id="admin-logout-btn" class="btn btn-secondary btn-sm"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+          <button id="close-admin-btn" class="close-modal-btn">&times;</button>
+        </div>
       </div>
       <div class="modal-body">
-        <p class="modal-intro">Paste your Google Drive share links for each video here. These links will be saved to your local database and updated in your <code>videos.json</code> file, ready for pushing to GitHub.</p>
+        <!-- File Upload Dropzone -->
+        <div class="upload-section" style="margin-bottom: 2rem; padding: 1.5rem; background: rgba(255,255,255,0.01); border: 2px dashed rgba(255,255,255,0.1); border-radius: var(--radius-md); text-align: center; position: relative;" id="drop-zone">
+          <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2rem; color: var(--accent-cyan); margin-bottom: 0.75rem; display: block; margin-left: auto; margin-right: auto;"></i>
+          <h4 style="margin-bottom: 0.25rem;">Drag & Drop Video Files Here</h4>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">or click to browse (MP4, WebM, OGG, MOV up to 500MB)</p>
+          <input type="file" id="file-input" accept="video/mp4,video/webm,video/ogg,video/quicktime" style="display: none;">
+          <button type="button" class="btn btn-secondary btn-sm" id="browse-btn"><i class="fa-solid fa-folder-open"></i> Browse Files</button>
+          
+          <div id="upload-progress-container" class="hidden" style="margin-top: 1.5rem; text-align: left;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+              <span id="upload-filename">video.mp4</span>
+              <span id="upload-percent">0%</span>
+            </div>
+            <div class="progress-bar-bg" style="width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden;">
+              <div id="upload-progress-bar" style="width: 0%; height: 100%; background: var(--accent-blue); transition: width 0.1s;"></div>
+            </div>
+          </div>
+          <div id="upload-status" class="admin-save-status hidden" style="margin-top: 0.75rem; font-size: 0.85rem;"></div>
+        </div>
+
+        <!-- Add Video via Cloud Link -->
+        <div class="link-add-section" style="margin-bottom: 2rem; padding: 1.5rem; background: rgba(255,255,255,0.01); border: 1px solid var(--card-border); border-radius: var(--radius-md);">
+          <h4 style="margin-bottom: 0.5rem;"><i class="fa-solid fa-link" style="color: var(--accent-cyan);"></i> Add Cloud Video Link</h4>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">Paste a OneDrive, SharePoint, Google Drive sharing link, or iframe embed code. Metadata is matched automatically based on the filename inside the link.</p>
+          <div style="display: flex; gap: 0.75rem;">
+            <input type="text" id="add-link-input" placeholder="Paste link or iframe code here..." style="flex: 1; background: var(--bg-darker); border: 1px solid var(--card-border); color: var(--text-primary); padding: 0.6rem 0.8rem; font-size: 0.85rem; border-radius: var(--radius-sm); font-family: var(--font-body);">
+            <button type="button" class="btn btn-primary btn-sm" id="add-link-btn" style="white-space: nowrap;"><i class="fa-solid fa-plus"></i> Add Video Link</button>
+          </div>
+          <div id="add-link-status" class="admin-save-status hidden" style="margin-top: 0.75rem; font-size: 0.85rem; margin-left: 0;"></div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem;">
+          <h4 style="font-family: var(--font-header); font-size: 1.1rem; color: var(--text-primary);">Video Directory Management</h4>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Stored at <code>E:\Demos</code></span>
+        </div>
         
         <div id="admin-video-list" class="admin-video-list">
           <!-- Populated dynamically -->
