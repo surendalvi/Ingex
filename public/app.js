@@ -212,10 +212,13 @@ function handleDeepLink() {
   }
 }
 
-// Check if URL is Google Drive or OneDrive
+// Check if URL is an iframe embed source (Google Drive, OneDrive, or SharePoint)
 function isEmbedSource(url) {
   if (!url) return false;
-  return url.includes('drive.google.com') || url.includes('onedrive.live.com');
+  return url.includes('drive.google.com') || 
+         url.includes('onedrive.live.com') ||
+         url.includes('sharepoint.com') ||
+         url.includes('onedrive.com');
 }
 
 // Convert OneDrive and Google Drive share URLs to embed preview URLs
@@ -239,7 +242,7 @@ function getEmbedUrl(url) {
     }
   }
 
-  // OneDrive
+  // OneDrive (Personal)
   if (url.includes('onedrive.live.com')) {
     if (url.includes('/embed')) {
       return url;
@@ -247,6 +250,11 @@ function getEmbedUrl(url) {
     if (url.includes('redir?')) {
       return url.replace('redir?', 'embed?');
     }
+    return url;
+  }
+
+  // SharePoint / OneDrive Business (already pasted as embed or sharing link)
+  if (url.includes('sharepoint.com') || url.includes('onedrive.com')) {
     return url;
   }
 
