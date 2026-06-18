@@ -24,6 +24,10 @@ const searchInput = document.getElementById('search-input');
 const clearSearchBtn = document.getElementById('clear-search');
 const filterTabs = document.getElementById('filter-tabs');
 
+// Theme toggle elements
+const themeToggleBtn = document.getElementById('theme-toggle-btn');
+const themeToggleIcon = document.getElementById('theme-toggle-icon');
+
 // Modal Elements
 const adminBtn = document.getElementById('admin-btn');
 const adminModal = document.getElementById('admin-modal');
@@ -58,6 +62,7 @@ const addLinkStatus = document.getElementById('add-link-status');
 
 // Initialize App
 document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
   fetchVideos();
   setupEventListeners();
   checkAdminStatus();
@@ -318,6 +323,37 @@ function setupEventListeners() {
         explorerElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
+  }
+
+  // Theme toggle click handler
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', toggleTheme);
+  }
+}
+
+// Premium Theme Handling
+function initTheme() {
+  const savedTheme = localStorage.getItem('theme');
+  const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+  
+  if (savedTheme === 'light' || (!savedTheme && prefersLight)) {
+    document.body.classList.add('light-theme');
+    if (themeToggleIcon) {
+      themeToggleIcon.className = 'fa-solid fa-sun';
+    }
+  } else {
+    document.body.classList.remove('light-theme');
+    if (themeToggleIcon) {
+      themeToggleIcon.className = 'fa-solid fa-moon';
+    }
+  }
+}
+
+function toggleTheme() {
+  const isLight = document.body.classList.toggle('light-theme');
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  if (themeToggleIcon) {
+    themeToggleIcon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
   }
 }
 
