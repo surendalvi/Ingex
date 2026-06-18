@@ -16,14 +16,14 @@
   },
   {
     "filename": "ARM.mp4",
-    "title": "ARM",
+    "title": "Asset Reliability Management (ARM)",
     "category": "Demos",
     "tags": [
       "New"
     ],
-    "description": "Demo video for ARM.",
+    "description": "ARM module displays Asset performance, Asset Reliability and Time to Failure Forecast",
     "localUrl": "videos/ARM.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=0a7f83f7-0caf-4eee-8056-f758caae6ea7&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create\" width=\"640\" height=\"360\" frameborder=\"0\" scrolling=\"no\" allowfullscreen title=\"ARM.mp4",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=0a7f83f7-0caf-4eee-8056-f758caae6ea7&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
     "hidden": false,
     "sizeBytes": 32568062,
     "modifiedAt": "2026-06-17T16:27:17.377Z"
@@ -45,7 +45,7 @@
   },
   {
     "filename": "DCU demo.mp4",
-    "title": "DCU Demo",
+    "title": "Delayed Coker Unit (DCU)",
     "category": "Demos",
     "tags": [
       "DCU",
@@ -53,7 +53,7 @@
     ],
     "description": "Delayed Coker Unit (DCU) operation demo highlighting key operational metrics, safety parameters, and operator flows.",
     "localUrl": "videos/DCU%20demo.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=ec8ee5bc-0f9b-4f50-8c1f-be8d32045535&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create\" width=\"640\" height=\"360\" frameborder=\"0\" scrolling=\"no\" allowfullscreen title=\"DCU demo.mp4",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=ec8ee5bc-0f9b-4f50-8c1f-be8d32045535&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
     "hidden": false,
     "sizeBytes": 53911646,
     "modifiedAt": "2026-06-17T16:27:26.515Z"
@@ -65,9 +65,9 @@
     "tags": [
       "New"
     ],
-    "description": "Demo video for Furnace Optimizer.",
+    "description": "Demo video for Furnace Optimizer highlighting key operational metrics, Efficiency and Yield",
     "localUrl": "videos/Furnace_Optimizer.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=ab2a1597-f2fd-4d27-8949-8de1d02dd31a&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create\" width=\"640\" height=\"360\" frameborder=\"0\" scrolling=\"no\" allowfullscreen title=\"Furnace_Optimizer.mp4",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=ab2a1597-f2fd-4d27-8949-8de1d02dd31a&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
     "hidden": false,
     "sizeBytes": 25204292,
     "modifiedAt": "2026-06-17T16:27:37.097Z"
@@ -108,9 +108,9 @@
     "tags": [
       "New"
     ],
-    "description": "Demo video for Methanol Synthesis.",
+    "description": "Demo video for Methanol highlighting key operational metrics, Efficiency and Yield",
     "localUrl": "videos/Methanol%20Synthesis.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=93882705-ca2d-428b-8d38-ee096d5e53ca&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create\" width=\"640\" height=\"360\" frameborder=\"0\" scrolling=\"no\" allowfullscreen title=\"Methanol Synthesis.mp4",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=93882705-ca2d-428b-8d38-ee096d5e53ca&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
     "hidden": false,
     "sizeBytes": 21592182,
     "modifiedAt": "2026-06-17T16:26:57.416Z"
@@ -122,9 +122,9 @@
     "tags": [
       "New"
     ],
-    "description": "Demo video for Polymer.",
+    "description": "Demo video for Polymer highlighting key operational metrics, Efficiency and Yield.",
     "localUrl": "videos/Polymer.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=2277b23d-deff-422f-b6eb-6f3e1e0cf55c&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create\" width=\"640\" height=\"360\" frameborder=\"0\" scrolling=\"no\" allowfullscreen title=\"Polymer.mp4",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=2277b23d-deff-422f-b6eb-6f3e1e0cf55c&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
     "hidden": false,
     "sizeBytes": 290626526,
     "modifiedAt": "2026-06-18T12:26:31.752Z"
@@ -138,7 +138,7 @@
     ],
     "description": "Demo video for Process Control Valve Diagnostic.",
     "localUrl": "videos/Process%20Control%20Valve%20Diagnostic.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=df062153-db8d-4be3-87c6-0431932f1a9c&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create\" width=\"640\" height=\"360\" frameborder=\"0\" scrolling=\"no\" allowfullscreen title=\"Process Control Valve Diagnostic.mp4",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=df062153-db8d-4be3-87c6-0431932f1a9c&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
     "hidden": false,
     "sizeBytes": 103024730,
     "modifiedAt": "2026-06-18T12:26:10.401Z"

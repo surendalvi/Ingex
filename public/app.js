@@ -295,7 +295,7 @@ function setupEventListeners() {
       
       // Reset details panel
       activeTitle.textContent = 'Select a Demo Video';
-      activeDescription.textContent = 'Choose from the grid below to view live demonstrations of Ingenero\'s Agentic AI applications, Process Optimizers, and Operational Dashboards.';
+      activeDescription.textContent = 'Choose from the grid above to view live demonstrations of Ingenero\'s Agentic AI applications, Process Optimizers, and Operational Dashboards.';
       activeTags.innerHTML = '<span class="category-tag">Industrial AI</span>';
       activeSize.innerHTML = `<i class="fa-solid fa-hard-drive"></i> -- MB`;
       activeDate.innerHTML = `<i class="fa-solid fa-calendar-days"></i> --`;
