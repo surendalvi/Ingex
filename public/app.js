@@ -368,39 +368,41 @@ function handleDeepLink() {
   }
 }
 
-// Check if URL is an iframe embed source (Google Drive, OneDrive, or SharePoint)
+// Check if URL is an iframe embed source (Google Drive only)
 function isEmbedSource(url) {
   if (!url) return false;
-  
-  // SharePoint Sharing links (containing ':v:/g/') are not embeds. They can be played natively!
-  if (url.includes('sharepoint.com') && !url.includes('embed.aspx')) {
-    return false;
-  }
-  
-  return url.includes('drive.google.com') || 
-         (url.includes('onedrive.live.com') && url.includes('embed')) ||
-         url.includes('embed.aspx') ||
-         url.includes('onedrive.com');
+  return url.includes('drive.google.com');
 }
 
-// Convert sharing links to direct download streams for native playback
+// Convert sharing and embed links to direct streams for native playback
 function getDirectStreamUrl(url) {
   if (!url) return '';
   
   // OneDrive Personal
-  if (url.includes('onedrive.live.com') && !url.includes('download')) {
-    if (url.includes('redir?')) {
-      return url.replace('redir?', 'download?');
+  if (url.includes('onedrive.live.com')) {
+    if (!url.includes('download')) {
+      if (url.includes('redir?')) {
+        return url.replace('redir?', 'download?');
+      }
+      if (url.includes('embed?')) {
+        return url.replace('embed?', 'download?');
+      }
     }
-    if (url.includes('embed?')) {
-      return url.replace('embed?', 'download?');
-    }
+    return url;
   }
   
-  // OneDrive Business / SharePoint Sharing Links (e.g. contains /:v:/g/)
-  if (url.includes('sharepoint.com') && !url.includes('download=1') && !url.includes('embed.aspx')) {
-    const separator = url.includes('?') ? '&' : '?';
-    return `${url}${separator}download=1`;
+  // OneDrive Business / SharePoint (Share links and Embed links)
+  if (url.includes('sharepoint.com') || url.includes('onedrive.com')) {
+    if (url.includes('embed.aspx')) {
+      // Convert embed.aspx to download.aspx for direct native streaming
+      return url.replace('embed.aspx', 'download.aspx');
+    }
+    
+    // For sharing links (containing /:v:/g/ or standard share query parameter)
+    if (!url.includes('download=1')) {
+      const separator = url.includes('?') ? '&' : '?';
+      return `${url}${separator}download=1`;
+    }
   }
   
   return url;
