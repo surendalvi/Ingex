@@ -1,22 +1,7 @@
 [
   {
-    "filename": "AFP demo 1.mp4",
-    "title": "Asset Reliability Management (ARM)",
-    "category": "Demos",
-    "tags": [
-      "ARM",
-      "Process modeling"
-    ],
-    "description": "ARM demo is related to Asset Health, it's Performance and Time to Failure Forecast",
-    "localUrl": "videos/AFP%20demo%201.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/akhurana_ingenero_com/_layouts/15/embed.aspx?UniqueId=d436eea9-af39-4b9c-9d0a-bdcbbe10f346&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
-    "hidden": false,
-    "sizeBytes": 32568062,
-    "modifiedAt": "2026-06-17T16:27:17.377Z"
-  },
-  {
     "filename": "Ammonia_Dashboard.mp4",
-    "title": "Ammonia",
+    "title": "Ammonia Dashboard",
     "category": "Dashboards",
     "tags": [
       "Ammonia",
@@ -24,10 +9,24 @@
     ],
     "description": "Comprehensive process dashboard for monitoring ammonia plant operation, energy efficiency, and yield analytics.",
     "localUrl": "videos/Ammonia_Dashboard.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/:v:/g/personal/ajha_ingenero_com/IQCLF4DeZ-2OTKhiiXR6XIXLAfpGIqpKoyQiO-nzgTyuKaQ",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=da16d076-4fb1-4d0a-946d-8a24e16ad328&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create\" width=\"640\" height=\"360\" frameborder=\"0\" scrolling=\"no\" allowfullscreen title=\"Ammonia_Dashboard.mp4",
     "hidden": false,
     "sizeBytes": 80761981,
     "modifiedAt": "2026-06-17T16:27:02.371Z"
+  },
+  {
+    "filename": "ARM.mp4",
+    "title": "ARM",
+    "category": "Demos",
+    "tags": [
+      "New"
+    ],
+    "description": "Demo video for ARM.",
+    "localUrl": "videos/ARM.mp4",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=0a7f83f7-0caf-4eee-8056-f758caae6ea7&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create\" width=\"640\" height=\"360\" frameborder=\"0\" scrolling=\"no\" allowfullscreen title=\"ARM.mp4",
+    "hidden": false,
+    "sizeBytes": 32568062,
+    "modifiedAt": "2026-06-17T16:27:17.377Z"
   },
   {
     "filename": "Catofin Agentic AI.mp4",
@@ -39,14 +38,14 @@
     ],
     "description": "State-of-the-art Agentic AI assistant guiding plant operators through Catofin process diagnostics and operational controls.",
     "localUrl": "videos/Catofin%20Agentic%20AI.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/rinkey_ingenero_com/_layouts/15/embed.aspx?UniqueId=b2ff0af7-c8ba-42d3-affd-179ed9b67472&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=4c8dcb11-3307-4a4c-a304-dd2b46d7009e&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create\" width=\"640\" height=\"360\" frameborder=\"0\" scrolling=\"no\" allowfullscreen title=\"Catofin Agentic AI.mp4",
     "hidden": false,
     "sizeBytes": 147555797,
     "modifiedAt": "2026-06-17T16:26:56.819Z"
   },
   {
     "filename": "DCU demo.mp4",
-    "title": "Delayed Coker Unit (DCU)",
+    "title": "DCU Demo",
     "category": "Demos",
     "tags": [
       "DCU",
@@ -54,37 +53,35 @@
     ],
     "description": "Delayed Coker Unit (DCU) operation demo highlighting key operational metrics, safety parameters, and operator flows.",
     "localUrl": "videos/DCU%20demo.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/aanand_ingenero_com1/_layouts/15/embed.aspx?UniqueId=9f56018d-fb33-4ad8-9eec-b2cc158f984d&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=ec8ee5bc-0f9b-4f50-8c1f-be8d32045535&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create\" width=\"640\" height=\"360\" frameborder=\"0\" scrolling=\"no\" allowfullscreen title=\"DCU demo.mp4",
     "hidden": false,
     "sizeBytes": 53911646,
     "modifiedAt": "2026-06-17T16:27:26.515Z"
   },
   {
-    "filename": "Furnace_Optimizer_Professional.mp4",
+    "filename": "Furnace_Optimizer.mp4",
     "title": "Furnace Optimizer",
-    "category": "Optimizers",
+    "category": "Demos",
     "tags": [
-      "Optimizers",
-      "Furnace"
+      "New"
     ],
-    "description": "Real-time combustion optimization and thermal efficiency tracker for process heaters and steam cracking furnaces.",
-    "localUrl": "videos/Furnace_Optimizer_Professional.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/:v:/g/personal/ksampat_ingenero_com/IQA2SY2wJOahTK6EE6Z4O0CSAboXQfjMEJsen0tdFOn0oU8",
+    "description": "Demo video for Furnace Optimizer.",
+    "localUrl": "videos/Furnace_Optimizer.mp4",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=ab2a1597-f2fd-4d27-8949-8de1d02dd31a&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create\" width=\"640\" height=\"360\" frameborder=\"0\" scrolling=\"no\" allowfullscreen title=\"Furnace_Optimizer.mp4",
     "hidden": false,
     "sizeBytes": 25204292,
     "modifiedAt": "2026-06-17T16:27:37.097Z"
   },
   {
-    "filename": "Generic Outlier Detection 2.mp4",
-    "title": "Anomaly Detection",
-    "category": "Dashboards",
+    "filename": "Generic Outlier Detection.mp4",
+    "title": "Generic Outlier Detection",
+    "category": "Demos",
     "tags": [
-      "Analytics",
-      "ML"
+      "New"
     ],
-    "description": "Machine learning powered outlier detection dashboard for multi-dimensional process variables and early anomaly warning.",
-    "localUrl": "videos/Generic%20Outlier%20Detection%202.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/:v:/g/personal/sumitd_ingenero_com/IQCVHHqo_jn-Q4yQz40A8ddjAUJxReEGnRinyvJOhaeyycY?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=xRLhBt",
+    "description": "Demo video for Generic Outlier Detection.",
+    "localUrl": "videos/Generic%20Outlier%20Detection.mp4",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=4181de35-16a3-4c38-9605-be0fe49ba6b6&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create\" width=\"640\" height=\"360\" frameborder=\"0\" scrolling=\"no\" allowfullscreen title=\"Generic Outlier Detection.mp4",
     "hidden": false,
     "sizeBytes": 31188890,
     "modifiedAt": "2026-06-17T16:26:41.278Z"
@@ -99,39 +96,51 @@
     ],
     "description": "Generative AI applications in industrial engineering and design query answering, standard searching, and calculator assistance.",
     "localUrl": "videos/Ingenero%20GenAI.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/skarthik_ingenero_com/_layouts/15/embed.aspx?UniqueId=7643e649-7e24-4d9e-afed-795cdd73cc1e&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=8a517e44-f806-4190-853e-f75325952170&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create\" width=\"640\" height=\"360\" frameborder=\"0\" scrolling=\"no\" allowfullscreen title=\"Ingenero GenAI.mp4",
     "hidden": true,
     "sizeBytes": 7069758,
     "modifiedAt": "2026-06-17T16:27:52.074Z"
   },
   {
-    "filename": "Methanol Synthesis Video.mp4",
+    "filename": "Methanol Synthesis.mp4",
     "title": "Methanol Synthesis",
-    "category": "Dashboards",
+    "category": "Demos",
     "tags": [
-      "Dashboards",
-      "Methanol"
+      "New"
     ],
-    "description": "Process optimization showcase for methanol synthesis reactors, catalyst deactivation models, and loop recovery.",
-    "localUrl": "videos/Methanol%20Synthesis%20Video.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=53a23eb1-2182-4679-8845-7affc6fc8482&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
+    "description": "Demo video for Methanol Synthesis.",
+    "localUrl": "videos/Methanol%20Synthesis.mp4",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=93882705-ca2d-428b-8d38-ee096d5e53ca&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create\" width=\"640\" height=\"360\" frameborder=\"0\" scrolling=\"no\" allowfullscreen title=\"Methanol Synthesis.mp4",
     "hidden": false,
     "sizeBytes": 21592182,
     "modifiedAt": "2026-06-17T16:26:57.416Z"
   },
   {
-    "filename": "Cloud_Video_1781777294831.mp4",
+    "filename": "Polymer.mp4",
     "title": "Polymer",
-    "category": "Dashboards",
+    "category": "Demos",
     "tags": [
-      "Process",
-      "Dashboard"
+      "New"
     ],
-    "description": "Comprehensive process dashboard for monitoring Polymer plant operation, energy efficiency, and yield analytics.",
-    "localUrl": "",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/vaishali_ingenero_com/_layouts/15/embed.aspx?UniqueId=d27dc2ef-cbfd-4edf-a738-328d3888fc53&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
+    "description": "Demo video for Polymer.",
+    "localUrl": "videos/Polymer.mp4",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=2277b23d-deff-422f-b6eb-6f3e1e0cf55c&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create\" width=\"640\" height=\"360\" frameborder=\"0\" scrolling=\"no\" allowfullscreen title=\"Polymer.mp4",
     "hidden": false,
-    "sizeBytes": 290455552,
-    "modifiedAt": "2026-06-18T11:43:33.231Z"
+    "sizeBytes": 290626526,
+    "modifiedAt": "2026-06-18T12:26:31.752Z"
+  },
+  {
+    "filename": "Process Control Valve Diagnostic.mp4",
+    "title": "Process Control Valve Diagnostic",
+    "category": "Demos",
+    "tags": [
+      "New"
+    ],
+    "description": "Demo video for Process Control Valve Diagnostic.",
+    "localUrl": "videos/Process%20Control%20Valve%20Diagnostic.mp4",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=df062153-db8d-4be3-87c6-0431932f1a9c&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create\" width=\"640\" height=\"360\" frameborder=\"0\" scrolling=\"no\" allowfullscreen title=\"Process Control Valve Diagnostic.mp4",
+    "hidden": false,
+    "sizeBytes": 103024730,
+    "modifiedAt": "2026-06-18T12:26:10.401Z"
   }
 ]
