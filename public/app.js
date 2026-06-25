@@ -631,6 +631,9 @@ function renderGrid() {
             <i class="fa-solid fa-play"></i>
           </div>
         </div>
+        ${video.thumbnailUrl ? `
+          <img class="card-thumbnail-img" src="${video.thumbnailUrl}" alt="${video.title} Thumbnail" onerror="this.style.display='none'">
+        ` : ''}
         <!-- Built-in aesthetic vector covers (Zero image placeholders) -->
         <div class="cover-design ${categoryClass}">
           <i class="${categoryIcon} cover-icon"></i>
