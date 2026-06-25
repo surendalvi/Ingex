@@ -18,7 +18,7 @@
   {
     "filename": "ARM.mp4",
     "title": "Asset Reliability Management (ARM)",
-    "category": "Demos",
+    "category": "Dashboards",
     "tags": [
       "New"
     ],
@@ -49,7 +49,7 @@
   {
     "filename": "DCU demo.mp4",
     "title": "Delayed Coker Unit (DCU)",
-    "category": "Demos",
+    "category": "Dashboards",
     "tags": [
       "DCU",
       "Process"
@@ -65,7 +65,7 @@
   {
     "filename": "Furnace_Optimizer.mp4",
     "title": "Furnace Optimizer",
-    "category": "Demos",
+    "category": "Optimizers",
     "tags": [
       "New"
     ],
@@ -111,7 +111,7 @@
   {
     "filename": "Methanol Synthesis.mp4",
     "title": "Methanol Synthesis",
-    "category": "Demos",
+    "category": "Dashboards",
     "tags": [
       "New"
     ],
@@ -126,7 +126,7 @@
   {
     "filename": "Polymer.mp4",
     "title": "Polymer",
-    "category": "Demos",
+    "category": "Dashboards",
     "tags": [
       "New"
     ],

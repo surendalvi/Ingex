@@ -6,6 +6,7 @@
   --card-hover-bg: rgba(22, 31, 59, 0.85);
   --card-border: rgba(255, 255, 255, 0.06);
   --card-border-hover: rgba(249, 115, 22, 0.4); /* Orange border on hover */
+  --video-card-border: rgba(249, 115, 22, 0.22); /* Orange card outline */
   
   --accent-blue: #f97316; /* Ingenero Brand Orange */
   --accent-blue-rgb: 249, 115, 22;
@@ -41,6 +42,7 @@ body.light-theme {
   --card-hover-bg: #ffffff;
   --card-border: rgba(15, 23, 42, 0.08);
   --card-border-hover: rgba(234, 88, 12, 0.45); /* Orange hover border */
+  --video-card-border: rgba(234, 88, 12, 0.18); /* Light mode orange card outline */
   
   --accent-blue: #ea580c; /* Ingenero Brand Orange 600 */
   --accent-cyan: #f97316; /* Ingenero Brand Orange 500 */
@@ -663,7 +665,7 @@ body {
 /* Video Card Grid Item */
 .video-card {
   background: var(--card-bg);
-  border: 1px solid var(--card-border);
+  border: 1px solid var(--video-card-border);
   border-radius: var(--radius-md);
   overflow: hidden;
   display: flex;
