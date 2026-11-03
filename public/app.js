@@ -404,10 +404,15 @@ function handleDeepLink() {
   }
 }
 
-// Check if URL is an iframe embed source (Google Drive only)
+// Check if URL is an iframe embed source (Google Drive, SharePoint, OneDrive Embeds)
 function isEmbedSource(url) {
   if (!url) return false;
-  return url.includes('drive.google.com');
+  return url.includes('drive.google.com') ||
+         url.includes('sharepoint.com') ||
+         url.includes('onedrive') ||
+         url.includes('embed.aspx') ||
+         url.includes('/embed') ||
+         url.startsWith('<iframe');
 }
 
 // Convert sharing and embed links to direct streams for native playback
@@ -447,6 +452,10 @@ function getDirectStreamUrl(url) {
 // Convert OneDrive and Google Drive share URLs to embed preview URLs
 function getEmbedUrl(url) {
   if (!url) return '';
+  if (url.startsWith('<iframe')) {
+    const m = url.match(/src=["']([^"']+)["']/i);
+    if (m && m[1]) url = m[1];
+  }
   
   // Google Drive
   if (url.includes('drive.google.com')) {
