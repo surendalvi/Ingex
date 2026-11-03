@@ -9,26 +9,28 @@
     ],
     "description": "Comprehensive process dashboard for monitoring ammonia plant operation, energy efficiency, and yield analytics.",
     "localUrl": "videos/Ammonia_Dashboard.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/:v:/g/personal/sdalvi_ingenero_com/IQB20BbasU8KTZRtiiThatMoAaUcTw3AOWye-Z3KxdenZQA?e=kFH2Tc",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=43914589-5261-4055-9704-eb541bf6ffc9&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
     "hidden": false,
     "sizeBytes": 80761981,
     "thumbnailUrl": "thumbnails/Ammonia_Dashboard.jpg",
-    "modifiedAt": "2026-06-17T16:27:02.371Z"
+    "modifiedAt": "2026-06-17T16:27:02.370Z"
   },
   {
     "filename": "ARM.mp4",
     "title": "Asset Reliability Management (ARM)",
     "category": "Dashboards",
     "tags": [
-      "New"
+      "New",
+      "Asset Management",
+      "Reliability"
     ],
-    "description": "ARM module displays Asset performance, Asset Reliability and Time to Failure Forecast",
+    "description": "ARM module displays Asset performance, Asset Reliability and Time to Failure Forecast.",
     "localUrl": "videos/ARM.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/:v:/g/personal/sdalvi_ingenero_com/IQD3g38KrwzuToBW91jKrm6nAQeNEWF_GbB3xV2BgqfVNBg?e=FDSlS5",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=0a7f83f7-0caf-4eee-8056-f758caae6ea7&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
     "hidden": false,
     "sizeBytes": 32568062,
     "thumbnailUrl": "thumbnails/ARM.jpg",
-    "modifiedAt": "2026-06-17T16:27:17.377Z"
+    "modifiedAt": "2026-06-17T16:27:17.376Z"
   },
   {
     "filename": "Catofin Agentic AI.mp4",
@@ -36,15 +38,16 @@
     "category": "Agentic AI",
     "tags": [
       "Agentic AI",
-      "GenAI"
+      "GenAI",
+      "Diagnostics"
     ],
     "description": "State-of-the-art Agentic AI assistant guiding plant operators through Catofin process diagnostics and operational controls.",
     "localUrl": "videos/Catofin%20Agentic%20AI.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/:v:/g/personal/sdalvi_ingenero_com/IQARy41MBzNMSqME3StG1wCeAd6GLzDKNVV8u2SMnnK3HUA?e=kcFHUK",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=918054c9-d183-45e8-8fbd-82da3dc6022b&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
     "hidden": false,
-    "sizeBytes": 147555797,
+    "sizeBytes": 155598248,
     "thumbnailUrl": "thumbnails/Catofin%20Agentic%20AI.jpg",
-    "modifiedAt": "2026-06-17T16:26:56.819Z"
+    "modifiedAt": "2026-11-03T11:34:03.803Z"
   },
   {
     "filename": "DCU demo.mp4",
@@ -52,11 +55,12 @@
     "category": "Dashboards",
     "tags": [
       "DCU",
-      "Process"
+      "Process",
+      "Coking"
     ],
     "description": "Delayed Coker Unit (DCU) operation demo highlighting key operational metrics, safety parameters, and operator flows.",
     "localUrl": "videos/DCU%20demo.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/:v:/g/personal/sdalvi_ingenero_com/IQC85Y7smw9QT4wfvo0yBFU1Aay39t1eHVZGbFnFS12VfLo?e=QY1Los",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=932569bb-b5ac-4f47-abc3-e8c7bee8ca8d&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
     "hidden": false,
     "sizeBytes": 53911646,
     "thumbnailUrl": "thumbnails/DCU%20demo.jpg",
@@ -67,30 +71,52 @@
     "title": "Furnace Optimizer",
     "category": "Optimizers",
     "tags": [
-      "New"
+      "New",
+      "Optimizers",
+      "Furnace"
     ],
-    "description": "Demo video for Furnace Optimizer highlighting key operational metrics, Efficiency and Yield",
+    "description": "Demo video for Furnace Optimizer highlighting key operational metrics, Efficiency and Yield.",
     "localUrl": "videos/Furnace_Optimizer.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/:v:/g/personal/sdalvi_ingenero_com/IQCXFSqr_fInTYlJjeHQLdMaAQ2Z7xOEmd2RNpgX2lEKgAI?e=l0QezE",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=ab2a1597-f2fd-4d27-8949-8de1d02dd31a&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
     "hidden": false,
     "sizeBytes": 25204292,
     "thumbnailUrl": "thumbnails/Furnace_Optimizer.jpg",
-    "modifiedAt": "2026-06-17T16:27:37.097Z"
+    "modifiedAt": "2026-06-17T16:27:37.096Z"
   },
   {
     "filename": "Generic Outlier Detection.mp4",
     "title": "Generic Outlier Detection",
     "category": "Demos",
     "tags": [
-      "New"
+      "New",
+      "Anomaly Detection",
+      "ML"
     ],
     "description": "Demo video for Generic Outlier Detection.",
     "localUrl": "videos/Generic%20Outlier%20Detection.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/:v:/g/personal/sdalvi_ingenero_com/IQA13oFBoxY4TJYFvg_km6a2Ad2w1Mt_SNtZeiLwdNkKjag?e=Mw4X0d",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=4181de35-16a3-4c38-9605-be0fe49ba6b6&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
     "hidden": false,
     "sizeBytes": 31188890,
     "thumbnailUrl": "thumbnails/Generic%20Outlier%20Detection.jpg",
     "modifiedAt": "2026-06-17T16:26:41.278Z"
+  },
+  {
+    "filename": "genX360_Simulation_Methanol.mp4",
+    "title": "genX360 Simulation - Methanol",
+    "category": "Optimizers",
+    "tags": [
+      "genX360",
+      "Simulation",
+      "Methanol",
+      "Digital Twin"
+    ],
+    "description": "genX360 digital twin and simulation engine modeling methanol synthesis loop kinetics, energy conservation, and yield optimization.",
+    "localUrl": "videos/genX360_Simulation_Methanol.mp4",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=38ec17e9-774f-4e29-8715-0a81eff99ace&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
+    "hidden": false,
+    "sizeBytes": 28808439,
+    "thumbnailUrl": "thumbnails/genX360_Simulation_Methanol.jpg",
+    "modifiedAt": "2026-11-03T11:32:38.592Z"
   },
   {
     "filename": "Ingenero GenAI.mp4",
@@ -98,59 +124,83 @@
     "category": "Agentic AI",
     "tags": [
       "GenAI",
-      "Agentic AI"
+      "Agentic AI",
+      "Industrial Copilot"
     ],
     "description": "Generative AI applications in industrial engineering and design query answering, standard searching, and calculator assistance.",
     "localUrl": "videos/Ingenero%20GenAI.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/:v:/g/personal/sdalvi_ingenero_com/IQBEflGKBviQQYU-91MllSFwAZ9iv2Zs6BIjvlQZiyYZKMY?e=3jXmYn",
-    "hidden": true,
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=8a517e44-f806-4190-853e-f75325952170&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
+    "hidden": false,
     "sizeBytes": 7069758,
     "thumbnailUrl": "thumbnails/Ingenero%20GenAI.jpg",
     "modifiedAt": "2026-06-17T16:27:52.074Z"
+  },
+  {
+    "filename": "IngeneroX360AI Dashboard.mp4",
+    "title": "IngeneroX360AI Dashboard",
+    "category": "Dashboards",
+    "tags": [
+      "IngeneroX360AI",
+      "Enterprise",
+      "Dashboards"
+    ],
+    "description": "Flagship IngeneroX360AI enterprise cockpit integrating multi-unit plant health, real-time KPIs, and agentic workflows.",
+    "localUrl": "videos/IngeneroX360AI%20Dashboard.mp4",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=81d0ee45-e89c-4d87-952d-97121acc6c76&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
+    "hidden": false,
+    "sizeBytes": 18425259,
+    "thumbnailUrl": "thumbnails/IngeneroX360AI%20Dashboard.jpg",
+    "modifiedAt": "2026-11-03T05:40:46.493Z"
   },
   {
     "filename": "Methanol Synthesis.mp4",
     "title": "Methanol Synthesis",
     "category": "Dashboards",
     "tags": [
-      "New"
+      "New",
+      "Methanol",
+      "Process Monitoring"
     ],
-    "description": "Demo video for Methanol highlighting key operational metrics, Efficiency and Yield",
+    "description": "Demo video for Methanol highlighting key operational metrics, Efficiency and Yield.",
     "localUrl": "videos/Methanol%20Synthesis.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/:v:/g/personal/sdalvi_ingenero_com/IQAFJ4iTLcqLQo047gltXlPKAVUiVT7AqgdaE5JzsCUPNTo?e=wA6XnS",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=93882705-ca2d-428b-8d38-ee096d5e53ca&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
     "hidden": false,
     "sizeBytes": 21592182,
     "thumbnailUrl": "thumbnails/Methanol%20Synthesis.jpg",
     "modifiedAt": "2026-06-17T16:26:57.416Z"
   },
   {
-    "filename": "Polymer.mp4",
-    "title": "Polymer",
+    "filename": "Polymer demo.mp4",
+    "title": "Polymer Plant Efficiency",
     "category": "Dashboards",
     "tags": [
-      "New"
+      "New",
+      "Polymer",
+      "Efficiency"
     ],
     "description": "Demo video for Polymer highlighting key operational metrics, Efficiency and Yield.",
-    "localUrl": "videos/Polymer.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/:v:/g/personal/sdalvi_ingenero_com/IQA9snci_94vQrbrbz4eDPVcAcaLL2NQlVxw8SLXySaZh9Q?e=pgc4mI",
+    "localUrl": "videos/Polymer%20demo.mp4",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=95e1897f-714b-45e2-85f2-4392fdadc1ba&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
     "hidden": false,
     "sizeBytes": 290626526,
-    "thumbnailUrl": "thumbnails/Polymer.jpg",
-    "modifiedAt": "2026-06-18T12:26:31.752Z"
+    "thumbnailUrl": "thumbnails/Polymer%20demo.jpg",
+    "modifiedAt": "2026-11-03T11:33:43.434Z"
   },
   {
-    "filename": "Process Control Valve Diagnostic.mp4",
-    "title": "Process Control Valve Diagnostic",
-    "category": "Demos",
+    "filename": "Workflow_AI.mp4",
+    "title": "Workflow AI",
+    "category": "Agentic AI",
     "tags": [
-      "New"
+      "Workflow AI",
+      "Agentic Automation",
+      "SOP"
     ],
-    "description": "Demo video for Process Control Valve Diagnostic.",
-    "localUrl": "videos/Process%20Control%20Valve%20Diagnostic.mp4",
-    "onlineUrl": "https://ingenero0-my.sharepoint.com/:v:/g/personal/sdalvi_ingenero_com/IQBTIQbfjdvjS4fGBDGTLxqcAaG1w2SWIFKvDhZL9N97jcw?e=glJrTb",
+    "description": "Autonomous multi-agent workflow orchestration automating standard operating procedures, alarm triage, and incident resolution.",
+    "localUrl": "videos/Workflow_AI.mp4",
+    "onlineUrl": "https://ingenero0-my.sharepoint.com/personal/sdalvi_ingenero_com/_layouts/15/embed.aspx?UniqueId=57a1d7ec-d217-4cfe-b119-21c4baa5f253&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create",
     "hidden": false,
-    "sizeBytes": 103024730,
-    "thumbnailUrl": "thumbnails/Process%20Control%20Valve%20Diagnostic.jpg",
-    "modifiedAt": "2026-06-18T12:26:10.401Z"
+    "sizeBytes": 143880757,
+    "thumbnailUrl": "thumbnails/Workflow_AI.jpg",
+    "modifiedAt": "2026-11-03T11:33:18.052Z"
   }
 ]
